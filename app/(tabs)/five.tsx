@@ -1,11 +1,14 @@
 import { StyleSheet } from 'react-native';
-import Home from '@/components/home/Home';
+
+import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
 
-export default function TabOneScreen() {
+export default function TabFiveScreen() {
   return (
     <View style={styles.container}>
-      <Home />
+      <Text style={styles.title}>Tab Five</Text>
+      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <EditScreenInfo path="app/(tabs)/two.tsx" />
     </View>
   );
 }
@@ -14,8 +17,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-    maxHeight: '100%',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 20,
