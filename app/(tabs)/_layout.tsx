@@ -1,5 +1,5 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
+import { Link, Tabs, useRouter } from 'expo-router';
 import { Pressable } from 'react-native';
 import { styles } from '@/components/util/Theme';
 import Colors from '@/constants/Colors';
@@ -13,6 +13,7 @@ import Login from '@/app/(tabs)/login/Login';
 import Dashboard from '@/app/(tabs)/dashboard/Dashboard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+import DashboardModal from './modals/DashboardModal';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -25,6 +26,7 @@ function TabBarIcon(props: {
 const Tab = createBottomTabNavigator();
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const router = useRouter();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -44,20 +46,6 @@ export default function TabLayout() {
               tabBarStyle: { display: 'none' }, // Display tab in login screen
               headerShown: false, // Hide the header in the login screen
               tabBarButton: () => null, // Hide the tab button on the navigation bar
-              headerRight: () => (
-                <Link href="/modal" asChild>
-                  <Pressable>
-                    {({ pressed }) => (
-                      <FontAwesome
-                        name="info-circle"
-                        size={25}
-                        color={Colors[colorScheme ?? 'light'].text}
-                        style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                      />
-                    )}
-                  </Pressable>
-                </Link>
-              )
             }}
           />
           <Tab.Screen 
@@ -65,6 +53,26 @@ export default function TabLayout() {
             component={Dashboard} 
             options={{
               tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+              headerRight: () => (
+                <Link 
+                  href={{
+                    pathname: "/modal",
+                    params: { data: 'DashboardModal', title: 'Dashboard Options' }, // Params to determine modal to render
+                  }}
+                  asChild
+                >
+                  <Pressable>
+                    {({ pressed }) => (
+                      <FontAwesome
+                        name='bars'
+                        size={25}
+                        color={Colors[colorScheme ?? 'light'].text}
+                        style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                      />
+                    )}
+                  </Pressable>
+                </Link>
+              ),
             }}
           />
           <Tab.Screen
@@ -72,6 +80,26 @@ export default function TabLayout() {
             component={Reports} 
             options={{
               tabBarIcon: ({ color }) => <TabBarIcon name="camera" color={color} />,
+              headerRight: () => (
+                <Link 
+                  href={{
+                    pathname: "/modal",
+                    params: { data: 'ReportsModal', title: 'Report Options' },
+                  }}
+                  asChild
+                >
+                  <Pressable>
+                    {({ pressed }) => (
+                      <FontAwesome
+                        name='bars'
+                        size={25}
+                        color={Colors[colorScheme ?? 'light'].text}
+                        style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                      />
+                    )}
+                  </Pressable>
+                </Link>
+              ),
             }}
           />
           <Tab.Screen 
