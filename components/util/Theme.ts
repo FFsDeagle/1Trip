@@ -1,6 +1,8 @@
 import { StyleSheet } from "react-native";
 import { useState } from "react";
 
+// Theme Component requires work in order to be functional
+
 // Types
 export type Theme = {
   colors: {
@@ -46,6 +48,9 @@ export const styles = StyleSheet.create({
       justifyContent: 'center',
       alignContent: 'center'
     },
+    justifiedTop: {
+      
+    },
     container: {
       width: '100%',
       height: '100%',
@@ -89,6 +94,16 @@ export const styles = StyleSheet.create({
       textAlign: 'center',
       padding: 20,
       color: 'black',
-    }
+    },
+    title: {
+      fontSize: 16,
+      fontWeight: 'normal',
+      marginBottom: 10,
+    },
+    separator: {
+      marginVertical: 30,
+      height: 1,
+      width: '80%',
+    },
   });
   
