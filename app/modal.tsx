@@ -1,10 +1,10 @@
-import { StatusBar } from 'expo-status-bar';
-import { Platform, StyleSheet } from 'react-native';
 import { useState } from 'react';
-import { View } from '@/components/Themed';
 import { useNavigation, useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
 import { componentMap } from './(tabs)/modals/ModalMap';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { styles } from '@/components/util/Theme';
+import { View } from 'react-native';
 
 export default function ModalScreen() {
   const navigation = useNavigation();
@@ -23,30 +23,23 @@ export default function ModalScreen() {
   useEffect(() => {
     navigation.setOptions({
       title: title,
+      headerStyle: {
+        backgroundColor: '#0D2327',
+        elevation: 2,
+        shadowOffset: { width: 0, height: 10 },
+        shadowColor: 'black',
+        marginTop: 10,
+      },
+      headerTitleStyle: {
+        color: 'white',
+      },
+      headerTintColor: 'white',
     })
   },[])
 
   return (
-    <View style={styles.container}>
-      <View style={styles.topMargin} />
+    <View>
         {Component}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
     </View>
   );
 }
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  topMargin: {
-    marginTop: 20,
-    width: '100%',
-  },
-  separator: {
-    height: 1,
-    width: '90%',
-  },
-});

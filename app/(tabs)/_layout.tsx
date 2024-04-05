@@ -12,8 +12,6 @@ import Inventory from './inventory/Inventory';
 import Login from '@/app/(tabs)/login/Login';
 import Dashboard from '@/app/(tabs)/dashboard/Dashboard';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
-import DashboardModal from './modals/DashboardModal';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -32,7 +30,14 @@ export default function TabLayout() {
     <SafeAreaView style={styles.container}>
       <Tab.Navigator
         screenOptions={{
-          tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+          tabBarActiveTintColor: 'lightblue',
+          tabBarInactiveTintColor: '#24666E',
+          tabBarStyle: {
+            backgroundColor: '#0D2327',
+            paddingBottom: 5,
+            paddingTop: 5,
+            height: 60,
+          },
           // Disable the static render of the header on web
           // to prevent a hydration error in React Navigation v6.
           headerShown: useClientOnlyValue(false, true),
@@ -49,9 +54,20 @@ export default function TabLayout() {
             }}
           />
           <Tab.Screen 
-            name="Dashboard" 
+            name="Dashboard"
             component={Dashboard} 
             options={{
+              headerStyle: {
+                // backgroundColor: Colors[colorScheme ?? 'light'].background,
+                backgroundColor: '#0D2327',
+                elevation: 2,
+                shadowOffset: { width: 0, height: 10 },
+                shadowColor: 'black',
+              },
+              headerTitleStyle: {
+                // color: Colors[colorScheme ?? 'light'].text,
+                color: 'white',
+              },
               tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
               headerRight: () => (
                 <Link 
@@ -66,7 +82,8 @@ export default function TabLayout() {
                       <FontAwesome
                         name='bars'
                         size={25}
-                        color={Colors[colorScheme ?? 'light'].text}
+                        // color={Colors[colorScheme ?? 'light'].text}
+                        color='white'
                         style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                       />
                     )}
