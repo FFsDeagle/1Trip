@@ -7,6 +7,20 @@ export default function Dashboard() {
     <View style={styles.container}>
         <MenuGridWidget />
         {/* more widgets or cards to add below */}
+        <View style={{
+          height: 300,
+          backgroundColor: 'black',
+        }}>
+            <Text
+              style={{
+                color: 'white',
+                textAlign: 'center',
+                marginTop: 20,
+              }}
+            >
+              More widgets or cards to add here
+            </Text>
+        </View>
     </View>
   );
 };

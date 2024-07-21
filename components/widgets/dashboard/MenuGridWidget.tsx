@@ -9,14 +9,17 @@ import { LinearGradient } from "expo-linear-gradient";
 export default function MenuGridWidget() {
     const [gridItems, setGridItems] = useState<WidgetGridItemProps[]>([])
 
-    // Static grid items
+    // Static grid items for testing
+    // Can add more dynamic types to the grid items such as a component to render
+    // These can be stored on the server and fetched dynamically
+    // For certain events different menu items will appear
     const staticGridItems = [
         {
             component: AntDesign,
             title: 'Local',
             icon: 'shoppingcart',
             size: 1,
-            iconColor: '#C8E5EE', // this can be preset in the theme but currently static for demo
+            iconColor: '#C8E5EE',
         },
         {
             component: AntDesign,

@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { useNavigation, useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
 import { componentMap } from './(tabs)/modals/ModalMap';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { styles } from '@/components/util/Theme';
 import { View } from 'react-native';
 
 export default function ModalScreen() {

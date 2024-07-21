@@ -12,6 +12,7 @@ import Inventory from './inventory/Inventory';
 import Login from '@/app/(tabs)/login/Login';
 import Dashboard from '@/app/(tabs)/dashboard/Dashboard';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Shopping from './shopping/Shopping';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -92,7 +93,22 @@ export default function TabLayout() {
               ),
             }}
           />
-          <Tab.Screen
+          <Tab.Screen 
+            name="Shopping" 
+            component={Shopping} 
+            options={{
+              tabBarIcon: ({ color }) => <TabBarIcon name="square" color={color} />,
+            }}
+          />
+          <Tab.Screen 
+            name="Inventory"
+            component={Inventory} 
+            options={{
+              tabBarIcon: ({ color }) => <TabBarIcon name="square" color={color} />,
+            }}
+          />
+          {/* Disable Reports Button */}
+          {/* <Tab.Screen
             name="Reports" 
             component={Reports} 
             options={{
@@ -118,22 +134,18 @@ export default function TabLayout() {
                 </Link>
               ),
             }}
-          />
-          <Tab.Screen 
-            name="Inventory" 
-            component={Inventory} 
-            options={{
-              tabBarIcon: ({ color }) => <TabBarIcon name="square" color={color} />,
-            }}
-          />
-          <Tab.Screen 
+          /> */}
+          {/* Commenting out Account screen as it can be moved elsewhere */}
+          {/* <Tab.Screen 
             name="Account" 
             component={Account} 
             options={{
               tabBarIcon: ({ color }) => <TabBarIcon name="address-book-o" color={color} />,
             }}
-          />
+          /> */}
       </Tab.Navigator>
+      {/* Other windows that are not on the tabs */}
+      
     </SafeAreaView>
   );
 }

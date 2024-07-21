@@ -2,18 +2,19 @@ import { ListItem, Text } from "@rneui/base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import { styles } from "@/components/util/Theme";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "@/components/util/Types";
 
 // Props for size and color
 export default function DashboardModal() {
-    const items = [
-        {
-            name: 'Settings',
-            navigation: 'Settings',
-        },
-        {
-            name:  'Profile',
-            navigation: 'Profile',
-        },
+    const navigate = useNavigation<NavigationProp<RootStackParamList>>();
+
+    type Item = {
+        name: string;
+        navigation: keyof RootStackParamList;
+    };
+
+    const items: Item[] = [
         {
             name:  'Logout',
             navigation: 'Login',
@@ -33,7 +34,7 @@ export default function DashboardModal() {
                         alignItems: 'center',
                         width: '100%',
                     }}
-                    onPress={() => console.log(`Navigate to: ${item.navigation} screen`)}
+                    onPress={() => navigate.navigate(item.navigation)}
                 >
                     <ListItem.Title style={styles.title}>{item.name}</ListItem.Title>
                 </TouchableOpacity>
