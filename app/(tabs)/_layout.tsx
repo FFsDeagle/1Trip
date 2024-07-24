@@ -98,6 +98,17 @@ export default function TabLayout() {
             component={Shopping} 
             options={{
               tabBarIcon: ({ color }) => <TabBarIcon name="square" color={color} />,
+              headerStyle: {
+                // backgroundColor: Colors[colorScheme ?? 'light'].background,
+                backgroundColor: '#0D2327',
+                elevation: 2,
+                shadowOffset: { width: 0, height: 10 },
+                shadowColor: 'black',
+              },
+              headerTitleStyle: {
+                // color: Colors[colorScheme ?? 'light'].text,
+                color: 'white',
+              },
             }}
           />
           <Tab.Screen 
@@ -105,6 +116,17 @@ export default function TabLayout() {
             component={Inventory} 
             options={{
               tabBarIcon: ({ color }) => <TabBarIcon name="square" color={color} />,
+              headerStyle: {
+                // backgroundColor: Colors[colorScheme ?? 'light'].background,
+                backgroundColor: '#0D2327',
+                elevation: 2,
+                shadowOffset: { width: 0, height: 10 },
+                shadowColor: 'black',
+              },
+              headerTitleStyle: {
+                // color: Colors[colorScheme ?? 'light'].text,
+                color: 'white',
+              },
             }}
           />
           {/* Disable Reports Button */}
@@ -116,7 +138,7 @@ export default function TabLayout() {
               headerRight: () => (
                 <Link 
                   href={{
-                    pathname: "/modal",
+                    pathname: "/modal",dw
                     params: { data: 'ReportsModal', title: 'Report Options' },
                   }}
                   asChild
