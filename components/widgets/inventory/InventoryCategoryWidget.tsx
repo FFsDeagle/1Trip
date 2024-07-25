@@ -5,9 +5,11 @@ import { AntDesign, Feather, Ionicons, MaterialCommunityIcons, FontAwesome6, Mat
 import { styles } from "@/components/util/Theme";
 import { WidgetGridItemProps } from "@/constants/Types";
 import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
 
 export default function InventoryCategoryWidget() {
     const [gridItems, setGridItems] = useState<WidgetGridItemProps[]>([])
+    const router = useRouter();
 
     // Static grid items for testing
     // Can add more dynamic types to the grid items such as a component to render
@@ -105,6 +107,13 @@ export default function InventoryCategoryWidget() {
         setGridItems(staticGridItems)
     }, [])
 
+    const handleSelection = (item: WidgetGridItemProps) => {
+      router.push({
+        pathname: "/modal",
+        params: { data: 'SearchResultsModal', title: `${item.title}` }, 
+      });
+    }
+
     return (
         <LinearGradient 
             style={styles.gridContainer}
@@ -129,7 +138,7 @@ export default function InventoryCategoryWidget() {
                                 margin: 5,
                             }}
                             key={index}
-                            onPress={() => console.log(`${item.title} pressed`)}
+                            onPress={() => handleSelection(item)}
                         >
                             <View
                                 style={styles.gridItem}
