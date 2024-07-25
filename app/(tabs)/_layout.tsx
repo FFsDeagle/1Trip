@@ -13,6 +13,7 @@ import Login from '@/app/(tabs)/login/Login';
 import Dashboard from '@/app/(tabs)/dashboard/Dashboard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Shopping from './shopping/Shopping';
+import SearchBarWidget from '@/components/widgets/misc/SearchBar';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -115,6 +116,7 @@ export default function TabLayout() {
             name="Inventory"
             component={Inventory} 
             options={{
+              headerRight: () => <SearchBarWidget componentToRender={"SearchResultsModal"} />,
               tabBarIcon: ({ color }) => <TabBarIcon name="square" color={color} />,
               headerStyle: {
                 // backgroundColor: Colors[colorScheme ?? 'light'].background,
@@ -138,7 +140,7 @@ export default function TabLayout() {
               headerRight: () => (
                 <Link 
                   href={{
-                    pathname: "/modal",dw
+                    pathname: "/modal",
                     params: { data: 'ReportsModal', title: 'Report Options' },
                   }}
                   asChild

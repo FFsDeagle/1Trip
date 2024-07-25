@@ -10,3 +10,8 @@ export interface WidgetGridItemProps {
     size: number,
     iconColor: string,
 }
+
+export interface SearchBarProp {
+    componentToRender: string,
+    inputValue?: string
+}

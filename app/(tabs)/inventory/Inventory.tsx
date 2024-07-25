@@ -18,7 +18,6 @@ export default function Inventory() {
 
   return (
     <View style={styles.container}>
-      <SearchBarWidget />
       <InventoryCategoryWidget />
       <Text>
         Test
