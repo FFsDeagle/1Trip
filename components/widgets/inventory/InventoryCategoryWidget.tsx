@@ -110,7 +110,7 @@ export default function InventoryCategoryWidget() {
     const handleSelection = (item: WidgetGridItemProps) => {
       router.push({
         pathname: "/modal",
-        params: { data: 'SearchResultsModal', title: `${item.title}` }, 
+        params: { modal: 'SearchResultsModal', title: `${item.title}`, navigationParam: 'InventoryItemInfo' }, 
       });
     }
 

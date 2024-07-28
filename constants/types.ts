@@ -1,3 +1,5 @@
+import { NavigationProp } from '@react-navigation/native';
+
 export interface LoginProps {
     userName: string,
     password: string,
@@ -14,4 +16,24 @@ export interface WidgetGridItemProps {
 export interface SearchBarProp {
     componentToRender: string,
     inputValue?: string
+}
+
+export interface MappingProps {
+    modal: string,
+    title: string,
+    subComponent: string
+    navigation: NavigationProp<ReactNavigation.RootParamList>
+}
+
+export interface NavigationProps {
+    navigation: NavigationProp<ReactNavigation.RootParamList>
+}
+
+export type InventoryStackParamList = {
+    InventoryMain: undefined;
+    InventoryItemInfo: { searchValue: string };
+}
+
+export type ShoppingStackParamList = {
+
 }

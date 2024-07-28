@@ -55,7 +55,7 @@ export default function TabLayout() {
               tabBarButton: () => null, // Hide the tab button on the navigation bar
             }}
           />
-          <Tab.Screen 
+          {/* <Tab.Screen 
             name="Dashboard"
             component={Dashboard} 
             options={{
@@ -93,12 +93,12 @@ export default function TabLayout() {
                 </Link>
               ),
             }}
-          />
+          /> */}
           <Tab.Screen 
-            name="Shopping" 
+            name="Shopping List" 
             component={Shopping} 
             options={{
-              tabBarIcon: ({ color }) => <TabBarIcon name="square" color={color} />,
+              tabBarIcon: ({ color }) => <TabBarIcon name="shopping-cart" color={color} />,
               headerStyle: {
                 // backgroundColor: Colors[colorScheme ?? 'light'].background,
                 backgroundColor: '#0D2327',

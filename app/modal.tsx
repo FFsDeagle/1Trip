@@ -5,15 +5,15 @@ import { componentMap } from './(tabs)/modals/ModalMap';
 import { View } from 'react-native';
 
 export default function ModalScreen() {
-  const navigation = useNavigation();
   const params = useLocalSearchParams();
+  const navigation = useNavigation();
+  const { modal, title, navigationParam } = params;
+  
   const [Component, setComponent] = useState<React.JSX.Element | null>(null);
-
-  const { data, title } = params;
 
   useEffect(() => {
     // Use the componentMap function to render the correct modal
-    const component = componentMap(data as string);
+    const component = componentMap(modal as string, navigationParam as string);
     setComponent(component);
   }, []);
 

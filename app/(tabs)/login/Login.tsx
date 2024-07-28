@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { TouchableOpacity, ActivityIndicator } from 'react-native';
 import { View, Text } from "../../../components/Themed";
-import { LinearGradient } from "expo-linear-gradient";
 import { Input, Button } from '@rneui/themed';
 import { styles } from "@/components/util/Theme";
 
@@ -29,7 +28,7 @@ export default function Login ({ navigation }: { navigation: any }){
             <TouchableOpacity
                 onPress={() => {
                     // navigate to other tab
-                    navigation.navigate('Dashboard');
+                    navigation.navigate('Shopping List');
                 }}
                 style={styles.textStyle}
                 accessibilityLabel="Learn more about this purple button"

@@ -1,33 +1,32 @@
-import { styles } from '@/components/util/Theme';
-import { View } from '@/components/Themed';
 import { useEffect } from 'react';
-import { FlatList, Text } from 'react-native';
-import { FontAwesome6, Fontisto, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import InventoryCategoryWidget from '@/components/widgets/inventory/InventoryCategoryWidget';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import InventoryMain from './InventoryMain';
+import InventoryItemInfo from './InventoryItemInfo';
+import { View, Text } from 'react-native';
 
 export default function Inventory() {
   // Load categories
+  const InventoryStack = createNativeStackNavigator();
   useEffect(() => {
 
   },[])
   
   return (
-    <View style={styles.container}>
-      <InventoryCategoryWidget />
-      <View style={{
-          height: 300,
-          backgroundColor: 'black',
-        }}>
-            <Text
-              style={{
-                color: 'white',
-                textAlign: 'center',
-                marginTop: 20,
-              }}
-            >
-              More widgets or cards to add here
-            </Text>
-        </View>
-    </View>
+    <InventoryStack.Navigator>
+      <InventoryStack.Screen
+        name="InventoryMain"
+        component={InventoryMain}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <InventoryStack.Screen
+        name="InventoryItemInfo"
+        component={InventoryItemInfo}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </InventoryStack.Navigator>
   );
 };

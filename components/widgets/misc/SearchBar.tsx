@@ -4,7 +4,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { SearchBarProp } from "@/constants/Types";
 import { Link, useRouter } from "expo-router";
 
-export default function SearchBarWidget({inputValue, componentToRender}: SearchBarProp) {
+export default function SearchBarWidget({ componentToRender}: SearchBarProp) {
   // Reusable searchbar widget
   // Uses animations to render modal with search results
   const [searchText, setSearchText] = useState<string>("");
@@ -14,10 +14,9 @@ export default function SearchBarWidget({inputValue, componentToRender}: SearchB
     if (searchText.trim()) {
       const searchQuery = searchText;
       setSearchText(""); // Clear the search text
-      console.log(searchText);
       router.push({
         pathname: "/modal",
-        params: { data: componentToRender, title: `Search - ${searchQuery}` }, 
+        params: { modal: componentToRender, title: `Search - ${searchQuery}`, navigationParam: 'InventoryItemInfo' }, 
       });
     }
   };
