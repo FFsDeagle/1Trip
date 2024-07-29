@@ -1,10 +1,9 @@
 import { View, Text } from "react-native";
 import { styles } from "@/components/util/Theme";
 import InventoryCategoryWidget from "@/components/widgets/inventory/InventoryCategoryWidget";
-import { useNavigation } from "expo-router";
+import AddInventoryItemButton from "@/app/(tabs)/inventory/AddInventoryItemButton";
 
 export default function InventoryMain() {
-    const navigation = useNavigation();
     return(
     <View style={styles.container}>
       <InventoryCategoryWidget />
@@ -22,6 +21,7 @@ export default function InventoryMain() {
               More widgets or cards to add here
             </Text>
         </View>
+        <AddInventoryItemButton />
     </View>
     );
 };

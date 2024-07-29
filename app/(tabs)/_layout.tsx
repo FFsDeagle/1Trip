@@ -14,6 +14,8 @@ import Dashboard from '@/app/(tabs)/dashboard/Dashboard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Shopping from './shopping/Shopping';
 import SearchBarWidget from '@/components/widgets/misc/SearchBar';
+import { useAppSelector } from '../store/hooks';
+import { useEffect } from 'react';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -27,6 +29,11 @@ const Tab = createBottomTabNavigator();
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const router = useRouter();
+  const showInventoryHeader = useAppSelector(state => state.inventory.showHeader);
+  
+  useEffect(() => {
+    console.log('State', showInventoryHeader)
+  }, [showInventoryHeader])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -42,7 +49,7 @@ export default function TabLayout() {
           },
           // Disable the static render of the header on web
           // to prevent a hydration error in React Navigation v6.
-          headerShown: useClientOnlyValue(false, true),
+          // headerShown: useClientOnlyValue(false, true),
         }}>
           <Tab.Screen 
             name="Login" 
@@ -55,45 +62,6 @@ export default function TabLayout() {
               tabBarButton: () => null, // Hide the tab button on the navigation bar
             }}
           />
-          {/* <Tab.Screen 
-            name="Dashboard"
-            component={Dashboard} 
-            options={{
-              headerStyle: {
-                // backgroundColor: Colors[colorScheme ?? 'light'].background,
-                backgroundColor: '#0D2327',
-                elevation: 2,
-                shadowOffset: { width: 0, height: 10 },
-                shadowColor: 'black',
-              },
-              headerTitleStyle: {
-                // color: Colors[colorScheme ?? 'light'].text,
-                color: 'white',
-              },
-              tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-              headerRight: () => (
-                <Link 
-                  href={{
-                    pathname: "/modal",
-                    params: { data: 'DashboardModal', title: 'Dashboard Options' }, // Params to determine modal to render
-                  }}
-                  asChild
-                >
-                  <Pressable>
-                    {({ pressed }) => (
-                      <FontAwesome
-                        name='bars'
-                        size={25}
-                        // color={Colors[colorScheme ?? 'light'].text}
-                        color='white'
-                        style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                      />
-                    )}
-                  </Pressable>
-                </Link>
-              ),
-            }}
-          /> */}
           <Tab.Screen 
             name="Shopping List" 
             component={Shopping} 
@@ -116,6 +84,7 @@ export default function TabLayout() {
             name="Inventory"
             component={Inventory} 
             options={{
+              headerShown: showInventoryHeader,
               headerRight: () => <SearchBarWidget componentToRender={"SearchResultsModal"} />,
               tabBarIcon: ({ color }) => <TabBarIcon name="square" color={color} />,
               headerStyle: {
@@ -131,45 +100,8 @@ export default function TabLayout() {
               },
             }}
           />
-          {/* Disable Reports Button */}
-          {/* <Tab.Screen
-            name="Reports" 
-            component={Reports} 
-            options={{
-              tabBarIcon: ({ color }) => <TabBarIcon name="camera" color={color} />,
-              headerRight: () => (
-                <Link 
-                  href={{
-                    pathname: "/modal",
-                    params: { data: 'ReportsModal', title: 'Report Options' },
-                  }}
-                  asChild
-                >
-                  <Pressable>
-                    {({ pressed }) => (
-                      <FontAwesome
-                        name='bars'
-                        size={25}
-                        color={Colors[colorScheme ?? 'light'].text}
-                        style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                      />
-                    )}
-                  </Pressable>
-                </Link>
-              ),
-            }}
-          /> */}
-          {/* Commenting out Account screen as it can be moved elsewhere */}
-          {/* <Tab.Screen 
-            name="Account" 
-            component={Account} 
-            options={{
-              tabBarIcon: ({ color }) => <TabBarIcon name="address-book-o" color={color} />,
-            }}
-          /> */}
       </Tab.Navigator>
       {/* Other windows that are not on the tabs */}
-      
     </SafeAreaView>
   );
 }

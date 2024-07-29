@@ -32,6 +32,7 @@ export interface NavigationProps {
 export type InventoryStackParamList = {
     InventoryMain: undefined;
     InventoryItemInfo: { searchValue: string };
+    AddItem: undefined;
 }
 
 export type ShoppingStackParamList = {

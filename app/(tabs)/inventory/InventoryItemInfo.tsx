@@ -4,12 +4,15 @@ import { useNavigation } from "expo-router";
 import { InventoryStackParamList } from "@/constants/Types";
 import { NavigationProp, RouteProp, useRoute } from "@react-navigation/native";
 import BackButton from "@/components/util/BackButton";
+import useToggleHeader from "../hooks/useToggleHeader";
 
 type InventoryItemInfoRouteProp = RouteProp<InventoryStackParamList, 'InventoryItemInfo'>;
 
 export default function InventoryItemInfo() {
   const route = useRoute<InventoryItemInfoRouteProp>();
     const navigation = useNavigation<NavigationProp<InventoryStackParamList, 'InventoryMain'>>();
+
+    useToggleHeader(false);
 
     const { searchValue } = route.params;
     return(

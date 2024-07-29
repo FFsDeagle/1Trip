@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/app/store/store";
 import { signInWithCredentials, logout } from "./loginAPI";
+import axios, { AxiosResponse } from "axios";
 
 // Login state structure
 export interface loginState {
@@ -44,12 +45,30 @@ export interface LogoutResponse {
     status: boolean,
 }
 
+export const createAccount = createAsyncThunk(
+    'login/createAccount',
+    async ({ userName, password }: LoginProps) => {
+        return axios.post('http://localhost:5000/account/createAccount', { params: ({ userName, password })})
+        .then((response: AxiosResponse<LoginResponse>) => {
+            return response;
+        }).catch((error) => {
+            console.log("Error occurred when attempting to create account:", error);
+            return error;
+        })
+    }
+)
+
 // Function for logging in
 export const loginAsync = createAsyncThunk(
     'login/loginAsync',
     async ({ userName, password }: LoginProps) => {
-        const response = await signInWithCredentials({ userName, password});
-        return response as LoginResponse | undefined;
+        return axios.post('http://localhost:5000/account/login', { params: ({ userName, password })})
+        .then((response: AxiosResponse<LoginResponse>) => {
+            return response;
+        }).catch((error) => {
+            console.log("Error occurred when attempting to sign in:", error);
+            return error;
+        })
     }
 )
 
@@ -58,8 +77,12 @@ export const logoutAsync = createAsyncThunk(
     'login/logoutAsync',
     // No need to define a interface here as we are only passing 1 argument of type string
     async (id: string) => {
-        const response = await logout(id);
-        return response as LogoutResponse | undefined;
+        return axios.post('http://localhost:5000/account/logout', { params: ({ id })})
+        .then((response: AxiosResponse<LogoutResponse>) => {
+            return response;
+        }).catch(error => {
+            return error;
+        })
     }
 )
 
@@ -97,6 +120,19 @@ export const loginSlice = createSlice({
             if(action.payload?.status){
                 // Reset state by creating an empty object of type LoginResponse
                 state.userProps = {} as LoginResponse
+            }
+        })
+        .addCase(createAccount.pending, (state) => {
+            state.status = 'loading';
+        })
+        .addCase(createAccount.rejected, (state, action) => {
+            state.status = 'failed';
+            state.error = action.error.message;
+        })
+        .addCase(createAccount.fulfilled, (state, action) => {
+            state.status = 'success';
+            if (action.payload) {
+                state.userProps = action.payload;
             }
         })
     }

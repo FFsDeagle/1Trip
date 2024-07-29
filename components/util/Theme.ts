@@ -132,6 +132,10 @@ export const styles = StyleSheet.create({
     listItem: {
       borderColor: 'rgba(0,0,0,0.2)',
       borderBottomWidth: 1,
-    }
+    },
+    subtitle: {
+      fontSize: 12,
+      color: 'rgba(0,0,0,0.4)',
+    },
   });
   

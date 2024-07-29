@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import InventoryMain from './InventoryMain';
 import InventoryItemInfo from './InventoryItemInfo';
-import { View, Text } from 'react-native';
+import AddItem from './AddItem';
 
 export default function Inventory() {
   // Load categories
@@ -23,6 +23,13 @@ export default function Inventory() {
       <InventoryStack.Screen
         name="InventoryItemInfo"
         component={InventoryItemInfo}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <InventoryStack.Screen
+        name="AddItem"
+        component={AddItem}
         options={{
           headerShown: false,
         }}
