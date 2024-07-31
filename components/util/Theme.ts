@@ -3,45 +3,6 @@ import { useState } from "react";
 
 // Theme Component requires work in order to be functional
 
-// Types
-export type Theme = {
-  colors: {
-    primary: string;
-    secondary: string;
-    background: string;
-    text: string;
-  };
-};
-
-export const defaultTheme: Theme = {
-  colors: {
-    primary: 'blue',
-    secondary: 'green',
-    background: 'white',
-    text: 'black',
-  },
-};
-
-export const darkTheme: Theme = {
-  colors: {
-    primary: 'cyan',
-    secondary: 'magenta',
-    background: 'black',
-    text: 'white',
-  },
-};
-
-function Theme() {
-  const [theme, setTheme] = useState<Theme>(defaultTheme);
-  
-}
-
-// Theme handler
-export function toggleTheme(currentTheme: Theme) {
-
-    return currentTheme === defaultTheme ? darkTheme : defaultTheme;
-}
-
 export const styles = StyleSheet.create({
     justified: {
       display: 'flex',

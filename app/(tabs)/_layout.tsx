@@ -1,21 +1,16 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs, useRouter } from 'expo-router';
-import { Pressable } from 'react-native';
 import { styles } from '@/components/util/Theme';
-import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
-import { useClientOnlyValue } from '@/components/useClientOnlyValue';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Reports from './reports/Reports';
-import Account from './account/Account';
 import Inventory from './inventory/Inventory';
 import Login from '@/app/(tabs)/login/Login';
-import Dashboard from '@/app/(tabs)/dashboard/Dashboard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Shopping from './shopping/Shopping';
 import SearchBarWidget from '@/components/widgets/misc/SearchBar';
-import { useAppSelector } from '../store/hooks';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import ItemMain from './items/ItemMain';
+import { defaultTheme, getTheme, ThemeProps } from './themeSlice';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -27,13 +22,21 @@ function TabBarIcon(props: {
 
 const Tab = createBottomTabNavigator();
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-  const router = useRouter();
+  // const colorScheme = useColorScheme();
   const showInventoryHeader = useAppSelector(state => state.inventory.showHeader);
-  
+  const dispatch = useAppDispatch();
+  const themeState = useAppSelector(state => state.theme);
+
+  // Theme handler, set to default theme
+  const [theme, setTheme] = useState<ThemeProps>(defaultTheme);
+
+  // useEffect on mount to make api call to get saved theme
   useEffect(() => {
-    console.log('State', showInventoryHeader)
-  }, [showInventoryHeader])
+    dispatch(getTheme());
+    if (themeState.status === 'success') {
+      setTheme(themeState);
+    }
+  }, [themeState])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -63,10 +66,30 @@ export default function TabLayout() {
             }}
           />
           <Tab.Screen 
-            name="Shopping List" 
+            name="Shopping List"
             component={Shopping} 
             options={{
               tabBarIcon: ({ color }) => <TabBarIcon name="shopping-cart" color={color} />,
+              headerStyle: {
+                // backgroundColor: Colors[colorScheme ?? 'light'].background,
+                backgroundColor: theme.colors.background,
+                elevation: 2,
+                shadowOffset: { width: 0, height: 10 },
+                shadowColor: 'black',
+              },
+              headerTitleStyle: {
+                // color: Colors[colorScheme ?? 'light'].text,
+                color: theme.colors.primary,
+              },
+            }}
+          />
+          <Tab.Screen 
+            name="Inventory"
+            component={Inventory} 
+            options={{
+              headerShown: showInventoryHeader,
+              headerRight: () => <SearchBarWidget componentToRender={"SearchResultsModal"} />,
+              tabBarIcon: ({ color }) => <TabBarIcon name="archive" color={color} />,
               headerStyle: {
                 // backgroundColor: Colors[colorScheme ?? 'light'].background,
                 backgroundColor: '#0D2327',
@@ -81,8 +104,8 @@ export default function TabLayout() {
             }}
           />
           <Tab.Screen 
-            name="Inventory"
-            component={Inventory} 
+            name="Items"
+            component={ItemMain} 
             options={{
               headerShown: showInventoryHeader,
               headerRight: () => <SearchBarWidget componentToRender={"SearchResultsModal"} />,
@@ -101,7 +124,6 @@ export default function TabLayout() {
             }}
           />
       </Tab.Navigator>
-      {/* Other windows that are not on the tabs */}
     </SafeAreaView>
   );
 }
