@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { TouchableOpacity, ActivityIndicator } from 'react-native';
-import { View, Text } from "../../../components/Themed";
-import { Input, Button } from '@rneui/themed';
+import { Text } from "react-native";
+import { Input } from '@rneui/themed';
 import { styles } from "@/components/util/Theme";
-import { LinearGradient } from "expo-linear-gradient";
+import { LinearGradient } from "@/components/Themed";
 
 export default function Login ({ navigation }: { navigation: any }){
     const [isLoading, setIsLoading] = useState(false);
-
+    
     // Check users login status by passing their id to the server
     // Which then checks the session by the token
 
@@ -26,7 +26,7 @@ export default function Login ({ navigation }: { navigation: any }){
                     justifyContent: 'center',
                     alignItems: 'center',
                 }]}
-                colors={['#184E68', '#57CA85']}
+                colors={[]}
             >
             <Text style={{
                 fontSize: 50,

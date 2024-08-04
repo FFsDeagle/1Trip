@@ -4,8 +4,8 @@ import { ListItem } from "@rneui/base";
 import { AntDesign, Feather, Ionicons, MaterialCommunityIcons, FontAwesome6, MaterialIcons, Fontisto } from "@expo/vector-icons";
 import { styles } from "@/components/util/Theme";
 import { WidgetGridItemProps } from "@/constants/Types";
-import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
+import { LinearGradient } from "@/components/Themed";
 
 export default function InventoryCategoryWidget() {
     const [gridItems, setGridItems] = useState<WidgetGridItemProps[]>([])
@@ -116,9 +116,8 @@ export default function InventoryCategoryWidget() {
 
     return (
         <LinearGradient 
-            style={styles.gridContainer}
-            // dark purple colors
-            colors={['#184E68', '#57CA85']}
+          style={styles.gridContainer} 
+          colors={[]}        
         >
             <Text style={styles.getStartedText}>
                 Categories

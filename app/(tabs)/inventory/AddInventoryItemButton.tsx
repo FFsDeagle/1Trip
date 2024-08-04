@@ -3,7 +3,6 @@ import { useNavigation } from "expo-router";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
 import { InventoryStackParamList } from "@/constants/Types";
-import useToggleHeader from "../hooks/useToggleHeader";
 import { useEffect, useState } from "react";
 
 export default function AddInventoryItemButton() {
@@ -14,8 +13,6 @@ export default function AddInventoryItemButton() {
 
     // Disable the add button when the keyboard is visible
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-
-    useToggleHeader(true);
   
     useEffect(() => {
       const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {

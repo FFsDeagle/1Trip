@@ -1,6 +1,5 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { styles } from '@/components/util/Theme';
-import { useColorScheme } from '@/components/useColorScheme';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Inventory from './inventory/Inventory';
 import Login from '@/app/(tabs)/login/Login';
@@ -8,9 +7,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Shopping from './shopping/Shopping';
 import SearchBarWidget from '@/components/widgets/misc/SearchBar';
 import { useEffect, useState } from 'react';
-import ItemMain from './items/ItemMain';
-import { defaultTheme, getTheme, ThemeProps } from './themeSlice';
+import { defaultTheme, getTheme, ThemeProps } from '../../components/util/themeSlice';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { ActivityIndicator } from 'react-native';
+import Items from './items/Items';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -24,6 +24,7 @@ const Tab = createBottomTabNavigator();
 export default function TabLayout() {
   // const colorScheme = useColorScheme();
   const showInventoryHeader = useAppSelector(state => state.inventory.showHeader);
+  const showItemHeader = useAppSelector(state => state.item.showHeader);
   const dispatch = useAppDispatch();
   const themeState = useAppSelector(state => state.theme);
 
@@ -36,7 +37,16 @@ export default function TabLayout() {
     if (themeState.status === 'success') {
       setTheme(themeState);
     }
-  }, [themeState])
+  }, [])
+
+  if (themeState.status === 'loading') {
+    return (
+      // load spinner
+      <SafeAreaView style={styles.container}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </SafeAreaView>
+    )
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -44,8 +54,9 @@ export default function TabLayout() {
         screenOptions={{
           tabBarActiveTintColor: 'lightblue',
           tabBarInactiveTintColor: '#24666E',
+          tabBarHideOnKeyboard: true,
           tabBarStyle: {
-            backgroundColor: '#0D2327',
+            backgroundColor: theme.colors.background,//'#0D2327',
             paddingBottom: 5,
             paddingTop: 5,
             height: 60,
@@ -69,6 +80,7 @@ export default function TabLayout() {
             name="Shopping List"
             component={Shopping} 
             options={{
+              headerShown: false,
               tabBarIcon: ({ color }) => <TabBarIcon name="shopping-cart" color={color} />,
               headerStyle: {
                 // backgroundColor: Colors[colorScheme ?? 'light'].background,
@@ -87,40 +99,16 @@ export default function TabLayout() {
             name="Inventory"
             component={Inventory} 
             options={{
-              headerShown: showInventoryHeader,
-              headerRight: () => <SearchBarWidget componentToRender={"SearchResultsModal"} />,
+              headerShown: false,
               tabBarIcon: ({ color }) => <TabBarIcon name="archive" color={color} />,
-              headerStyle: {
-                // backgroundColor: Colors[colorScheme ?? 'light'].background,
-                backgroundColor: '#0D2327',
-                elevation: 2,
-                shadowOffset: { width: 0, height: 10 },
-                shadowColor: 'black',
-              },
-              headerTitleStyle: {
-                // color: Colors[colorScheme ?? 'light'].text,
-                color: 'white',
-              },
             }}
           />
           <Tab.Screen 
             name="Items"
-            component={ItemMain} 
+            component={Items} 
             options={{
-              headerShown: showInventoryHeader,
-              headerRight: () => <SearchBarWidget componentToRender={"SearchResultsModal"} />,
+              headerShown: false,
               tabBarIcon: ({ color }) => <TabBarIcon name="square" color={color} />,
-              headerStyle: {
-                // backgroundColor: Colors[colorScheme ?? 'light'].background,
-                backgroundColor: '#0D2327',
-                elevation: 2,
-                shadowOffset: { width: 0, height: 10 },
-                shadowColor: 'black',
-              },
-              headerTitleStyle: {
-                // color: Colors[colorScheme ?? 'light'].text,
-                color: 'white',
-              },
             }}
           />
       </Tab.Navigator>

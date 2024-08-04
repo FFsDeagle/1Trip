@@ -3,13 +3,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import InventoryMain from './InventoryMain';
 import InventoryItemInfo from './InventoryItemInfo';
 import AddItem from './AddItem';
+import SearchBarWidget from '@/components/widgets/misc/SearchBar';
 
 export default function Inventory() {
   // Load categories
   const InventoryStack = createNativeStackNavigator();
-  useEffect(() => {
-
-  },[])
   
   return (
     <InventoryStack.Navigator>
@@ -17,7 +15,16 @@ export default function Inventory() {
         name="InventoryMain"
         component={InventoryMain}
         options={{
-          headerShown: false,
+          headerShown: true,
+          headerRight: () => <SearchBarWidget componentToRender={"SearchResultsModal"} />,
+          headerStyle: {
+            // backgroundColor: Colors[colorScheme ?? 'light'].background,
+            backgroundColor: '#0D2327',
+          },              
+          headerTitleStyle: {
+            // color: Colors[colorScheme ?? 'light'].text,
+            color: 'white',
+          },
         }}
       />
       <InventoryStack.Screen

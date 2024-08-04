@@ -2,7 +2,8 @@ import loginSlice from "@/app/(tabs)/login/loginSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import logger from 'redux-logger';
 import inventorySlice from "../(tabs)/inventory/InventorySlice";
-import themeSlice from "../(tabs)/themeSlice";
+import themeSlice from "../../components/util/themeSlice";
+import ItemSlice from "../(tabs)/items/ItemSlice";
 
 
 const store = configureStore({
@@ -10,6 +11,7 @@ const store = configureStore({
         login: loginSlice,
         inventory: inventorySlice,
         theme: themeSlice,
+        item: ItemSlice,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });

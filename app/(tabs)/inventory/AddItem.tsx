@@ -1,6 +1,6 @@
+import { LinearGradient, TextPrimary, TextSecondary } from "@/components/Themed";
 import BackButton from "@/components/util/BackButton";
 import { styles } from "@/components/util/Theme";
-import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { View, Text } from "react-native";
 
@@ -14,8 +14,8 @@ export default function AddItem() {
         }]}
         colors={['#184E68', '#57CA85']}
     >
-            <Text style={styles.title}>Add Item</Text>
-            <Text style={styles.subtitle}>Add a new item to your inventory</Text>
+            <TextPrimary style={styles.title}>Add Item</TextPrimary>
+            <TextSecondary style={styles.subtitle}>Add a new item to your inventory</TextSecondary>
         <BackButton />
     </LinearGradient>
   )

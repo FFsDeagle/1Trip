@@ -1,7 +1,4 @@
 import { StyleSheet } from "react-native";
-import { useState } from "react";
-
-// Theme Component requires work in order to be functional
 
 export const styles = StyleSheet.create({
     justified: {

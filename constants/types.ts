@@ -35,6 +35,11 @@ export type InventoryStackParamList = {
     AddItem: undefined;
 }
 
+export type ItemsStackParamList = {
+    ItemMain: undefined;
+    ItemInfo: { searchValue: string };
+}
+
 export type ShoppingStackParamList = {
 
 }

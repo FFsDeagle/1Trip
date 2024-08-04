@@ -1,15 +1,15 @@
 import { styles } from "@/components/util/Theme";
 import { useNavigation } from "expo-router";
-import { InventoryStackParamList } from "@/constants/Types";
+import { ItemsStackParamList } from "@/constants/Types";
 import { NavigationProp, RouteProp, useRoute } from "@react-navigation/native";
 import BackButton from "@/components/util/BackButton";
-import { SecondaryView, TextPrimary, TextSecondary, TouchableOpacity, TouchableOpacityItem } from "@/components/Themed";
+import { SecondaryView, TextPrimary, TextSecondary, TouchableOpacityItem } from "@/components/Themed";
 
-type InventoryItemInfoRouteProp = RouteProp<InventoryStackParamList, 'InventoryItemInfo'>;
+type ItemInfoRouteProp = RouteProp<ItemsStackParamList, 'ItemInfo'>;
 
-export default function InventoryItemInfo() {
-  const route = useRoute<InventoryItemInfoRouteProp>();
-    const navigation = useNavigation<NavigationProp<InventoryStackParamList, 'InventoryMain'>>();
+export default function ItemInfo() {
+  const route = useRoute<ItemInfoRouteProp>();
+    const navigation = useNavigation<NavigationProp<ItemsStackParamList, 'ItemInfo'>>();
 
     const { searchValue } = route.params;
     return(
@@ -21,12 +21,12 @@ export default function InventoryItemInfo() {
           fontSize: 20,
         }}
       >
-        Inventory Item info
+        Item info
       </TextPrimary>
         <TouchableOpacityItem
             onPress={() => {
                 console.log('Item clicked');
-                navigation.navigate('InventoryMain');
+                navigation.navigate('ItemMain');
             }}
         >
           <TextSecondary style={styles.title}>{searchValue}</TextSecondary>

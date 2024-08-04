@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Keyboard, TouchableOpacity, View } from "react-native";
+import { Keyboard, View } from "react-native";
 import { useNavigation } from "expo-router";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { TouchableOpacity } from "../Themed";
 
 export default function BackButton() {
     // Re-usable back button component which appears on the bottom right of the screen
@@ -38,20 +39,19 @@ export default function BackButton() {
         // shadow
     }}>
         <TouchableOpacity 
-        style={{
-            backgroundColor: '#0D2327',
-            padding: 10,
-            borderRadius: 50,
-            display: 'flex',
-            height: 50,
-            width: 50,
-            justifyContent: 'center',
-            alignItems: 'center',
-            elevation: 5,
-            borderColor: '#5D6C6F',
-            borderWidth: 2, 
-        }} 
-        onPress={() => navigate.goBack()}
+          style={{
+              padding: 10,
+              borderRadius: 50,
+              display: 'flex',
+              height: 50,
+              width: 50,
+              justifyContent: 'center',
+              alignItems: 'center',
+              elevation: 5,
+              borderColor: '#5D6C6F',
+              borderWidth: 2, 
+          }} 
+          onPress={() => navigate.goBack()}
         >
             <FontAwesome5 name="arrow-left" size={24} color="white" />
         </TouchableOpacity>

@@ -1,45 +1,74 @@
-/**
- * Learn more about Light and Dark modes:
- * https://docs.expo.io/guides/color-schemes/
- */
 
-import { Text as DefaultText, View as DefaultView } from 'react-native';
+import { Text as DefaultText, View as DefaultView, TouchableOpacity as DefaultTouchableOpacity, StyleProp, ViewStyle } from 'react-native';
+import { defaultTheme } from './util/themeSlice';
+import { LinearGradient as DefaultLinearGradient } from 'expo-linear-gradient';
+import { useMemo } from 'react';
+import GetTheme from './util/GetTheme';
 
-import Colors from '@/constants/Colors';
-import { useColorScheme } from './useColorScheme';
-
-type ThemeProps = {
-  lightColor?: string;
-  darkColor?: string;
-};
-
-export type TextProps = ThemeProps & DefaultText['props'];
-export type ViewProps = ThemeProps & DefaultView['props'];
+export type TextProps = DefaultText['props'];
+export type ViewProps = DefaultView['props'];
+export type LinearGradientProp = DefaultLinearGradient['props'];
+export type TouchableOpacityProps = DefaultTouchableOpacity['props'];
 
 export function useThemeColor(
-  props: { light?: string; dark?: string },
-  colorName: keyof typeof Colors.light & keyof typeof Colors.dark
+  colorName: keyof typeof defaultTheme.colors, 
 ) {
-  const theme = useColorScheme() ?? 'light';
-  const colorFromProps = props[theme];
-
-  if (colorFromProps) {
-    return colorFromProps;
-  } else {
-    return Colors[theme][colorName];
-  }
+  const { colors } = GetTheme();
+    return colors[colorName];
 }
 
-export function Text(props: TextProps) {
-  const { style, lightColor, darkColor, ...otherProps } = props;
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
+// Different types of Components are returned here
+// Custom Text and View components can be created for example TextMain and TextSecondary
+// Or ViewMain and ViewSecondary
+// This allows us to create a more consistent look and feel throughout the app without having to style each component individually
+export function TextPrimary(props: TextProps) {
+  const { style, ...otherProps } = props;
+  const color = useThemeColor('textPrimary');
 
-  return <DefaultText style={[{ color }, style]} {...otherProps} />;
+  return <DefaultText style={[{ color }, style] as StyleProp<ViewStyle>} {...otherProps} />;
 }
 
-export function View(props: ViewProps) {
-  const { style, lightColor, darkColor, ...otherProps } = props;
-  const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
+export function TextSecondary(props: TextProps) {
+  const { style, ...otherProps } = props;
+  const color = useThemeColor('textSecondary');
 
-  return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
+  return <DefaultText style={[{ color }, style] as StyleProp<ViewStyle>} {...otherProps} />;
+}
+
+export function PrimaryView(props: ViewProps) {
+  const { style, ...otherProps } = props;
+  const backgroundColor = useThemeColor('background');
+
+  return <DefaultView style={[{ backgroundColor }, style] as StyleProp<ViewStyle>} {...otherProps} />;
+}
+
+export function SecondaryView(props: ViewProps) {
+  const { style, ...otherProps } = props;
+  const backgroundColor = useThemeColor('background2');
+
+  return <DefaultView style={[{ backgroundColor }, style] as StyleProp<ViewStyle>} {...otherProps} />;
+}
+
+export function TouchableOpacity(props: TouchableOpacityProps) {
+  const { style, ...otherProps } = props;
+  const backgroundColor = useThemeColor('background');
+
+  return <DefaultTouchableOpacity style={[{ backgroundColor }, style] as StyleProp<ViewStyle>} {...otherProps} />;
+}
+
+export function TouchableOpacityItem(props: TouchableOpacityProps) {
+  const { style, ...otherProps } = props;
+  const backgroundColor = useThemeColor('background2');
+
+  return <DefaultTouchableOpacity style={[{ backgroundColor }, style] as StyleProp<ViewStyle>} {...otherProps} />;
+}
+
+export function LinearGradient(props: LinearGradientProp) {
+  const { style, colors, ...otherProps } = props;
+  const gradientColors = useThemeColor('linearBackground') as string[];
+  const stableColors = useMemo(() => gradientColors, [gradientColors]);
+
+  console.log('Gradient Colors:', stableColors);
+
+  return <DefaultLinearGradient colors={stableColors} style={style} {...otherProps} />;
 }

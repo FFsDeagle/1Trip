@@ -4,19 +4,20 @@ import { FontAwesome } from "@expo/vector-icons";
 import { SearchBarProp } from "@/constants/Types";
 import { Link, useRouter } from "expo-router";
 
-export default function SearchBarWidget({ componentToRender}: SearchBarProp) {
+export default function SearchBarWidget({ componentToRender }: SearchBarProp) {
   // Reusable searchbar widget
   // Uses animations to render modal with search results
   const [searchText, setSearchText] = useState<string>("");
   const router = useRouter();
   
   const handleSubmit = () => {
+    console.log('componentToRender', componentToRender)
     if (searchText.trim()) {
       const searchQuery = searchText;
       setSearchText(""); // Clear the search text
       router.push({
         pathname: "/modal",
-        params: { modal: componentToRender, title: `Search - ${searchQuery}`, navigationParam: 'InventoryItemInfo' }, 
+        params: { modal: componentToRender, title: `Search - ${searchQuery}`, navigationParam: componentToRender }, 
       });
     }
   };
@@ -34,15 +35,15 @@ export default function SearchBarWidget({ componentToRender}: SearchBarProp) {
         borderRadius: 15,
     }}>
         <TextInput 
-        onChange={(e) => setSearchText(e.nativeEvent.text)}
-        onSubmitEditing={handleSubmit}
-        placeholderTextColor={'white'}
-        value={searchText}
-        style={{
-            color: 'white',
-            fontSize: 18,
-            marginRight: 10,
-        }}
+          onChange={(e) => setSearchText(e.nativeEvent.text)}
+          onSubmitEditing={handleSubmit}
+          placeholderTextColor={'white'}
+          value={searchText}
+          style={{
+              color: 'white',
+              fontSize: 18,
+              marginRight: 10,
+          }}
         placeholder="Search"></TextInput>
         <FontAwesome style={{ marginRight: 10 }} color="white" name="search"/>
     </View>
