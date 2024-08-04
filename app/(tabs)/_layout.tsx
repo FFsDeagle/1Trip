@@ -23,8 +23,6 @@ function TabBarIcon(props: {
 const Tab = createBottomTabNavigator();
 export default function TabLayout() {
   // const colorScheme = useColorScheme();
-  const showInventoryHeader = useAppSelector(state => state.inventory.showHeader);
-  const showItemHeader = useAppSelector(state => state.item.showHeader);
   const dispatch = useAppDispatch();
   const themeState = useAppSelector(state => state.theme);
 

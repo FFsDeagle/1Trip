@@ -5,13 +5,11 @@ import axios, { AxiosResponse } from "axios";
 
 // Interfaces here are slice related and can be used outside of the slice where required
 export interface InventoryState {
-    showHeader: boolean,
     status: 'idle' | 'loading' | 'failed' | 'success'
     inventoryItems: InventoryItem[],
 }
 
 export const initialState: InventoryState = {
-    showHeader: true,
     status: 'idle',
     inventoryItems: [],
 }
@@ -73,10 +71,6 @@ export const inventorySlice = createSlice({
     name: 'invenotry',
     initialState: initialState,
     reducers: {
-        // Change state for showing header
-        showHeader: (state, action: PayloadAction<boolean>) => {
-            state.showHeader = action.payload;
-        },
     },
     extraReducers: (builder) => {
         builder.addCase(addItem.pending, (state) => {
@@ -109,5 +103,4 @@ export const inventorySlice = createSlice({
     }
 })
 
-export const { showHeader } = inventorySlice.actions;
 export default inventorySlice.reducer;

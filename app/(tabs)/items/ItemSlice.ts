@@ -4,15 +4,13 @@ import axios, { AxiosResponse } from "axios";
 
 // Interfaces here are slice related and can be used outside of the slice where required
 export interface InventoryState {
-    showHeader: boolean,
     status: 'idle' | 'loading' | 'failed' | 'success'
-    inventoryItems: InventoryItem[],
+    items: InventoryItem[],
 }
 
 export const initialState: InventoryState = {
-    showHeader: true,
     status: 'idle',
-    inventoryItems: [],
+    items: [],
 }
 
 export interface InventoryItem {
@@ -72,17 +70,13 @@ export const inventorySlice = createSlice({
     name: 'item',
     initialState: initialState,
     reducers: {
-        // Change state for showing header
-        showHeader: (state, action: PayloadAction<boolean>) => {
-            state.showHeader = action.payload;
-        },
     },
     extraReducers: (builder) => {
         builder.addCase(addItem.pending, (state) => {
             state.status = 'loading';
         })
         builder.addCase(addItem.fulfilled, (state, action) => {
-            state.inventoryItems.push(action.payload);
+            state.items.push(action.payload);
         })
         builder.addCase(addItem.rejected, (state) => {
             state.status = 'failed';
@@ -91,7 +85,7 @@ export const inventorySlice = createSlice({
             state.status = 'loading';
         })
         builder.addCase(itemCategorySearch.fulfilled, (state, action) => {
-            state.inventoryItems = action.payload;
+            state.items = action.payload;
         })
         builder.addCase(itemCategorySearch.rejected, (state) => {
             state.status = 'failed';
@@ -100,7 +94,7 @@ export const inventorySlice = createSlice({
             state.status = 'loading';
         })
         builder.addCase(itemSearch.fulfilled, (state, action) => {
-            state.inventoryItems = action.payload;
+            state.items = action.payload;
         })
         builder.addCase(itemSearch.rejected, (state) => {
             state.status = 'failed';
@@ -108,5 +102,4 @@ export const inventorySlice = createSlice({
     }
 })
 
-export const { showHeader } = inventorySlice.actions;
 export default inventorySlice.reducer;
