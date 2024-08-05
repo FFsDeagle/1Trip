@@ -4,10 +4,12 @@ import InventoryMain from './InventoryMain';
 import InventoryItemInfo from './InventoryItemInfo';
 import AddItem from './AddItem';
 import SearchBarWidget from '@/components/widgets/misc/SearchBar';
+import { useAppSelector } from '@/app/store/hooks';
 
 export default function Inventory() {
   // Load categories
   const InventoryStack = createNativeStackNavigator();
+  const theme = useAppSelector(state => state.theme);
   
   return (
     <InventoryStack.Navigator>
@@ -19,7 +21,7 @@ export default function Inventory() {
           headerRight: () => <SearchBarWidget componentToRender={"SearchResultsModal"} />,
           headerStyle: {
             // backgroundColor: Colors[colorScheme ?? 'light'].background,
-            backgroundColor: '#0D2327',
+            backgroundColor: theme.colors.background,
           },              
           headerTitleStyle: {
             // color: Colors[colorScheme ?? 'light'].text,

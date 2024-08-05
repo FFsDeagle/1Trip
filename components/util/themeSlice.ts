@@ -15,12 +15,17 @@ export interface Colors {
     secondary?: string;
     background?: string;
     background2?: string;
+    background3?: string;
     textPrimary?: string;
     textSecondary?: string
     tint?: string,
     tabIconDefault?: string,
     tabIconSelected?: string,
     linearBackground?: string[],
+    iconColor?: string,
+    iconColor2?: string,
+    borderColor?: string,
+    headerTitleColor?: string,
 }
 
 export interface ThemeStyle {
@@ -31,7 +36,7 @@ export interface ThemeStyle {
     tabIconSelected: string,
 }
 
-const initialState: ThemeProps = {
+export const initialState: ThemeProps = {
     status: 'idle',
     error: undefined,
     colors: {} as Colors,
@@ -50,15 +55,21 @@ export const defaultTheme: ThemeProps = {
     colors: {
       primary: 'white',
       secondary: 'rgba(0, 0, 0, 0.4)',
-      background: '#0D2327',
-      background2: '#5D6C6F',
-      linearBackground: ['#184E68', '#57CA85'],
+      background: '#2B160F',
+      background2: '#EFEFE9',
+      background3: '#A3684E',
+      linearBackground: ['#A3684E', '#EFEFE9'],
       tabIconDefault: '#ccc',
       textPrimary: 'black',
+      tint: 'white',
       textSecondary: 'grey',
+      iconColor: '#2B160F',
+      iconColor2: 'white',
+      borderColor: '2B160F',
+      headerTitleColor: 'white',
     } as Colors,
     mode: 'default',
-  };
+};
 
 // This will fail for now, default value will be set to defaultTheme
 export const getTheme = createAsyncThunk(

@@ -11,7 +11,7 @@ export default function AddItem() {
             justifyContent: 'center',
             alignItems: 'center',
         }]}
-        colors={['#184E68', '#57CA85']}
+        colors={[]}
     >
             <TextPrimary style={styles.title}>Add Item</TextPrimary>
             <TextSecondary style={styles.subtitle}>Add a new item to your inventory</TextSecondary>

@@ -3,8 +3,8 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import { styles } from "@/components/util/Theme";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { RootStackParamList } from "@/components/util/Types";
-import { View } from "@/components/Themed";
+import { RootStackParamList } from "@/constants/Types";
+import { SecondaryView } from "@/components/Themed";
 
 // Props for size and color
 export default function DisplayCategory() {
@@ -23,7 +23,7 @@ export default function DisplayCategory() {
     ];
 
     return (
-        <View style={styles.container}>
+        <SecondaryView style={styles.container}>
             {
                 items.map((item, index) => (
                     <ListItem
@@ -44,7 +44,7 @@ export default function DisplayCategory() {
                     </ListItem>
                 ))
             }
-        </View>
+        </SecondaryView>
     )
 }
 

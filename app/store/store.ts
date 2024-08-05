@@ -4,6 +4,7 @@ import logger from 'redux-logger';
 import inventorySlice from "../(tabs)/inventory/InventorySlice";
 import themeSlice from "../../components/util/themeSlice";
 import ItemSlice from "../(tabs)/items/ItemSlice";
+import shoppingListSlice from "../(tabs)/shopping/ShoppingSlice";
 
 
 const store = configureStore({
@@ -12,6 +13,7 @@ const store = configureStore({
         inventory: inventorySlice,
         theme: themeSlice,
         item: ItemSlice,
+        shoppingLists: shoppingListSlice,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });

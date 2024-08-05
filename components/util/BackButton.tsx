@@ -3,6 +3,7 @@ import { Keyboard, View } from "react-native";
 import { useNavigation } from "expo-router";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { TouchableOpacity } from "../Themed";
+import { useAppSelector } from "@/app/store/hooks";
 
 export default function BackButton() {
     // Re-usable back button component which appears on the bottom right of the screen
@@ -11,6 +12,7 @@ export default function BackButton() {
     // In this case we are using the navigation object to go back to the previous screen
     const navigate = useNavigation();
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+    const theme = useAppSelector(state => state.theme);
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
@@ -48,12 +50,11 @@ export default function BackButton() {
               justifyContent: 'center',
               alignItems: 'center',
               elevation: 5,
-              borderColor: '#5D6C6F',
               borderWidth: 2, 
           }} 
           onPress={() => navigate.goBack()}
         >
-            <FontAwesome5 name="arrow-left" size={24} color="white" />
+            <FontAwesome5 name="arrow-left" size={24} color={theme.colors.iconColor} />
         </TouchableOpacity>
     </View>
   )

@@ -6,8 +6,10 @@ export const styles = StyleSheet.create({
       justifyContent: 'center',
       alignContent: 'center'
     },
-    justifiedTop: {
-      
+    justifiedApart: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     },
     container: {
       width: '100%',
@@ -64,6 +66,11 @@ export const styles = StyleSheet.create({
       fontSize: 16,
       fontWeight: 'normal',
     },
+    heading: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      padding: 10,
+    },
     description: {
       fontSize: 10,
     },
@@ -90,6 +97,7 @@ export const styles = StyleSheet.create({
     listItem: {
       borderColor: 'rgba(0,0,0,0.2)',
       borderBottomWidth: 1,
+      padding: 10,
     },
     subtitle: {
       fontSize: 12,

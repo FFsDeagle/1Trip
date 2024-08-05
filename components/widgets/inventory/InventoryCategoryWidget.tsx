@@ -6,10 +6,12 @@ import { styles } from "@/components/util/Theme";
 import { WidgetGridItemProps } from "@/constants/Types";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "@/components/Themed";
+import { useAppSelector } from "@/app/store/hooks";
 
 export default function InventoryCategoryWidget() {
     const [gridItems, setGridItems] = useState<WidgetGridItemProps[]>([])
     const router = useRouter();
+    const theme = useAppSelector(state => state.theme);
 
     // Static grid items for testing
     // Can add more dynamic types to the grid items such as a component to render
@@ -21,84 +23,72 @@ export default function InventoryCategoryWidget() {
           icon: "cow",
           component: FontAwesome6,
           size: 1,
-          iconColor: '#C8E5EE',
         },
         {
           title: "Meat",
           icon: "food-steak",
           component: MaterialCommunityIcons,
           size: 1,
-          iconColor: '#C8E5EE',
         },
         {
           title: "Produce",
           icon: "leaf",
           component: FontAwesome6,
           size: 1,
-          iconColor: '#C8E5EE',
         },
         {
           title: "Frozen",
           icon: "snowflake",
           component: FontAwesome6,
           size: 1,
-          iconColor: '#C8E5EE',
         },
         {
           title: "Beverages",
           icon: "coffeescript",
           component: Fontisto,
           size: 1,
-          iconColor: '#C8E5EE',
         },
         {
           title: "Canned",
           icon: "jar",
           component: FontAwesome6,
           size: 1,
-          iconColor: '#C8E5EE',
         },
         {
           title: "Bakery",
           icon: "bread-slice",
           component: FontAwesome6,
           size: 1,
-          iconColor: '#C8E5EE',
         },
         {
           title: "Pantry",
           icon: "library-shelves",
           component: MaterialCommunityIcons,
           size: 1,
-          iconColor: '#C8E5EE',
         },
         {
           title: "Snacks",
           icon: "cookie",
           component: FontAwesome6,
           size: 1,
-          iconColor: '#C8E5EE',
         },
         {
           title: "Household",
           icon: "emoji-food-beverage",
           component: MaterialIcons,
           size: 1,
-          iconColor: '#C8E5EE',
         },
         {
           title: "Personal Care",
           icon: "soap",
           component: FontAwesome6,
           size: 1,
-          iconColor: '#C8E5EE',
         },
         {
           title: "Miscellaneous",
           icon: "other-houses",
           component: MaterialIcons,
           size: 1,
-          iconColor: '#C8E5EE',
         }
       ]
 
@@ -145,9 +135,9 @@ export default function InventoryCategoryWidget() {
                                 <item.component
                                     name={item.icon as string}
                                     size={30}
-                                    color={item.iconColor}
+                                    color={theme.colors.iconColor}
                                 />
-                                <ListItem.Title style={[styles.description, {color: item.iconColor}]}>
+                                <ListItem.Title style={[styles.description, {color: theme.colors.iconColor}]}>
                                     {item.title}
                                 </ListItem.Title>
                             </View>

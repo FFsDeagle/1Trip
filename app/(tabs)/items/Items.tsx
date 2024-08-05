@@ -2,10 +2,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ItemMain from './ItemMain';
 import ItemInfo from './ItemInfo';
 import SearchBarWidget from '@/components/widgets/misc/SearchBar';
+import { useAppSelector } from '@/app/store/hooks';
 
 export default function Items() {
   // Load categories
   const ItemsStack = createNativeStackNavigator();
+  const theme = useAppSelector(state => state.theme);
 
   return (
     <ItemsStack.Navigator>
@@ -17,7 +19,7 @@ export default function Items() {
           headerRight: () => <SearchBarWidget componentToRender={"ItemSearchModal"} />,
           headerStyle: {
             // backgroundColor: Colors[colorScheme ?? 'light'].background,
-            backgroundColor: '#0D2327',
+            backgroundColor: theme.colors.background,
           },
           headerTitleStyle: {
             // color: Colors[colorScheme ?? 'light'].text,

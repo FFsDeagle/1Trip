@@ -1,6 +1,6 @@
 
 import { Text as DefaultText, View as DefaultView, TouchableOpacity as DefaultTouchableOpacity, StyleProp, ViewStyle } from 'react-native';
-import { defaultTheme } from './util/themeSlice';
+import { initialState } from './util/themeSlice';
 import { LinearGradient as DefaultLinearGradient } from 'expo-linear-gradient';
 import { useMemo } from 'react';
 import GetTheme from './util/GetTheme';
@@ -11,7 +11,7 @@ export type LinearGradientProp = DefaultLinearGradient['props'];
 export type TouchableOpacityProps = DefaultTouchableOpacity['props'];
 
 export function useThemeColor(
-  colorName: keyof typeof defaultTheme.colors, 
+  colorName: keyof typeof initialState.colors, 
 ) {
   const { colors } = GetTheme();
     return colors[colorName];
@@ -51,9 +51,10 @@ export function SecondaryView(props: ViewProps) {
 
 export function TouchableOpacity(props: TouchableOpacityProps) {
   const { style, ...otherProps } = props;
-  const backgroundColor = useThemeColor('background');
+  const backgroundColor = useThemeColor('background2');
+  const borderColor = useThemeColor('borderColor');
 
-  return <DefaultTouchableOpacity style={[{ backgroundColor }, style] as StyleProp<ViewStyle>} {...otherProps} />;
+  return <DefaultTouchableOpacity style={[{ backgroundColor, borderColor }, style] as StyleProp<ViewStyle>} {...otherProps} />;
 }
 
 export function TouchableOpacityItem(props: TouchableOpacityProps) {

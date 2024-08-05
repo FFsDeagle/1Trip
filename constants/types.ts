@@ -1,4 +1,10 @@
 import { NavigationProp } from '@react-navigation/native';
+import { FontAwesome6 } from "@expo/vector-icons";
+import { ShoppingList } from '@/app/(tabs)/shopping/ShoppingSlice';
+
+export type RootFontList = {
+    Fontawesome6: typeof FontAwesome6
+}
 
 export interface LoginProps {
     userName: string,
@@ -10,7 +16,6 @@ export interface WidgetGridItemProps {
     title: string,
     icon: string,
     size: number,
-    iconColor: string,
 }
 
 export interface SearchBarProp {
@@ -41,5 +46,15 @@ export type ItemsStackParamList = {
 }
 
 export type ShoppingStackParamList = {
-
+    ShoppingMain: undefined;
+    ShoppingItemInfo: { searchValue: string };
+    CreateShoppingList: undefined;
+    ViewShoppingList: { list: ShoppingList };
 }
+
+export type RootStackParamList = {
+    Login: undefined,
+    Inventory: undefined,
+    Shopping: undefined,
+  };
+  

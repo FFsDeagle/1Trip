@@ -1,10 +1,18 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SearchBarWidget from '@/components/widgets/misc/SearchBar';
 import ShoppingMain from './ShoppingMain';
+import { useAppSelector } from '@/app/store/hooks';
+import AddNewShoppingList from './AddNewShoppingList';
+import CreateShoppingList from './CreateShoppingList';
+import { useEffect } from 'react';
+import ViewShoppingList from './ViewShoppingList';
+import { ShoppingList } from './ShoppingSlice';
+import { ParamListBase, RouteProp } from '@react-navigation/native';
 
 export default function Items() {
   // Load categories
   const ItemsStack = createNativeStackNavigator();
+  const theme = useAppSelector(state => state.theme);
+  const shoppingLists = useAppSelector(state => state.shoppingLists.lists);
 
   return (
     <ItemsStack.Navigator>
@@ -13,17 +21,39 @@ export default function Items() {
         component={ShoppingMain}
         options={{
           headerShown: true,
-          headerRight: () => <SearchBarWidget componentToRender={"ItemSearchModal"} />,
+          headerRight: () => <AddNewShoppingList />,
           headerStyle: {
             // backgroundColor: Colors[colorScheme ?? 'light'].background,
-            backgroundColor: '#0D2327',
+            backgroundColor: theme.colors.background,
           },
           headerTitleStyle: {
             // color: Colors[colorScheme ?? 'light'].text,
-            color: 'white',
+            color: theme.colors.headerTitleColor,
           },
         }}
       />
+      <ItemsStack.Screen
+        name="CreateShoppingList"
+        component={CreateShoppingList}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <ItemsStack.Screen
+        name="ViewShoppingList"
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.colors.background,
+          },
+          headerTintColor: theme.colors.tint,
+          headerTitleStyle: {
+            color: theme.colors.headerTitleColor,
+          },
+        }}
+      >
+        {(props: any) => <ViewShoppingList {...props} />}
+      </ItemsStack.Screen>
     </ItemsStack.Navigator>
   );
 };
