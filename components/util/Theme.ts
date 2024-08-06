@@ -6,6 +6,21 @@ export const styles = StyleSheet.create({
       justifyContent: 'center',
       alignContent: 'center'
     },
+    absoluteBottomRight: {
+      position: 'absolute',
+      bottom: 20,
+      right: 20,
+      zIndex: 100,
+      elevation: 5,
+    },
+    flexRow: {
+      display: 'flex',
+      flexDirection: 'row',
+    },
+    flexColumn: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
     justifiedApart: {
       display: 'flex',
       flexDirection: 'row',
@@ -65,6 +80,8 @@ export const styles = StyleSheet.create({
     title: {
       fontSize: 16,
       fontWeight: 'normal',
+      marginLeft: 10,
+      marginRight: 10,
     },
     heading: {
       fontSize: 18,

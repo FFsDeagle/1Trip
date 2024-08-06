@@ -1,25 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { SecondaryView, TextSecondary, TouchableOpacity } from "@/components/Themed";
 import { ShoppingList } from "./ShoppingSlice";
 import { FlatList, View } from "react-native";
-import { RouteProp } from "@react-navigation/native";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { styles } from "@/components/util/Theme";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useAppSelector } from "@/app/store/hooks";
-import { useNavigation } from "expo-router";
+import { useFocusEffect, useNavigation } from "expo-router";
+import MultiButtonContextMenu from "@/components/widgets/misc/MultiButtonContextMenu";
+import { ShoppingStackParamList } from "@/constants/Types";
 
-type ShoppingStackParamList = {
+type ShoppingStackParam = {
   ViewShoppingList: { list: ShoppingList };
 };
 
 type ViewShoppingListProps = {
-  route: RouteProp<ShoppingStackParamList, "ViewShoppingList">;
+  route: RouteProp<ShoppingStackParam, "ViewShoppingList">;
 };
 
 export default function ViewShoppingList({ route }: ViewShoppingListProps) {
   const { list } = route.params; 
   const theme = useAppSelector(state => state.theme);
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<ShoppingStackParamList>>();
 
   useEffect(() => {
     // Set the header title when the component mounts
@@ -27,7 +29,7 @@ export default function ViewShoppingList({ route }: ViewShoppingListProps) {
   }, [navigation]);
 
   return (
-    <SecondaryView>
+    <SecondaryView style={styles.container}>
       <FlatList
         data={list.items}
         keyExtractor={(item) => item.id.toString()} 
@@ -53,6 +55,16 @@ export default function ViewShoppingList({ route }: ViewShoppingListProps) {
                 </View>
             )
         }
+      />
+      <MultiButtonContextMenu 
+        // Add buttons to the context menu
+        buttons={[
+          <TouchableOpacity 
+            onPress={() => navigation.navigate('StartShopping', { list })}
+          >
+            <FontAwesome5 name="shopping-cart" size={24} color={theme.colors.iconColor} />
+          </TouchableOpacity>
+        ]} 
       />
     </SecondaryView>
   );

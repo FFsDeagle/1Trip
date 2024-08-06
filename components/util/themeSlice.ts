@@ -18,7 +18,6 @@ export interface Colors {
     background3?: string;
     textPrimary?: string;
     textSecondary?: string
-    tint?: string,
     tabIconDefault?: string,
     tabIconSelected?: string,
     linearBackground?: string[],
@@ -26,6 +25,8 @@ export interface Colors {
     iconColor2?: string,
     borderColor?: string,
     headerTitleColor?: string,
+    tabActive: string,
+    tint?: string,
 }
 
 export interface ThemeStyle {
@@ -61,12 +62,13 @@ export const defaultTheme: ThemeProps = {
       linearBackground: ['#A3684E', '#EFEFE9'],
       tabIconDefault: '#ccc',
       textPrimary: 'black',
-      tint: 'white',
       textSecondary: 'grey',
       iconColor: '#2B160F',
       iconColor2: 'white',
       borderColor: '2B160F',
       headerTitleColor: 'white',
+      tint: '#EFEFE9',
+      tabActive: '#A3684E',
     } as Colors,
     mode: 'default',
 };

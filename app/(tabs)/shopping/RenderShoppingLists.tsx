@@ -27,6 +27,9 @@ export default function RenderShoppingLists({ listType, title }: RenderShoppingL
             </TextPrimary>
             <FlatList
                 data={shoppingLists}
+                style={{
+                    width: '100%',
+                }}
                 renderItem={({item}) => (
                     <TouchableOpacity
                         onPress={() => navigation.navigate('ViewShoppingList', { list: item as ShoppingList } )}

@@ -50,8 +50,8 @@ export default function TabLayout() {
     <SafeAreaView style={styles.container}>
       <Tab.Navigator
         screenOptions={{
-          tabBarActiveTintColor: 'lightblue',
-          tabBarInactiveTintColor: '#24666E',
+          tabBarActiveTintColor: theme.colors.tint,
+          tabBarInactiveTintColor: theme.colors.tabActive,
           tabBarHideOnKeyboard: true,
           tabBarStyle: {
             backgroundColor: theme.colors.background,//'#0D2327',
@@ -67,7 +67,7 @@ export default function TabLayout() {
             name="Login" 
             component={Login} 
             options={{
-              tabBarIcon: ({ color }) => <TabBarIcon name="dashboard" color={color} />,
+              tabBarIcon: ({ color }) => <TabBarIcon name="dashboard" color={theme.colors.iconColor2 ? theme.colors.iconColor2 : color } />,
               tabBarIconStyle: { marginBottom: 0 },
               tabBarStyle: { display: 'none' }, // Display tab in login screen
               headerShown: false, // Hide the header in the login screen
@@ -79,7 +79,7 @@ export default function TabLayout() {
             component={Shopping} 
             options={{
               headerShown: false,
-              tabBarIcon: ({ color }) => <TabBarIcon name="shopping-cart" color={color} />,
+              tabBarIcon: ({ color }) => <TabBarIcon name="shopping-cart" color={theme.colors.iconColor2 ? theme.colors.iconColor2 : color } />,
               headerStyle: {
                 // backgroundColor: Colors[colorScheme ?? 'light'].background,
                 backgroundColor: theme.colors.background,
@@ -98,15 +98,15 @@ export default function TabLayout() {
             component={Inventory} 
             options={{
               headerShown: false,
-              tabBarIcon: ({ color }) => <TabBarIcon name="archive" color={color} />,
+              tabBarIcon: ({ color }) => <TabBarIcon name="archive" color={theme.colors.iconColor2 ? theme.colors.iconColor2 : color } />,
             }}
           />
           <Tab.Screen 
-            name="Items"
+            name="Products"
             component={Items} 
             options={{
               headerShown: false,
-              tabBarIcon: ({ color }) => <TabBarIcon name="square" color={color} />,
+              tabBarIcon: ({ color }) => <TabBarIcon name="square" color={theme.colors.iconColor2 ? theme.colors.iconColor2 : color } />,
             }}
           />
       </Tab.Navigator>

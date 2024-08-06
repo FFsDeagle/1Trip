@@ -3,10 +3,13 @@ import { useNavigation, useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
 import { componentMap } from './(tabs)/modals/ModalMap';
 import { View } from 'react-native';
+import { SecondaryView } from '@/components/Themed';
+import { useAppSelector } from './store/hooks';
 
 export default function ModalScreen() {
   const params = useLocalSearchParams();
   const navigation = useNavigation();
+  const theme = useAppSelector(state => state.theme);
   const { modal, title, navigationParam } = params;
   
   const [Component, setComponent] = useState<React.JSX.Element | null>(null);
@@ -22,7 +25,7 @@ export default function ModalScreen() {
     navigation.setOptions({
       title: title,
       headerStyle: {
-        backgroundColor: '#0D2327',
+        backgroundColor: theme.colors.background,
         elevation: 2,
         shadowOffset: { width: 0, height: 10 },
         shadowColor: 'black',
@@ -36,8 +39,8 @@ export default function ModalScreen() {
   },[])
 
   return (
-    <View>
+    <SecondaryView>
         {Component}
-    </View>
+    </SecondaryView>
   );
 }

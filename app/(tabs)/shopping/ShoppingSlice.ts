@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
+import { useAppDispatch } from "@/app/store/hooks";
+import { AddListToInventory, InventoryItem } from "../inventory/InventorySlice";
 
 export interface ShoppingListProps {
     status: 'idle' | 'loading' | 'failed' | 'success',
@@ -12,16 +14,10 @@ export interface ShoppingListTypes {
     history?: ShoppingList[],
 }
 
-export interface ShoppingListItem {
-    id: string,
-    name: string,
-    quantity: number,
-}
-
 export interface ShoppingList {
     id: string,
     name: string,
-    items?: ShoppingListItem[]
+    items?: InventoryItem[]
 }
 
 export const placeHolderList: ShoppingListTypes = {
@@ -34,11 +30,15 @@ export const placeHolderList: ShoppingListTypes = {
                     id: '1',
                     name: 'Item 1',
                     quantity: 1,
+                    description: 'Description 1',
+                    category: 'Miscellaneous',
                 },
                 {
                     id: '2',
                     name: 'Item 2',
                     quantity: 2,
+                    description: 'Description 2',
+                    category: 'Miscellaneous',
                 },
             ]
         },
@@ -50,11 +50,15 @@ export const placeHolderList: ShoppingListTypes = {
                     id: '1',
                     name: 'Item 1',
                     quantity: 1,
+                    description: 'Description 1',
+                    category: 'Miscellaneous',
                 },
                 {
                     id: '2',
                     name: 'Item 2',
                     quantity: 2,
+                    description: 'Description 2',
+                    category: 'Miscellaneous',
                 },
             ]
         },
@@ -68,11 +72,15 @@ export const placeHolderList: ShoppingListTypes = {
                     id: '1',
                     name: 'Item 1',
                     quantity: 1,
+                    description: 'Description 1',
+                    category: 'Miscellaneous',
                 },
                 {
                     id: '2',
                     name: 'Item 2',
                     quantity: 2,
+                    description: 'Description 2',
+                    category: 'Miscellaneous',
                 },
             ]
         },
@@ -84,11 +92,15 @@ export const placeHolderList: ShoppingListTypes = {
                     id: '1',
                     name: 'Item 1',
                     quantity: 1,
+                    description: 'Description 1',
+                    category: 'Miscellaneous',
                 },
                 {
                     id: '2',
                     name: 'Item 2',
                     quantity: 2,
+                    description: 'Description 2',
+                    category: 'Miscellaneous',
                 },
             ]
         },
@@ -102,11 +114,15 @@ export const placeHolderList: ShoppingListTypes = {
                     id: '1',
                     name: 'Item 1',
                     quantity: 1,
+                    description: 'Description 1',
+                    category: 'Miscellaneous',
                 },
                 {
                     id: '2',
                     name: 'Item 2',
                     quantity: 2,
+                    description: 'Description 2',
+                    category: 'Miscellaneous',
                 },
             ]
         },
@@ -118,11 +134,15 @@ export const placeHolderList: ShoppingListTypes = {
                     id: '1',
                     name: 'Item 1',
                     quantity: 1,
+                    description: 'Description 1',
+                    category: 'Miscellaneous',
                 },
                 {
                     id: '2',
                     name: 'Item 2',
                     quantity: 2,
+                    description: 'Description 2',
+                    category: 'Miscellaneous',
                 },
             ]
         },
@@ -152,6 +172,20 @@ export const GetLists = createAsyncThunk(
     }
 )
 
+export const SaveShoppingList = createAsyncThunk(
+    'shoppingList/saveList',
+    async (list: ShoppingList) => {
+        return list; // This is a placeholder for the actual axios call
+        return axios.post('http://localhost:5000/shopping/saveList', list)
+        .then((response: AxiosResponse) => {
+            return response;
+        }).catch((error) => {
+            console.log("Error occurred when saving list", error);
+            return error;
+        })
+    }
+)
+
 export const ShoppingListSlice = createSlice({
     name: 'shoppingList',
     initialState: initialState,
@@ -166,6 +200,16 @@ export const ShoppingListSlice = createSlice({
             state.lists = action.payload;
         })
         builder.addCase(GetLists.rejected, (state) => {
+            state.status = 'failed';
+        })
+        builder.addCase(SaveShoppingList.pending, (state) => {
+            state.status = 'loading';
+        })
+        builder.addCase(SaveShoppingList.fulfilled, (state, action) => {
+            state.status = 'success';
+            state.lists?.savedLists?.push(action.payload);
+        })
+        builder.addCase(SaveShoppingList.rejected, (state) => {
             state.status = 'failed';
         })
     }

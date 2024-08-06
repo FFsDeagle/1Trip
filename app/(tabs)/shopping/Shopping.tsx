@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import ViewShoppingList from './ViewShoppingList';
 import { ShoppingList } from './ShoppingSlice';
 import { ParamListBase, RouteProp } from '@react-navigation/native';
+import StartShopping from './StartShopping';
 
 export default function Items() {
   // Load categories
@@ -20,6 +21,7 @@ export default function Items() {
         name="ShoppingMain"
         component={ShoppingMain}
         options={{
+          headerTitle: 'Shopping Lists',
           headerShown: true,
           headerRight: () => <AddNewShoppingList />,
           headerStyle: {
@@ -53,6 +55,21 @@ export default function Items() {
         }}
       >
         {(props: any) => <ViewShoppingList {...props} />}
+      </ItemsStack.Screen>
+      <ItemsStack.Screen
+        name="StartShopping"
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.colors.background,
+          },
+          headerTintColor: theme.colors.tint,
+          headerTitleStyle: {
+            color: theme.colors.headerTitleColor,
+          },
+        }}
+      >
+        {(props: any) => <StartShopping {...props} />}
       </ItemsStack.Screen>
     </ItemsStack.Navigator>
   );
