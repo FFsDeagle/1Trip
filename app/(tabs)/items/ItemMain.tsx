@@ -1,12 +1,17 @@
 import { styles } from "@/components/util/Theme";
-import { SecondaryView, TextPrimary } from "@/components/Themed";
+import { ScrollView, SecondaryView, TextSecondary } from "@/components/Themed";
+import ItemsCategoryWidget from "@/components/widgets/items/ItemsCategoryWidget";
+import { useAppSelector } from "@/app/store/hooks";
 
 export default function ItemMain() {
+  const theme = useAppSelector(state => state.theme.colors);
+
   return (
     <SecondaryView style={styles.container}>
-        <TextPrimary>
-            Item Main
-        </TextPrimary>
+      <ScrollView>
+        <ItemsCategoryWidget />
+        <TextSecondary style={[styles.header2, {color: theme.textPrimary}]}>Favorites</TextSecondary>
+      </ScrollView>
     </SecondaryView>
   )
 };

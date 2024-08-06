@@ -18,11 +18,12 @@ export default function Inventory() {
         component={InventoryMain}
         options={{
           headerShown: true,
+          headerTitle: 'Inventory',
           headerRight: () => <SearchBarWidget componentToRender={"SearchResultsModal"} />,
           headerStyle: {
             // backgroundColor: Colors[colorScheme ?? 'light'].background,
             backgroundColor: theme.colors.background,
-          },              
+          },
           headerTitleStyle: {
             // color: Colors[colorScheme ?? 'light'].text,
             color: 'white',

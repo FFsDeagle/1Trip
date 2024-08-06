@@ -1,5 +1,5 @@
 
-import { Text as DefaultText, View as DefaultView, TouchableOpacity as DefaultTouchableOpacity, StyleProp, ViewStyle } from 'react-native';
+import { Text as DefaultText, View as DefaultView, TouchableOpacity as DefaultTouchableOpacity, StyleProp, ViewStyle, ScrollView as DefaultScrollView } from 'react-native';
 import { initialState } from './util/themeSlice';
 import { LinearGradient as DefaultLinearGradient } from 'expo-linear-gradient';
 import { useMemo } from 'react';
@@ -9,6 +9,7 @@ export type TextProps = DefaultText['props'];
 export type ViewProps = DefaultView['props'];
 export type LinearGradientProp = DefaultLinearGradient['props'];
 export type TouchableOpacityProps = DefaultTouchableOpacity['props'];
+export type ScrollViewProps = DefaultScrollView['props'];
 
 export function useThemeColor(
   colorName: keyof typeof initialState.colors, 
@@ -49,6 +50,13 @@ export function SecondaryView(props: ViewProps) {
   return <DefaultView style={[{ backgroundColor }, style] as StyleProp<ViewStyle>} {...otherProps} />;
 }
 
+export function TertiaryView(props: ViewProps) {
+  const { style, ...otherProps } = props;
+  const backgroundColor = useThemeColor('background3');
+
+  return <DefaultView style={[{ backgroundColor }, style] as StyleProp<ViewStyle>} {...otherProps} />;
+}
+
 export function TouchableOpacity(props: TouchableOpacityProps) {
   const { style, ...otherProps } = props;
   const backgroundColor = useThemeColor('background2');
@@ -72,4 +80,11 @@ export function LinearGradient(props: LinearGradientProp) {
   console.log('Gradient Colors:', stableColors);
 
   return <DefaultLinearGradient colors={stableColors} style={style} {...otherProps} />;
+}
+
+export function ScrollView(props: ScrollViewProps){
+  const { style, ...otherProps } = props;
+  const backgroundColor = useThemeColor('background2');
+
+  return <DefaultScrollView style={[{ backgroundColor }, style] as StyleProp<ViewStyle>} {...otherProps} />;
 }

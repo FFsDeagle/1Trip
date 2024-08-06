@@ -21,7 +21,7 @@ export default function Items() {
             // backgroundColor: Colors[colorScheme ?? 'light'].background,
             backgroundColor: theme.colors.background,
           },
-          headerTitle: 'Products List',
+          headerTitle: 'Products',
           headerTitleStyle: {
             // color: Colors[colorScheme ?? 'light'].text,
             color: 'white',

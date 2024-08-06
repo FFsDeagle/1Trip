@@ -6,6 +6,16 @@ export const styles = StyleSheet.create({
       justifyContent: 'center',
       alignContent: 'center'
     },
+    alignContentStart: {
+      display: 'flex',
+      alignContent: 'flex-end',
+      justifyContent: 'center'
+    },
+    justifiedStart: {
+      display: 'flex',
+      justifyContent: 'flex-start',
+      alignContent: 'center'
+    },
     absoluteBottomRight: {
       position: 'absolute',
       bottom: 20,
@@ -16,6 +26,7 @@ export const styles = StyleSheet.create({
     flexRow: {
       display: 'flex',
       flexDirection: 'row',
+      width: '100%',
     },
     flexColumn: {
       display: 'flex',
@@ -70,12 +81,19 @@ export const styles = StyleSheet.create({
       fontWeight: 'bold',
       color: 'white',
     },
+    header2: {
+      fontSize: 18,
+      lineHeight: 24,
+      paddingTop: 10,
+      paddingBottom: 10,
+      paddingLeft: 20,
+      fontWeight: 'bold',
+    },
     textStyle: {
       fontSize: 24,
       lineHeight: 24,
       textAlign: 'center',
       padding: 20,
-      color: 'black',
     },
     title: {
       fontSize: 16,
@@ -97,6 +115,9 @@ export const styles = StyleSheet.create({
       width: '80%',
     },
     gridContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
       paddingTop: 15,
       width: '100%',
       paddingBottom: 15,
@@ -115,6 +136,12 @@ export const styles = StyleSheet.create({
       borderColor: 'rgba(0,0,0,0.2)',
       borderBottomWidth: 1,
       padding: 10,
+      fontSize: 16,
+    },
+    listText: {
+      borderColor: 'rgba(0,0,0,0.2)',
+      padding: 10,
+      fontSize: 16,
     },
     subtitle: {
       fontSize: 12,

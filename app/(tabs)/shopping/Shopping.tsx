@@ -3,10 +3,7 @@ import ShoppingMain from './ShoppingMain';
 import { useAppSelector } from '@/app/store/hooks';
 import AddNewShoppingList from './AddNewShoppingList';
 import CreateShoppingList from './CreateShoppingList';
-import { useEffect } from 'react';
 import ViewShoppingList from './ViewShoppingList';
-import { ShoppingList } from './ShoppingSlice';
-import { ParamListBase, RouteProp } from '@react-navigation/native';
 import StartShopping from './StartShopping';
 
 export default function Items() {

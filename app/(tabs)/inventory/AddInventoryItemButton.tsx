@@ -43,7 +43,7 @@ export default function AddInventoryItemButton() {
         zIndex: 100,
         // shadow
     }}>
-        <TouchableOpacity 
+      <TouchableOpacity 
         style={{
             padding: 10,
             borderRadius: 50,
@@ -55,9 +55,9 @@ export default function AddInventoryItemButton() {
             elevation: 5,
             borderWidth: 2, 
         }} 
-    onPress={() => {
-        navigation.navigate('AddItem');
-    }}
+          onPress={() => {
+              navigation.navigate('AddItem');
+          }}
         >
             <FontAwesome5 name="plus" size={24} color={theme.colors.iconColor} />
         </TouchableOpacity>

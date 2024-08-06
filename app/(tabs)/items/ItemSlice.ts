@@ -18,6 +18,7 @@ export interface InventoryItem {
     name: string,
     description: string,
     category: string,
+    isFavorite: boolean,
 }
 
 export interface InventoryResponse {

@@ -8,11 +8,10 @@ import { useRouter } from "expo-router";
 import { LinearGradient, TextSecondary } from "@/components/Themed";
 import { useAppSelector } from "@/app/store/hooks";
 
-export default function InventoryCategoryWidget() {
+export default function ItemsCategoryWidget() {
     const [gridItems, setGridItems] = useState<WidgetGridItemProps[]>([])
     const router = useRouter();
     const theme = useAppSelector(state => state.theme);
-    const items = useAppSelector(state => state.inventory.inventoryItems);
 
     // Static grid items for testing
     // Can add more dynamic types to the grid items such as a component to render
@@ -99,10 +98,10 @@ export default function InventoryCategoryWidget() {
     }, [])
 
     const handleSelection = (item: WidgetGridItemProps) => {
-      router.push({
-        pathname: "/modal",
-        params: { modal: 'SearchResultsModal', title: `${item.title}`, navigationParam: 'InventoryItemInfo' }, 
-      });
+    //   router.push({
+    //     pathname: "/modal",
+    //     params: { modal: 'SearchResultsModal', title: `${item.title}`, navigationParam: 'InventoryItemInfo' }, 
+    //   });
     }
 
     return (
@@ -110,9 +109,6 @@ export default function InventoryCategoryWidget() {
           style={styles.gridContainer} 
           colors={[]}        
         >
-          <View style={[styles.flexRow, styles.justifiedStart]}>
-            <TextSecondary style={[styles.header2, {color: theme.colors.background, paddingBottom: 0, paddingTop: 5}]}><Feather name="box" size={24} color={theme.colors.iconColor} /> Total Inventory: {items?.length}</TextSecondary>
-          </View>
           <View style={[styles.flexRow, styles.justifiedStart]}>
             <Text style={[styles.getStartedText, { textAlign: 'left' }]}>
               Categories
