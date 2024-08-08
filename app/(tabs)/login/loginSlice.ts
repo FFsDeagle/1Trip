@@ -35,8 +35,10 @@ export interface LoginProps {
 // User Account Data
 export interface LoginResponse  {
     id: string,
-    name: string,
-    tokenExpiry: Date,
+    username: string,
+    authToken: string,
+    tokenExpiry: string,
+    isLoggedIn: boolean,
     // Other data goes here
 }
 
@@ -44,6 +46,27 @@ export interface LoginResponse  {
 export interface LogoutResponse {
     status: boolean,
 }
+
+const testLoginResponse: LoginResponse = {
+    id: '1234',
+    username: 'Test',
+    authToken: 'aXsidJh87sa08auWsoihd',
+    tokenExpiry: new Date(Date.now() + 360000).toDateString(),
+    isLoggedIn: false,
+}
+
+export const verifyAuthToken = createAsyncThunk(
+    'login/verifyAuthToken',
+    async (id: string) => {
+        return testLoginResponse;
+        return axios.post('http://localhost:5000/account/verifyAuthToken', { params: ({ id })})
+        .then((response: AxiosResponse<LoginResponse>) => {
+            return response;
+        }).catch(error => {
+            return error;
+        })
+    }
+)
 
 export const createAccount = createAsyncThunk(
     'login/createAccount',
@@ -62,6 +85,7 @@ export const createAccount = createAsyncThunk(
 export const loginAsync = createAsyncThunk(
     'login/loginAsync',
     async ({ userName, password }: LoginProps) => {
+        return testLoginResponse;
         return axios.post('http://localhost:5000/account/login', { params: ({ userName, password })})
         .then((response: AxiosResponse<LoginResponse>) => {
             return response;
@@ -134,6 +158,25 @@ export const loginSlice = createSlice({
             if (action.payload) {
                 state.userProps = action.payload;
             }
+        })
+        .addCase(verifyAuthToken.pending, (state) => {
+            state.status = 'loading';
+        })
+        .addCase(verifyAuthToken.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
+            const tokenExpiryDate = new Date(action.payload.tokenExpiry);
+            if (tokenExpiryDate > new Date()) {
+                state.userProps = action.payload;
+                state.userProps.isLoggedIn = true;
+                state.status = 'success';
+            }
+            else {
+                state.status = 'failed';
+                state.error = 'Token has expired';
+            }
+        })
+        .addCase(verifyAuthToken.rejected, (state, action) => {
+            state.status = 'failed';
+            state.error = action.error.message;
         })
     }
 })
