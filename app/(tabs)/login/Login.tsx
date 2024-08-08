@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { TouchableOpacity, ActivityIndicator, Keyboard } from 'react-native';
-import { Text } from "react-native";
+import { TouchableOpacity, ActivityIndicator, Keyboard, View } from 'react-native';
 import { Input } from '@rneui/themed';
 import { styles } from "@/components/util/Theme";
-import { LinearGradient, SecondaryView, TextPrimary, TextSecondary } from "@/components/Themed";
+import { LinearGradient, LinearGradientSecondary, SecondaryView, TextPrimary, TextSecondary } from "@/components/Themed";
 import { useAppSelector } from "@/app/store/hooks";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 
 export default function Login ({ navigation }: { navigation: any }){
     const [isLoading, setIsLoading] = useState(false);
@@ -31,6 +30,11 @@ export default function Login ({ navigation }: { navigation: any }){
         };
     }, []);
 
+    const handleOAuthSignIn = () => {
+        // Sign in with OAuth
+        console.log('Sign in with OAuth');
+    }
+
     if(isLoading){
         return <ActivityIndicator size="large" color="#0000ff" />;
     }
@@ -53,6 +57,7 @@ export default function Login ({ navigation }: { navigation: any }){
                 width: '90%',
                 backgroundColor: 'rgba(0,0,0,0.1)',
                 borderRadius: 15,
+                paddingTop: 15,
             }}>
                 <Input
                     style={{
@@ -67,6 +72,7 @@ export default function Login ({ navigation }: { navigation: any }){
                 borderRadius: 15,
                 marginTop: 15,
                 marginBottom: 25,
+                paddingTop: 15,
             }}>
                 <Input
                     style={{
@@ -75,26 +81,59 @@ export default function Login ({ navigation }: { navigation: any }){
                     placeholder="Password"
                 />
             </SecondaryView>
-                {!isKeyboardVisible && 
-                    <LinearGradient
-                        colors={[]}
-                        style={{
-                            backgroundColor: 'rgba(0,0,0,0.5)',
-                            padding: 5,
-                            borderRadius: 50,
-                        }}
-                    >
+            {!isKeyboardVisible && 
+                <View style={[styles.justified, { width: '100%' }]}>
+                    <LinearGradientSecondary
+                            colors={[]}
+                            style={[{
+                                backgroundColor: 'rgba(0,0,0,0.5)',
+                                padding: 5,
+                                borderRadius: 50,
+                            }]}
+                        >
+                        <TouchableOpacity
+                            onPress={() => {
+                            // navigate to other tab
+                                navigation.navigate('Shopping List');
+                            }}
+                            style={styles.justified}
+                            accessibilityLabel="Learn more about this purple button"
+                        >
+                            <TextPrimary style={[styles.textStyle]}>Sign In</TextPrimary>
+                        </TouchableOpacity>
+                    </LinearGradientSecondary>
                     <TouchableOpacity
                         onPress={() => {
-                        // navigate to other tab
-                        navigation.navigate('Shopping List');
+                            // navigate to other tab
                         }}
-
-                        accessibilityLabel="Learn more about this purple button"
+                        style={styles.justified}
                     >
-                    <Text style={[styles.textStyle, {color: 'white'}]}>Sign In</Text>
-                </TouchableOpacity>
-            </LinearGradient>
+                        <TextSecondary style={[styles.header3]}>Forgot Password?</TextSecondary>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            // navigate to other tab
+                        }}
+                        style={styles.justified}
+                    >
+                        <TextSecondary style={[styles.header3, { paddingBottom: 0 }]}>Sign Up</TextSecondary>
+                    </TouchableOpacity>
+                    <View style={[styles.separator]}></View>
+                    <View>
+                        <TextSecondary style={[styles.header3, { lineHeight: 8 }]}>Or</TextSecondary>
+                    </View>
+                    <View style={[styles.flexRow, styles.justified]}>
+                        <TouchableOpacity style={styles.iconSelection} onPress={handleOAuthSignIn}>
+                            <FontAwesome name="facebook-f" size={24} color={theme.iconColor} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.iconSelection} onPress={handleOAuthSignIn}>
+                            <FontAwesome name="instagram" size={24} color={theme.iconColor} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.iconSelection} onPress={handleOAuthSignIn}>
+                            <FontAwesome5 name="tiktok" size={24} color={theme.iconColor} />
+                        </TouchableOpacity>
+                    </View>
+                </View>
             }
         </SecondaryView>
     );

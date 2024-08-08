@@ -4,7 +4,8 @@ export const styles = StyleSheet.create({
     justified: {
       display: 'flex',
       justifyContent: 'center',
-      alignContent: 'center'
+      alignItems: 'center',
+      alignContent: 'center',
     },
     alignContentStart: {
       display: 'flex',
@@ -28,12 +29,26 @@ export const styles = StyleSheet.create({
       flexDirection: 'row',
       width: '100%',
     },
+    iconSelection: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0,0,0,0.2)',
+      padding: 5,
+      borderRadius: 15,
+      width: 50,
+      height: 50,
+      marginTop: 10,
+      margin: 5,
+    },
     flexColumn: {
       display: 'flex',
       flexDirection: 'column',
     },
     justifiedApart: {
       display: 'flex',
+      alignContent: 'center',
       flexDirection: 'row',
       justifyContent: 'space-between',
     },
@@ -89,11 +104,20 @@ export const styles = StyleSheet.create({
       paddingLeft: 20,
       fontWeight: 'bold',
     },
+    header3:{
+      fontSize: 16,
+      lineHeight: 24,
+      paddingTop: 8,
+      paddingBottom: 8,
+      fontWeight: 'bold',
+    },
     textStyle: {
       fontSize: 24,
       lineHeight: 24,
       textAlign: 'center',
-      padding: 20,
+      padding: 15,
+      paddingTop: 10,
+      paddingBottom: 10,
     },
     title: {
       fontSize: 16,
@@ -110,7 +134,9 @@ export const styles = StyleSheet.create({
       fontSize: 10,
     },
     separator: {
-      marginVertical: 30,
+      marginVertical: 15,
+      borderBottomColor: 'black',
+      borderBottomWidth: StyleSheet.hairlineWidth,
       height: 1,
       width: '80%',
     },
@@ -135,12 +161,12 @@ export const styles = StyleSheet.create({
     listItem: {
       borderColor: 'rgba(0,0,0,0.2)',
       borderBottomWidth: 1,
-      padding: 10,
+      padding: 8,
       fontSize: 16,
     },
     listText: {
       borderColor: 'rgba(0,0,0,0.2)',
-      padding: 10,
+      padding: 5,
       fontSize: 16,
     },
     subtitle: {

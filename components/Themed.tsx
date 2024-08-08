@@ -82,6 +82,16 @@ export function LinearGradient(props: LinearGradientProp) {
   return <DefaultLinearGradient colors={stableColors} style={style} {...otherProps} />;
 }
 
+export function LinearGradientSecondary(props: LinearGradientProp) {
+  const { style, colors, ...otherProps } = props;
+  const gradientColors = useThemeColor('linearBackground2') as string[];
+  const stableColors = useMemo(() => gradientColors, [gradientColors]);
+
+  console.log('Gradient Colors:', stableColors);
+
+  return <DefaultLinearGradient colors={stableColors} style={style} {...otherProps} />;
+}
+
 export function ScrollView(props: ScrollViewProps){
   const { style, ...otherProps } = props;
   const backgroundColor = useThemeColor('background2');

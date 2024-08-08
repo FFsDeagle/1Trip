@@ -10,8 +10,113 @@ export interface InventoryState {
 
 export const initialState: InventoryState = {
     status: 'idle',
-    items: [],
+    items: [] as InventoryItem[],
 }
+// id: string,
+// name: string,
+// description: string,
+// category: string,
+// quantity: number,
+const testState: InventoryItem[] = [
+    {
+        id: '1',
+        name: 'test1',
+        description: 'test1',
+        category: 'test1',
+        isFavorite: true,
+    },
+    {
+        id: '2',
+        name: 'test2',
+        description: 'test2',
+        category: 'test2',
+        isFavorite: true,
+    },
+    {
+        id: '3',
+        name: 'test3',
+        description: 'test3',
+        category: 'test3',
+        isFavorite: true,
+    },
+    {
+        id: '4',
+        name: 'test4',
+        description: 'test4',
+        category: 'test4',
+        isFavorite: true,
+    },
+    {
+        id: '5',
+        name: 'test5',
+        description: 'test5',
+        category: 'test5',
+        isFavorite: true,
+    },
+    {
+        id: '6',
+        name: 'test6',
+        description: 'test6',
+        category: 'test6',
+        isFavorite: true,
+    },
+    {
+        id: '7',
+        name: 'test7',
+        description: 'test7',
+        category: 'test7',
+        isFavorite: false,
+    },
+    {
+        id: '8',
+        name: 'test8',
+        description: 'test8',
+        category: 'test8',
+        isFavorite: false,
+    },
+    {
+        id: '9',
+        name: 'test9',
+        description: 'test9',
+        category: 'test9',
+        isFavorite: false,
+    },
+    {
+        id: '10',
+        name: 'test10',
+        description: 'test10',
+        category: 'test10',
+        isFavorite: false,
+    },
+    {
+        id: '11',
+        name: 'test11',
+        description: 'test11',
+        category: 'test11',
+        isFavorite: false,
+    },
+    {
+        id: '12',
+        name: 'test12',
+        description: 'test12',
+        category: 'test12',
+        isFavorite: false,
+    },
+    {
+        id: '13',
+        name: 'test13',
+        description: 'test13',
+        category: 'test13',
+        isFavorite: false,
+    },
+    {
+        id: '14',
+        name: 'test14',
+        description: 'test14',
+        category: 'test14',
+        isFavorite: false,
+    },
+]
 
 export interface InventoryItem {
     id: string,
@@ -67,6 +172,20 @@ export const itemSearch = createAsyncThunk(
     }
 )
 
+export const getItemList = createAsyncThunk(
+    'item/getItemList',
+    async () => {
+        return testState;
+        return axios.get('http://localhost:5000/inventory/getItemList')
+        .then((response: AxiosResponse<InventoryItem[]>) => {
+            return response;
+        }).catch((error) => {
+            console.log("Error occurred when getting item list", error);
+            return error;
+        })
+    }
+)
+
 export const inventorySlice = createSlice({
     name: 'item',
     initialState: initialState,
@@ -98,6 +217,16 @@ export const inventorySlice = createSlice({
             state.items = action.payload;
         })
         builder.addCase(itemSearch.rejected, (state) => {
+            state.status = 'failed';
+        })
+        builder.addCase(getItemList.pending, (state) => {
+            state.status = 'loading';
+        })
+        builder.addCase(getItemList.fulfilled, (state, action) => {
+            state.status = 'success';
+            state.items = action.payload;
+        })
+        builder.addCase(getItemList.rejected, (state) => {
             state.status = 'failed';
         })
     }
