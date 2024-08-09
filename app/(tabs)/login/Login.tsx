@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { loginAsync, verifyAuthToken } from "./loginSlice";
+import LoadingIndicator from "@/components/animations/LoadingIndicator";
 
 interface LoginProps {
     username: string;
@@ -13,7 +14,7 @@ interface LoginProps {
 }
 
 export default function Login ({ navigation }: { navigation: any }){
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const theme = useAppSelector(state => state.theme.colors);
     const { loginState, loginResponse } = useAppSelector(state => state.login);
     const [login, setLogin] = useState<LoginProps>({ username: '', password: '' });
@@ -40,6 +41,7 @@ export default function Login ({ navigation }: { navigation: any }){
     }, []);
 
     const handleSigninWithCredentials = async () => {
+        setIsLoading(true);
         if (login.username === '' || login.password === '') {
             console.log('Username or password is empty');
             return;
@@ -52,17 +54,29 @@ export default function Login ({ navigation }: { navigation: any }){
     };
 
     useEffect(() => {
+        // Check if there is a cached token and verify if it is still valid
+        setIsLoading(true);
         loginWithStoredData();
+
+        // If user signs in with Credentials then and the login is successful
+        // The dependancy will trigger and store the data while navigating to the next screen
         if (loginState){
-            storeLoginData();
+            const timeout = setTimeout(() => {
+                storeTokenAndNavigate();
+            }, 2000);
+            return () => clearTimeout(timeout);
         }
         else {
-            console.log('Login failed');
             setIsLoading(false);
         }
     }, [loginState]);
 
-    const storeLoginData = async () => {
+    const loginWithStoredData = async () => {
+        await getDataAndVerify();
+    }
+
+    const storeTokenAndNavigate = async () => {
+        // Store data and navigate to the next screen
         await storeData(loginResponse.authToken);
         navigation.navigate('Shopping List');
     }
@@ -77,10 +91,6 @@ export default function Login ({ navigation }: { navigation: any }){
         catch (e) {
             console.log('Error:', e);
         }
-    }
-
-    const loginWithStoredData = async () => {
-        await getDataAndVerify();
     }
 
     const getDataAndVerify = async () => {
@@ -108,7 +118,8 @@ export default function Login ({ navigation }: { navigation: any }){
     }
 
     if (isLoading) {
-        return <ActivityIndicator />;
+        console.log("Loading...");
+        return <LoadingIndicator displayText={"Signing you in..."} />;
     }
 
     return (
