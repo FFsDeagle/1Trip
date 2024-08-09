@@ -7,7 +7,8 @@ import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { loginAsync, verifyAuthToken } from "./loginSlice";
 import LoadingIndicator from "@/components/animations/LoadingIndicator";
-import { signInWithGoogle, signInWithInstagram, signInWithTiktok } from "@/components/auth/authService";
+import * as AuthSession from 'expo-auth-session';
+import { useAuthRequest } from 'expo-auth-session';
 
 interface LoginProps {
     username: string;
@@ -15,6 +16,37 @@ interface LoginProps {
 }
 
 export default function Login ({ navigation }: { navigation: any }){
+    // To add as env variables once acquired
+    const googleAuthRequestConfig = {
+        clientId: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
+        scopes: ['profile', 'email'],
+        redirectUri: AuthSession.makeRedirectUri({
+            native: 'com.yourapp://redirect',
+        }),
+    };
+
+    const instagramAuthRequestConfig = {
+        clientId: 'YOUR_INSTAGRAM_CLIENT_ID',
+        scopes: ['user_profile'],
+        redirectUri: AuthSession.makeRedirectUri({
+            native: 'com.yourapp://redirect',
+        }),
+    }
+
+    const tiktokAuthRequestConfig = {
+        clientId: 'YOUR_TIKTOK_CLIENT_ID',
+        scopes: ['user_profile'],
+        redirectUri: AuthSession.makeRedirectUri({
+            native: 'com.yourapp://redirect',
+        }),
+    }
+
+    const googleOAuthDiscovery = AuthSession.useAutoDiscovery('https://accounts.google.com');
+    const instagramOAuthDiscovery = AuthSession.useAutoDiscovery('https://api.instagram.com');
+    const tiktokOAuthDiscovery = AuthSession.useAutoDiscovery('https://api.tiktok.com');
+    const [googleRequest, googleResponse, promptGoogleAsync] = useAuthRequest(googleAuthRequestConfig, googleOAuthDiscovery);
+    const [instagramRequest, instagramResponse, promptInstaAsync] = useAuthRequest(instagramAuthRequestConfig, instagramOAuthDiscovery);
+    const [tiktokRequest, tiktokResponse, promptTiktokAsync] = useAuthRequest(tiktokAuthRequestConfig, tiktokOAuthDiscovery);
     const [isLoading, setIsLoading] = useState(false);
     const theme = useAppSelector(state => state.theme.colors);
     const { loginState, loginResponse } = useAppSelector(state => state.login);
@@ -113,30 +145,39 @@ export default function Login ({ navigation }: { navigation: any }){
         }
     }
 
-    const handleOAuthSignIn = (type: string) => {
+    const handleOAuthSignIn = async (type: string) => {
         // Sign in with OAuth
         if (type === 'google') {
-            signInWithGoogle().then((result) => {
-                // Store the token and navigate to the next screen
-                storeData(result.accessToken).then(() => {
-                    navigation.navigate('Shopping List');
-                });
+            await promptGoogleAsync().then((result: AuthSession.AuthSessionResult) => {
+                if (result.type === 'success') {
+                    const { accessToken } = result.authentication as AuthSession.TokenResponseConfig;
+                    // Store the token and navigate to the next screen
+                    storeData(accessToken).then(() => {
+                        navigation.navigate('Shopping List');
+                    });
+                }
             });
         }
         else if (type === 'instagram') {
-            signInWithInstagram().then((result) => {
-                // Store the token and navigate to the next screen
-                storeData(result.accessToken).then(() => {
-                    navigation.navigate('Shopping List');
-                });
+            await promptInstaAsync().then((result: AuthSession.AuthSessionResult) => {
+                if (result.type === 'success') {
+                    const { accessToken } = result.authentication as AuthSession.TokenResponseConfig;
+                    // Store the token and navigate to the next screen
+                    storeData(accessToken).then(() => {
+                        navigation.navigate('Shopping List');
+                    });
+                }
             });
         }
         else if (type === 'tiktok') {
-            signInWithTiktok().then((result) => {
-                // Store the token and navigate to the next screen
-                storeData(result.accessToken).then(() => {
-                    navigation.navigate('Shopping List');
-                });
+            await promptTiktokAsync().then((result: AuthSession.AuthSessionResult) => {
+                if (result.type === 'success') {
+                    const { accessToken } = result.authentication as AuthSession.TokenResponseConfig;
+                    // Store the token and navigate to the next screen
+                    storeData(accessToken).then(() => {
+                        navigation.navigate('Shopping List');
+                    });
+                }
             });
         }
     }
