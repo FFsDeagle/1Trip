@@ -5,7 +5,7 @@ import { LinearGradientSecondary, SecondaryView, TextPrimary, TextSecondary } fr
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { loginAsync, LoginResponse, verifyAuthToken } from "./loginSlice";
+import { loginAsync, verifyAuthToken } from "./loginSlice";
 
 interface LoginProps {
     username: string;
@@ -15,12 +15,11 @@ interface LoginProps {
 export default function Login ({ navigation }: { navigation: any }){
     const [isLoading, setIsLoading] = useState(true);
     const theme = useAppSelector(state => state.theme.colors);
+    const { loginState, loginResponse } = useAppSelector(state => state.login);
     const [login, setLogin] = useState<LoginProps>({ username: '', password: '' });
     const inputRef = useRef<TextInput>(null);
     const textRef = useRef<TextInput>(null);
-    const [checkLogin, setCheckLogin] = useState(false);
     const dispatch = useAppDispatch();
-    const [loginState, setLoginState] = useState<LoginResponse>({} as LoginResponse);
     const storageKey = process.env.EXPO_PUBLIC_STORAGE_KEY;
     
     // Disable the add button when the keyboard is visible
@@ -41,41 +40,32 @@ export default function Login ({ navigation }: { navigation: any }){
     }, []);
 
     const handleSigninWithCredentials = async () => {
-        // Sign in with credentials
-        navigation.navigate('Shopping List');
-        return;
         if (login.username === '' || login.password === '') {
             console.log('Username or password is empty');
             return;
         }
-    
         try {
-            const response = await dispatch(loginAsync({ userName: login.username, password: login.password }));
-            
-            if (response.payload.status === 'success') {
-                setLoginState(response.payload);
-                await storeData(response.payload.id + response.payload.tokenExpiry);
-                navigation.navigate('Shopping List');
-            } else {
-                console.log('Login failed');
-                // Handle login failure here if needed
-            }
+            await dispatch(loginAsync({ userName: login.username, password: login.password }))
         } catch (error) {
             console.log('Error during login:', error);
-            // Handle error during login process
         }
     };
 
     useEffect(() => {
-        const verifyToken = async () => {
-            const response = await getDataAndVerify();
-            if (response) {
-                navigation.navigate('Shopping List');
-            }
+        loginWithStoredData();
+        if (loginState){
+            storeLoginData();
+        }
+        else {
+            console.log('Login failed');
             setIsLoading(false);
-        };
-        verifyToken();
-    }, []);
+        }
+    }, [loginState]);
+
+    const storeLoginData = async () => {
+        await storeData(loginResponse.authToken);
+        navigation.navigate('Shopping List');
+    }
 
     const storeData = async (value: string) => {
         try {
@@ -89,18 +79,20 @@ export default function Login ({ navigation }: { navigation: any }){
         }
     }
 
+    const loginWithStoredData = async () => {
+        await getDataAndVerify();
+    }
+
     const getDataAndVerify = async () => {
         try {
             if (storageKey){
                 const value = await AsyncStorage.getItem(storageKey);
-                console.log('Data retrieved:', value);
-                if(value !== null) {
-                    // value previously stored
-                    const response = await dispatch(verifyAuthToken(value));
-                    setLoginState(response.payload);
-                    console.log('Login State:', loginState);
-                    return response.payload.status === 'success';
+                if(value === null) {
+                    return false;
                 }
+                console.log('Data retrieved:', value);
+                // value previously stored
+                await dispatch(verifyAuthToken(value));
             }
             return false;
         } catch(e) {

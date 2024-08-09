@@ -1,5 +1,5 @@
 import loginSlice from "@/app/(tabs)/login/loginSlice";
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, isImmutableDefault } from "@reduxjs/toolkit";
 import logger from 'redux-logger';
 import inventorySlice from "../(tabs)/inventory/InventorySlice";
 import themeSlice from "../../components/util/themeSlice";
@@ -15,7 +15,12 @@ const store = configureStore({
         item: ItemSlice,
         shoppingLists: shoppingListSlice,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+    middleware: (getDefaultMiddleware) => 
+        getDefaultMiddleware({
+            serializableCheck: false,
+            isImmutableDefault,
+        })
+    .concat(logger),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

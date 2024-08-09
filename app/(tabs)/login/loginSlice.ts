@@ -7,11 +7,10 @@ import axios, { AxiosResponse } from "axios";
 export interface loginState {
     loginState: boolean,
     loading: boolean,
-    isLoggedIn?: false,
     error: string | undefined,
     status: 'idle' | 'loading' | 'failed' | 'success'
-    userProps: LoginResponse,
     logoutResponse: LogoutResponse,
+    loginResponse: LoginResponse,
 }
 
 // initialState on load
@@ -20,10 +19,10 @@ const initialState: loginState = {
     loading: false,
     error: undefined,
     status: 'idle',
-    userProps: {} as LoginResponse , // Declare an empty UserProps for initial state
     logoutResponse: {
         status: false, // Set to false by default
     } as LogoutResponse,
+    loginResponse: {} as LoginResponse,
 }
 
 // Props for User Login
@@ -38,8 +37,7 @@ export interface LoginResponse  {
     username: string,
     authToken: string,
     tokenExpiry: string,
-    isLoggedIn: boolean,
-    // Other data goes here
+    statusCode: string
 }
 
 // Logout response
@@ -51,8 +49,8 @@ const testLoginResponse: LoginResponse = {
     id: '1234',
     username: 'Test',
     authToken: 'aXsidJh87sa08auWsoihd',
-    tokenExpiry: new Date(Date.now() + 360000).toDateString(),
-    isLoggedIn: false,
+    tokenExpiry: new Date(Date.now() + 3600000).toISOString(),
+    statusCode: '200',
 }
 
 export const verifyAuthToken = createAsyncThunk(
@@ -85,7 +83,7 @@ export const createAccount = createAsyncThunk(
 export const loginAsync = createAsyncThunk(
     'login/loginAsync',
     async ({ userName, password }: LoginProps) => {
-        return testLoginResponse;
+        return testLoginResponse as LoginResponse;
         return axios.post('http://localhost:5000/account/login', { params: ({ userName, password })})
         .then((response: AxiosResponse<LoginResponse>) => {
             return response;
@@ -125,10 +123,16 @@ export const loginSlice = createSlice({
             state.status = "failed"
             state.error = action.error.message;
         })
-        .addCase(loginAsync.fulfilled, (state, action) => {
-            state.status = 'success';
-            if (action.payload) {
-                state.userProps = action.payload;
+        .addCase(loginAsync.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
+            console.log('Login Response from SLICE:', action.payload);
+            if (action.payload.statusCode === '200') {
+                state.loginResponse = action.payload;
+                state.loginState = true;
+                state.status = 'success';
+            }
+            else {
+                state.status = 'failed';
+                state.error = action.payload.statusCode;
             }
         })
         .addCase(logoutAsync.pending, (state) => {
@@ -143,7 +147,7 @@ export const loginSlice = createSlice({
             // If status is true
             if(action.payload?.status){
                 // Reset state by creating an empty object of type LoginResponse
-                state.userProps = {} as LoginResponse
+                state.loginResponse = {} as LoginResponse;
             }
         })
         .addCase(createAccount.pending, (state) => {
@@ -153,10 +157,10 @@ export const loginSlice = createSlice({
             state.status = 'failed';
             state.error = action.error.message;
         })
-        .addCase(createAccount.fulfilled, (state, action) => {
+        .addCase(createAccount.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
             state.status = 'success';
             if (action.payload) {
-                state.userProps = action.payload;
+                state.loginResponse = action.payload;
             }
         })
         .addCase(verifyAuthToken.pending, (state) => {
@@ -164,9 +168,11 @@ export const loginSlice = createSlice({
         })
         .addCase(verifyAuthToken.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
             const tokenExpiryDate = new Date(action.payload.tokenExpiry);
-            if (tokenExpiryDate > new Date()) {
-                state.userProps = action.payload;
-                state.userProps.isLoggedIn = true;
+            console.log('Token expiry date:', tokenExpiryDate, 'Current date:', new Date());
+            if (tokenExpiryDate >= new Date()) {
+                state.loginResponse = action.payload;
+                state.loginState = true;
+                // 
                 state.status = 'success';
             }
             else {
@@ -183,6 +189,4 @@ export const loginSlice = createSlice({
 
 // Export parts of your state for easy access throughout your app
 // For example this export will give you the current state of the user
-export const selectUser = (state: RootState) => state.login.userProps;
-
 export default loginSlice.reducer;
