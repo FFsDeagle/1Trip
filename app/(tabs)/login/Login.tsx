@@ -7,6 +7,7 @@ import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { loginAsync, verifyAuthToken } from "./loginSlice";
 import LoadingIndicator from "@/components/animations/LoadingIndicator";
+import { signInWithGoogle, signInWithInstagram, signInWithTiktok } from "@/components/auth/authService";
 
 interface LoginProps {
     username: string;
@@ -114,7 +115,30 @@ export default function Login ({ navigation }: { navigation: any }){
 
     const handleOAuthSignIn = (type: string) => {
         // Sign in with OAuth
-        console.log('Sign in with OAuth:', type);
+        if (type === 'google') {
+            signInWithGoogle().then((result) => {
+                // Store the token and navigate to the next screen
+                storeData(result.accessToken).then(() => {
+                    navigation.navigate('Shopping List');
+                });
+            });
+        }
+        else if (type === 'instagram') {
+            signInWithInstagram().then((result) => {
+                // Store the token and navigate to the next screen
+                storeData(result.accessToken).then(() => {
+                    navigation.navigate('Shopping List');
+                });
+            });
+        }
+        else if (type === 'tiktok') {
+            signInWithTiktok().then((result) => {
+                // Store the token and navigate to the next screen
+                storeData(result.accessToken).then(() => {
+                    navigation.navigate('Shopping List');
+                });
+            });
+        }
     }
 
     if (isLoading) {
