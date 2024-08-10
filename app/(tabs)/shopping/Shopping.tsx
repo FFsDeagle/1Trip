@@ -5,6 +5,7 @@ import AddNewShoppingList from './AddNewShoppingList';
 import CreateShoppingList from './CreateShoppingList';
 import ViewShoppingList from './ViewShoppingList';
 import StartShopping from './StartShopping';
+import ViewShoppingListType from './ViewShoppingListType';
 
 export default function Items() {
   // Load categories
@@ -67,6 +68,21 @@ export default function Items() {
         }}
       >
         {(props: any) => <StartShopping {...props} />}
+      </ItemsStack.Screen>
+      <ItemsStack.Screen
+        name="ViewShoppingListType"
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.colors.background,
+          },
+          headerTintColor: theme.colors.tint,
+          headerTitleStyle: {
+            color: theme.colors.headerTitleColor,
+          },
+        }}
+      >
+        {(props: any) => <ViewShoppingListType {...props} />}
       </ItemsStack.Screen>
     </ItemsStack.Navigator>
   );

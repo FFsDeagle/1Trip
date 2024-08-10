@@ -50,7 +50,13 @@ export type ShoppingStackParamList = {
     ShoppingItemInfo: { searchValue: string };
     CreateShoppingList: undefined;
     ViewShoppingList: { list: ShoppingList };
+    ViewShoppingListType: { list: ViewShoppingListTypeProps };
     StartShopping: { list: ShoppingList };
+}
+
+export type ViewShoppingListTypeProps = {
+    listType: string;
+    title: string;
 }
 
 export type RootStackParamList = {

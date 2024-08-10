@@ -13,18 +13,10 @@ interface RenderShoppingListsProps {
 
 export default function RenderShoppingLists({ listType, title }: RenderShoppingListsProps){
     const shoppingLists = useAppSelector(state => state.shoppingLists.lists && state.shoppingLists.lists[listType]);
-    const shoppingListTest = useAppSelector(state => state.shoppingLists.lists?.generatedLists);
     const navigation = useNavigation<NavigationProp<ShoppingStackParamList>>();
-
-    console.log(shoppingListTest);
 
     return (
         <SecondaryView>
-            <TextPrimary
-                style={styles.heading}
-            >
-              {title}
-            </TextPrimary>
             <FlatList
                 data={shoppingLists}
                 style={{

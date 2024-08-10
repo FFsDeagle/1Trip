@@ -7,6 +7,12 @@ export const styles = StyleSheet.create({
       alignItems: 'center',
       alignContent: 'center',
     },
+    justifiedCenter: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignContent: 'center',
+    },
     alignContentStart: {
       display: 'flex',
       alignContent: 'flex-end',
@@ -83,9 +89,10 @@ export const styles = StyleSheet.create({
       padding: 10,
       textAlign: 'center',
       borderRadius: 5,
-      backgroundColor: 'rgba(243, 243, 243, 1)',
-      width: '90%',
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      width: '95%',
       marginTop: 10,
+      height: 125,
     },
     getStartedText: {
       fontSize: 20,
