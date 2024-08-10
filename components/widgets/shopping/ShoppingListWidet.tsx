@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/app/store/hooks";
-import { SecondaryView, TextSecondary, TouchableOpacity } from "@/components/Themed";
+import { SecondaryView, TextPrimary, TouchableOpacity } from "@/components/Themed";
 import { styles } from "@/components/util/Theme";
 import { ShoppingStackParamList, ViewShoppingListTypeProps } from "@/constants/Types";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
@@ -23,10 +23,10 @@ export default function ShoppingListWidget() {
                     styles.cardContainer, styles.justifiedApart, { padding: 50, backgroundColor: theme.background3 }
                 ]}
             >
-                <TextSecondary style={[styles.title, { fontSize: 18, fontWeight: 'bold' }]}>
+                <TextPrimary style={[styles.title, { fontSize: 18, fontWeight: 'bold' }]}>
                     Saved Lists
-                </TextSecondary>
-                <FontAwesome5 name="save" size={24} color="black" />
+                </TextPrimary>
+                <FontAwesome5 name="save" size={24} color={theme.iconColor} />
             </TouchableOpacity>
             <TouchableOpacity 
                 onPress={() => handlePress({ listType: 'generatedLists', title: 'Generated Lists'})}
@@ -34,10 +34,10 @@ export default function ShoppingListWidget() {
                     styles.cardContainer, styles.justifiedApart, { padding: 50, backgroundColor: theme.background3 }
                     ]}
             >
-                    <MaterialIcons name="auto-awesome-motion" size={24} color="black" />
-                <TextSecondary style={[styles.title, { fontSize: 18, fontWeight: 'bold' }]}>
+                    <MaterialIcons name="auto-awesome-motion" size={24} color={theme.iconColor} />
+                <TextPrimary style={[styles.title, { fontSize: 18, fontWeight: 'bold' }]}>
                     Generated Shopping Lists
-                </TextSecondary>
+                </TextPrimary>
             </TouchableOpacity>
             <TouchableOpacity 
                 onPress={() => handlePress({ listType: 'history', title: 'History'})}
@@ -45,10 +45,10 @@ export default function ShoppingListWidget() {
                     styles.cardContainer, styles.justifiedApart, { padding: 50, backgroundColor: theme.background3 }
                 ]}
             >
-                <TextSecondary style={[styles.title, { fontSize: 18, fontWeight: 'bold' }]}>
+                <TextPrimary style={[styles.title, { fontSize: 18, fontWeight: 'bold' }]}>
                     History
-                </TextSecondary>
-                <FontAwesome5 name="history" size={24} color="black" />
+                </TextPrimary>
+                <FontAwesome5 name="history" size={24} color={theme.iconColor} />
             </TouchableOpacity>
         </SecondaryView>
     )
