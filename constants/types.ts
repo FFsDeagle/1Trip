@@ -52,6 +52,7 @@ export type ShoppingStackParamList = {
     ViewShoppingList: { list: ShoppingList };
     ViewShoppingListType: { list: ViewShoppingListTypeProps };
     StartShopping: { list: ShoppingList };
+    Settings: undefined;
 }
 
 export type ViewShoppingListTypeProps = {

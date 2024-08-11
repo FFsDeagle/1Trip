@@ -5,6 +5,7 @@ import { GetLists, ShoppingListTypes } from "./ShoppingSlice";
 import { useEffect } from "react";
 import { useAppDispatch } from "@/app/store/hooks";
 import ShoppingListWidget from "@/components/widgets/shopping/ShoppingListWidet";
+import AddShoppingListButton from "./AddShoppingListButton";
 
 export default function ShoppingMain() {
   const dispatch = useAppDispatch();
@@ -18,6 +19,7 @@ export default function ShoppingMain() {
       <ScrollView>
         <ShoppingListWidget />
       </ScrollView>
+      <AddShoppingListButton />
     </SecondaryView>
   )
 };

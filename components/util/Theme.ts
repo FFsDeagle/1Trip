@@ -168,7 +168,7 @@ export const styles = StyleSheet.create({
     listItem: {
       borderColor: 'rgba(0,0,0,0.2)',
       borderBottomWidth: 1,
-      padding: 8,
+      padding: 10,
       fontSize: 16,
     },
     listText: {

@@ -14,6 +14,7 @@ export default function LoadingIndicator({ displayText }: LoadingIndicatorProps 
     const screenWidth = Dimensions.get("window").width;
     const screenHeight = Dimensions.get("window").height;
     const pan = useRef(new Animated.Value(0)).current;
+    const rotate = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         Animated.loop(
@@ -21,12 +22,30 @@ export default function LoadingIndicator({ displayText }: LoadingIndicatorProps 
                 Animated.timing(pan, {
                     toValue: screenWidth + 100, // Adjust for icon size
                     duration: 2000,
-                    delay: 500,
+                    delay: 250,
                     useNativeDriver: true,
                 }),
             ])
         ).start();
     }, [pan, screenWidth]);
+
+    useEffect(() => {
+        Animated.loop(
+            Animated.sequence([
+                Animated.timing(rotate, {
+                    toValue: 1,
+                    duration: 500,
+                    delay: 100,
+                    useNativeDriver: true,
+                }),
+                Animated.timing(rotate, {
+                    toValue: 0,
+                    duration: 500,
+                    useNativeDriver: true,
+                })
+            ])
+        ).start();
+    },[rotate]);
 
     return (
         <SecondaryView style={[styles.container]}>
@@ -37,20 +56,35 @@ export default function LoadingIndicator({ displayText }: LoadingIndicatorProps 
                     marginTop: screenHeight / 2,
                     transform: [
                         {
-                            translateX: pan,
+                            translateX: pan
                         },
+                        {
+                            translateY: -50
+                        }
                     ],
                 }]}
             >
-                <FontAwesome5 style={[{
-                    transform: [
-                        { rotate: '45deg', },
-                        { scale: 1.5 },
-                        { translateX: -60 },
-                    ]
-                }]}
-                    name="location-arrow" size={38} color={theme.textPrimary} />
+                <Animated.View
+                    style={{
+                        transform: [
+                            {
+                                rotate: rotate.interpolate({
+                                    inputRange: [0, 1],
+                                    outputRange: ['0deg', '-45deg']
+                                })
+                            },
+                        ],
+                        left: -60,
+                    }}
+                >
+                    <FontAwesome5 style={[{
+                        transform: [
+                            { scale: 1.5 },
+                        ],
+                    }]}
+                        name="shopping-cart" size={38} color={theme.textPrimary} />
             </Animated.View>
+                </Animated.View>
             <View style={[styles.justified, styles.container, { marginTop: 50 }]}>
                 <TextSecondary style={[styles.getStartedText, { color: theme.background }]}>
                     {displayText}

@@ -3,12 +3,12 @@ import { TouchableOpacity } from "@/components/Themed";
 import { useNavigation } from "expo-router";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
-import { InventoryStackParamList } from "@/constants/Types";
+import { ShoppingStackParamList } from "@/constants/Types";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "@/app/store/hooks";
 
 export default function AddShoppingListButton() {
-    const navigation = useNavigation<NavigationProp<InventoryStackParamList, 'InventoryMain'>>();
+  const navigation = useNavigation<NavigationProp<ShoppingStackParamList, 'ShoppingMain'>>();
     // Re-usable back button component which appears on the bottom right of the screen
     // useNavigation will get the navigation object from the Router, the purpose of this is to get the current screen from the Navigation Stack
     // In this case we are using the navigation object to go back to the previous screen
@@ -56,7 +56,7 @@ export default function AddShoppingListButton() {
             borderWidth: 2, 
         }} 
           onPress={() => {
-              navigation.navigate('AddItem');
+              navigation.navigate('CreateShoppingList');
           }}
         >
             <FontAwesome5 name="plus" size={24} color={theme.colors.iconColor} />

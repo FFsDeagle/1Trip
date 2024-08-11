@@ -6,12 +6,14 @@ import CreateShoppingList from './CreateShoppingList';
 import ViewShoppingList from './ViewShoppingList';
 import StartShopping from './StartShopping';
 import ViewShoppingListType from './ViewShoppingListType';
+import Config from '../settings/Settings';
 
 export default function Items() {
   // Load categories
   const ItemsStack = createNativeStackNavigator();
   const theme = useAppSelector(state => state.theme);
   const shoppingLists = useAppSelector(state => state.shoppingLists.lists);
+  const { SettingsIcon, Settings } = Config;
 
   return (
     <ItemsStack.Navigator>
@@ -21,7 +23,7 @@ export default function Items() {
         options={{
           headerTitle: 'Shopping Lists',
           headerShown: true,
-          headerRight: () => <AddNewShoppingList />,
+          headerRight: () => <SettingsIcon />,
           headerStyle: {
             // backgroundColor: Colors[colorScheme ?? 'light'].background,
             backgroundColor: theme.colors.background,
@@ -84,6 +86,20 @@ export default function Items() {
       >
         {(props: any) => <ViewShoppingListType {...props} />}
       </ItemsStack.Screen>
+      <ItemsStack.Screen
+        name="Settings"
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.colors.background,
+          },
+          headerTintColor: theme.colors.tint,
+          headerTitleStyle: {
+            color: theme.colors.headerTitleColor,
+          },
+        }}
+        component={Settings}
+      />
     </ItemsStack.Navigator>
   );
 };
