@@ -16,37 +16,37 @@ interface LoginProps {
 }
 
 export default function Login ({ navigation }: { navigation: any }){
-    // To add as env variables once acquired
-    const googleAuthRequestConfig = {
-        clientId: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
-        scopes: ['profile', 'email'],
-        redirectUri: AuthSession.makeRedirectUri({
-            native: 'com.yourapp://redirect',
-        }),
-    };
+//     // To add as env variables once acquired
+//     const googleAuthRequestConfig = {
+//         clientId: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
+//         scopes: ['profile', 'email'],
+//         redirectUri: AuthSession.makeRedirectUri({
+//             native: 'com.yourapp://redirect',
+//         }),
+//     };
 
-    const instagramAuthRequestConfig = {
-        clientId: 'YOUR_INSTAGRAM_CLIENT_ID',
-        scopes: ['user_profile'],
-        redirectUri: AuthSession.makeRedirectUri({
-            native: 'com.yourapp://redirect',
-        }),
-    }
+//     const instagramAuthRequestConfig = {
+//         clientId: 'YOUR_INSTAGRAM_CLIENT_ID',
+//         scopes: ['user_profile'],
+//         redirectUri: AuthSession.makeRedirectUri({
+//             native: 'com.yourapp://redirect',
+//         }),
+//     }
 
-    const tiktokAuthRequestConfig = {
-        clientId: 'YOUR_TIKTOK_CLIENT_ID',
-        scopes: ['user_profile'],
-        redirectUri: AuthSession.makeRedirectUri({
-            native: 'com.yourapp://redirect',
-        }),
-    }
+//     const tiktokAuthRequestConfig = {
+//         clientId: 'YOUR_TIKTOK_CLIENT_ID',
+//         scopes: ['user_profile'],
+//         redirectUri: AuthSession.makeRedirectUri({
+//             native: 'com.yourapp://redirect',
+//         }),
+//     }
 
-    const googleOAuthDiscovery = AuthSession.useAutoDiscovery('https://accounts.google.com');
-    const instagramOAuthDiscovery = AuthSession.useAutoDiscovery('https://api.instagram.com');
-    const tiktokOAuthDiscovery = AuthSession.useAutoDiscovery('https://api.tiktok.com');
-    const [googleRequest, googleResponse, promptGoogleAsync] = useAuthRequest(googleAuthRequestConfig, googleOAuthDiscovery);
-    const [instagramRequest, instagramResponse, promptInstaAsync] = useAuthRequest(instagramAuthRequestConfig, instagramOAuthDiscovery);
-    const [tiktokRequest, tiktokResponse, promptTiktokAsync] = useAuthRequest(tiktokAuthRequestConfig, tiktokOAuthDiscovery);
+    // const googleOAuthDiscovery = AuthSession.useAutoDiscovery('https://accounts.google.com');
+    // const instagramOAuthDiscovery = AuthSession.useAutoDiscovery('https://api.instagram.com');
+    // const tiktokOAuthDiscovery = AuthSession.useAutoDiscovery('https://api.tiktok.com');
+    // const [googleRequest, googleResponse, promptGoogleAsync] = useAuthRequest(googleAuthRequestConfig, googleOAuthDiscovery);
+    // const [instagramRequest, instagramResponse, promptInstaAsync] = useAuthRequest(instagramAuthRequestConfig, instagramOAuthDiscovery);
+    // const [tiktokRequest, tiktokResponse, promptTiktokAsync] = useAuthRequest(tiktokAuthRequestConfig, tiktokOAuthDiscovery);
     const [isLoading, setIsLoading] = useState(false);
     const theme = useAppSelector(state => state.theme.colors);
     const { loginState, loginResponse } = useAppSelector(state => state.login);
@@ -145,42 +145,42 @@ export default function Login ({ navigation }: { navigation: any }){
         }
     }
 
-    const handleOAuthSignIn = async (type: string) => {
-        // Sign in with OAuth
-        if (type === 'google') {
-            await promptGoogleAsync().then((result: AuthSession.AuthSessionResult) => {
-                if (result.type === 'success') {
-                    const { accessToken } = result.authentication as AuthSession.TokenResponseConfig;
-                    // Store the token and navigate to the next screen
-                    storeData(accessToken).then(() => {
-                        navigation.navigate('Shopping List');
-                    });
-                }
-            });
-        }
-        else if (type === 'instagram') {
-            await promptInstaAsync().then((result: AuthSession.AuthSessionResult) => {
-                if (result.type === 'success') {
-                    const { accessToken } = result.authentication as AuthSession.TokenResponseConfig;
-                    // Store the token and navigate to the next screen
-                    storeData(accessToken).then(() => {
-                        navigation.navigate('Shopping List');
-                    });
-                }
-            });
-        }
-        else if (type === 'tiktok') {
-            await promptTiktokAsync().then((result: AuthSession.AuthSessionResult) => {
-                if (result.type === 'success') {
-                    const { accessToken } = result.authentication as AuthSession.TokenResponseConfig;
-                    // Store the token and navigate to the next screen
-                    storeData(accessToken).then(() => {
-                        navigation.navigate('Shopping List');
-                    });
-                }
-            });
-        }
-    }
+    // const handleOAuthSignIn = async (type: string) => {
+    //     // Sign in with OAuth
+    //     if (type === 'google') {
+    //         await promptGoogleAsync().then((result: AuthSession.AuthSessionResult) => {
+    //             if (result.type === 'success') {
+    //                 const { accessToken } = result.authentication as AuthSession.TokenResponseConfig;
+    //                 // Store the token and navigate to the next screen
+    //                 storeData(accessToken).then(() => {
+    //                     navigation.navigate('Shopping List');
+    //                 });
+    //             }
+    //         });
+    //     }
+    //     else if (type === 'instagram') {
+    //         await promptInstaAsync().then((result: AuthSession.AuthSessionResult) => {
+    //             if (result.type === 'success') {
+    //                 const { accessToken } = result.authentication as AuthSession.TokenResponseConfig;
+    //                 // Store the token and navigate to the next screen
+    //                 storeData(accessToken).then(() => {
+    //                     navigation.navigate('Shopping List');
+    //                 });
+    //             }
+    //         });
+    //     }
+    //     else if (type === 'tiktok') {
+    //         await promptTiktokAsync().then((result: AuthSession.AuthSessionResult) => {
+    //             if (result.type === 'success') {
+    //                 const { accessToken } = result.authentication as AuthSession.TokenResponseConfig;
+    //                 // Store the token and navigate to the next screen
+    //                 storeData(accessToken).then(() => {
+    //                     navigation.navigate('Shopping List');
+    //                 });
+    //             }
+    //         });
+    //     }
+    // }
 
     if (isLoading) {
         console.log("Loading...");
@@ -291,13 +291,19 @@ export default function Login ({ navigation }: { navigation: any }){
                         <TextSecondary style={[styles.header3, { lineHeight: 8 }]}>Or</TextSecondary>
                     </View>
                     <View style={[styles.flexRow, styles.justified]}>
-                        <TouchableOpacity style={styles.iconSelection} onPress={() => handleOAuthSignIn('facebook')}>
+                        <TouchableOpacity style={styles.iconSelection} 
+                            // onPress={() => handleOAuthSignIn('facebook')}
+                        >
                             <FontAwesome name="facebook-f" size={24} color={theme.iconColor} />
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.iconSelection} onPress={() => handleOAuthSignIn('instagram')}>
+                        <TouchableOpacity style={styles.iconSelection} 
+                            // onPress={() => handleOAuthSignIn('instagram')}
+                        >
                             <FontAwesome name="instagram" size={24} color={theme.iconColor} />
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.iconSelection} onPress={() => handleOAuthSignIn('tiktok')}>
+                        <TouchableOpacity style={styles.iconSelection} 
+                            // onPress={() => handleOAuthSignIn('tiktok')}
+                        >
                             <FontAwesome5 name="tiktok" size={24} color={theme.iconColor} />
                         </TouchableOpacity>
                     </View>

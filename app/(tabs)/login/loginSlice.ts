@@ -55,9 +55,9 @@ const testLoginResponse: LoginResponse = {
 
 export const verifyAuthToken = createAsyncThunk(
     'login/verifyAuthToken',
-    async (id: string) => {
+    async (authToken: string) => {
         return testLoginResponse;
-        return axios.post('http://localhost:5000/account/verifyAuthToken', { params: ({ id })})
+        return axios.post('http://localhost:5000/account/verifyAuthToken', { params: ({ authToken })})
         .then((response: AxiosResponse<LoginResponse>) => {
             return response;
         }).catch(error => {
@@ -119,21 +119,23 @@ export const loginSlice = createSlice({
         .addCase(loginAsync.pending, (state) => {
             state.status = 'loading';
         })
-        .addCase(loginAsync.rejected, (state, action) => {
+        .addCase(loginAsync.rejected, (state) => {
             state.status = "failed"
-            state.error = action.error.message;
         })
         .addCase(loginAsync.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
             console.log('Login Response from SLICE:', action.payload);
-            if (action.payload.statusCode === '200') {
-                state.loginResponse = action.payload;
-                state.loginState = true;
-                state.status = 'success';
-            }
-            else {
-                state.status = 'failed';
-                state.error = action.payload.statusCode;
-            }
+            state.loginResponse = action.payload;
+            state.loginState = true;
+            // state.status = 'success';
+            // if (action.payload.statusCode === '200') {
+            //     state.loginResponse = action.payload;
+            //     state.loginState = true;
+            //     state.status = 'success';
+            // }
+            // else {
+            //     state.status = 'failed';
+            //     state.error = action.payload.statusCode;
+            // }
         })
         .addCase(logoutAsync.pending, (state) => {
             state.status = 'idle';
