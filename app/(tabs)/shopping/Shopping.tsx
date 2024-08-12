@@ -2,7 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ShoppingMain from './ShoppingMain';
 import { useAppSelector } from '@/app/store/hooks';
 import AddNewShoppingList from './AddNewShoppingList';
-import CreateShoppingList from './CreateShoppingList';
+import CreateShoppingList from './shoppinglist/CreateShoppingList';
 import ViewShoppingList from './ViewShoppingList';
 import StartShopping from './StartShopping';
 import ViewShoppingListType from './ViewShoppingListType';

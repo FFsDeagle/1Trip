@@ -35,6 +35,14 @@ export const styles = StyleSheet.create({
       flexDirection: 'row',
       width: '100%',
     },
+    flexBottom: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      alignContent: 'center',
+      justifyContent: 'flex-end',
+      width: '100%',
+    },
     iconSelection: {
       display: 'flex',
       flexDirection: 'row',

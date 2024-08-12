@@ -77,8 +77,6 @@ export function LinearGradient(props: LinearGradientProp) {
   const gradientColors = useThemeColor('linearBackground') as string[];
   const stableColors = useMemo(() => gradientColors, [gradientColors]);
 
-  console.log('Gradient Colors:', stableColors);
-
   return <DefaultLinearGradient colors={stableColors} style={style} {...otherProps} />;
 }
 
