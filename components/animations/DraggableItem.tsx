@@ -30,19 +30,21 @@ const DraggableItem = ({ setItemDragged, setMenu, item, style, onDrop }: Draggab
             },
             onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], { useNativeDriver: false }),
             onPanResponderRelease: (e, gesture) => {
+
+                // Figured out correct property to use for the Gesture State
+                // MoveX/Y returns the position of the item relevant to the screens Width & Height
                 const dropPosition = {
-                    x: positionX + gesture.dx,
-                    y: positionY + gesture.dy,
-                    // x: initialPosition.x + gesture.dx,
-                    // y: initialPosition.y + gesture.dy,
+                    x: gesture.MoveX,
+                    y: gesture.MoveY,
                 };
-                console.log('dropPosition y', e.nativeEvent.locationX, e.nativeEvent.pageY);
-                console.log('dropPosition x', e.nativeEvent.locationY, e.nativeEvent.pageX);
 
-                // console.log('panresponder ', initialPosition);
-                
-                handleDrop(item.key, dropPosition);
+                // Save drop position and indicate dropped
+                onDrop(item.key, dropPosition);
+                setItemDragged(false);
+                // Old code to remove after testing
+                // handleDrop(item.key, dropPosition);
 
+                // After drop position is handled then return item to its original position
                 Animated.spring(pan, {
                     toValue: { x: 0, y: 0 },
                     useNativeDriver: true,
@@ -51,18 +53,16 @@ const DraggableItem = ({ setItemDragged, setMenu, item, style, onDrop }: Draggab
         })
     ).current;
 
-    const handleDrop = (key: string, dropPosition: { x: number, y: number }) => {
-        onDrop(item.key, dropPosition);
-        setItemDragged(false);
-    };
+    // Old code to remove after testing
+    // const handleDrop = (key: string, dropPosition: { x: number, y: number }) => {
+    //     onDrop(item.key, dropPosition);
+    //     setItemDragged(false);
+    // };
 
     const handleLayout = (event: LayoutChangeEvent) => {
         const { x, y } = event.nativeEvent.layout;
         initialPosition.x = x;
         initialPosition.y = y;
-        setPositionX(x);
-        setPositionY(y);
-        console.log('Initial Position: ', initialPosition);
     };
 
     return (
