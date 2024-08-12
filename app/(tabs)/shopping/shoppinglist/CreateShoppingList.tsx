@@ -113,25 +113,20 @@ export default function CreateShoppingList() {
 
     const handleDrop = (key: string, dropPosition: { x: number, y: number }) => {
         topPaneRef.current?.measure((x, y, width, height, pageX, pageY) => {
-            const withinXBounds = dimensionsX - dropPosition.y >= pageX && dimensionsX - dropPosition.y <= pageX + width;
-            const withinYBounds = dimensionsY - dropPosition.y >= pageY && dimensionsY - dropPosition.y <= pageY + height;
-
-            console.log(dropPosition.x, dropPosition.y, width, height, pageX, pageY);
-            dropPosition.x > 0 ? console.log(dimensionsX - dropPosition.x) : console.log(dimensionsX + dropPosition.x);
-            // console.log('Test y', (dimensionsY - dropPosition.x) - dropPosition.y, ' element position:', pageY, ' Element width less dimension', dimensionsY - width);
-            // console.log('Test x', (dimensionsX - width - pageX) - dropPosition.x, ' element position:', pageX, ' Element height', dimensionsX - height);
+            const withinXBounds = dropPosition.x >= pageX && dropPosition.x <= PageX + width;
+            const withinYBounds = dropPosition.y >= pageY && dropPosition.y <= PageY + height;
     
             if (withinXBounds && withinYBounds) {
                 console.log(`Item ${key} dropped in the top pane!`);
-                // Add the item to the list or handle the drop action
+                // Get the type, type = key
+                // Get all related items based on selected key
+                // Add to shoppingList state
             } else {
                 console.log(`Item ${key} was not dropped in the top pane.`);
             }
         });
     };
     
-    
-
     return (
         <LinearGradient 
             style={[styles.container]}
@@ -156,7 +151,6 @@ export default function CreateShoppingList() {
                         </View>
                     </View>
                 </PrimaryView>
-
                 {/* Center Scroll View for Shopping List */}
                 <Animated.ScrollView style={{ height: centreContainerHeight }}>
                     {   
@@ -168,7 +162,6 @@ export default function CreateShoppingList() {
                         <RenderShoppingListItems shoppingList={shoppingList} setShoppingList={setShoppingList} />
                     }
                 </Animated.ScrollView>
-
                 {/* Bottom Pane with Draggable Items */}
                 <Animated.View style={[styles.justified, { width: '100%', height: heightAnim, backgroundColor: theme.secondary }]}>
                     <View style={[styles.flexRow, styles.justifiedApart, { width: '60%' }]}>
@@ -219,104 +212,7 @@ export default function CreateShoppingList() {
                             <RenderCategoryItems categoryItems={categoryItems} setSelectedCategory={setSelectedCategory} />
                         </Animated.ScrollView>}
                 </Animated.View>
-                {/* <FlatList
-                    data={menuSelection}
-                    scrollEnabled={false}
-                    numColumns={4}
-                    renderItem={({item}) => 
-                        <DraggableItem
-                            setItemDragged={setItemDragged}
-                            key={item.key}
-                            item={item}
-                            style={[]}
-                            setMenu={setMenu}
-                            onDrop={handleDrop}
-                        />
-                    } 
-                /> */}
             </View>
-            {/* <Animated.View style={{ zIndex: 10, height: '100%' }}>
-                <View>
-                    <PrimaryView style={[styles.listItem]}>
-                        <View style={[styles.flexRow, styles.justifiedApart, {width: '80%'}]}>
-                            <View style={[styles.flexRow, { width: 'auto' }]}>
-                                <TextSecondary style={[styles.listText]}>Name </TextSecondary>
-                                <TextSecondary style={[styles.listText, {borderColor: theme.textSecondary, borderLeftWidth: 1, marginLeft: 20, paddingLeft: 30 }]}>Category</TextSecondary>
-                            </View>
-                            <View style={[styles.flexRow, { width: 'auto' }]}>
-                                <TextSecondary style={[styles.listText]}>Qty </TextSecondary>
-                            </View>
-                        </View>
-                    </PrimaryView>
-
-                </View>
-                {menu === '' && <FlatList
-                    data={menuSelection}
-                    scrollEnabled={false}
-                    ListHeaderComponentStyle={{
-                        height: initialHeight,
-                        borderTopLeftRadius: 25,
-                        width: '25%', 
-                        backgroundColor: 'lightgrey',
-                        opacity: itemDragged ? 1 : 0,
-                        position: 'absolute', zIndex: 90, right: 0, bottom: initialHeight, 
-                    }}
-                    ListHeaderComponent={
-                        <Animated.View ref={topPaneRef} 
-                            style={[styles.justified, styles.container, { 
-                                opacity: pulseAnimation,
-                        }]}>
-                            {itemDragged && <FontAwesome5 name="plus" color="black" size={52} />}
-                        </Animated.View>
-                    }
-                    numColumns={4}
-                    contentContainerStyle={[styles.flexBottom, { width: '100%', height: '100%', position: 'absolute', paddingBottom: 35, zIndex: 100 }]}
-                    renderItem={({item}) => 
-                        <DraggableItem
-                            setItemDragged={setItemDragged}
-                            key={item.key}
-                            item={item}
-                            style={[styles.flexRow, styles.justifiedCenter, { width: '25%', height: '100%', margin: 10 }] }
-                            setMenu={setMenu}
-                            onDrop={handleDrop}
-                        />
-                    }
-                />}
-            </Animated.View>
-            <Animated.View
-                style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    width: '100%',
-                    height: heightAnim,
-                    zIndex: menu !== '' ? 150 : 0,
-                }}
-            >
-                <PrimaryView style={[styles.justifiedApart, styles.container]}>
-                    {
-                        menu !== '' &&
-                        <SecondaryView style={[styles.container, { elevation: 5, zIndex: 150 }]}>
-                            <PrimaryView style={[styles.listItem]}>
-                                <ScrollView>
-                                    <View style={[styles.flexRow, styles.justifiedApart]}>
-                                        <View style={[styles.flexRow, { width: 'auto' }]}>
-                                            <TextSecondary style={[styles.listText]}>Name </TextSecondary>
-                                            <TextSecondary style={[styles.listText, {borderColor: theme.textSecondary, borderLeftWidth: 1, marginLeft: 20, paddingLeft: 30 }]}>Category</TextSecondary>
-                                        </View>
-                                        <TouchableOpacity onPress={() => setMenu('')} style={[styles.flexRow, { width: 'auto', right: 10 }]}>
-                                            <FontAwesome5 name="arrow-left" color="green" size={30} />
-                                        </TouchableOpacity>
-                                    </View>
-                                </ScrollView>
-                            </PrimaryView>
-                            <ScrollView>
-                                <RenderFavoriteItems favList={favList} />
-                                <RenderCategoryItems categoryItems={categoryItems} setSelectedCategory={setSelectedCategory} />
-                            </ScrollView>
-                        </SecondaryView>
-                }
-                </PrimaryView>
-            </Animated.View> */}
         </LinearGradient>
     );
 };
