@@ -1,10 +1,11 @@
-import { LinearGradient, PrimaryView, ScrollView, SecondaryView, TextPrimary, TextSecondary, TouchableOpacity as Touchable} from "@/components/Themed";
-import { Dimensions, Easing, PanResponder, TouchableOpacity } from "react-native";
+import { LinearGradient, PrimaryView, ScrollView, TextSecondary } from "@/components/Themed";
+import { Dimensions, TouchableOpacity, TextInput } from "react-native";
 import BackButton from "@/components/util/BackButton";
 import { styles } from "@/components/util/Theme";
 import { useEffect, useRef, useState } from "react";
 import { InventoryItem } from "../../items/ItemSlice";
-import { Animated, FlatList, View } from "react-native";
+import { InventoryItem as ShoppingListItem } from "../../inventory/InventorySlice";
+import { Animated, View } from "react-native";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { getItemList } from "../../items/ItemSlice";
@@ -19,7 +20,7 @@ export type CategorySelection = {
 };
 
 export default function CreateShoppingList() {
-    const [shoppingList, setShoppingList] = useState<InventoryItem[]>([]);
+    const [shoppingList, setShoppingList] = useState<ShoppingListItem[]>([]);
     const [menu, setMenu] = useState<string>('');
     const [favList, setFavList] = useState<InventoryItem[]>([] as InventoryItem[]);
     const [categoryItems, setCategoryItems] = useState<CategorySelection[]>([]);
@@ -27,104 +28,163 @@ export default function CreateShoppingList() {
     const theme = useAppSelector(state => state.theme.colors);
     const items = useAppSelector(state => state.item.items);
     const dimensionsY = Dimensions.get('window').height;
-    const dimensionsX = Dimensions.get('window').width;
     const [containerHeight, setContainerHeight] = useState<number>(dimensionsY / 7.3);
     const dispatch = useAppDispatch();
     const initialHeight = dimensionsY / 7.3;
     const expandedHeight = dimensionsY / 2.5;
-    const heightAnim = useRef(new Animated.Value(expandedHeight)).current;
+    const heightAnim = useRef(new Animated.Value(initialHeight)).current;
     const centreContainerHeight = dimensionsY - (initialHeight * 2 + 30);
-    const centreContainerAnim = useRef(new Animated.Value(centreContainerHeight)).current;
-    const oppositeHeightAnim = useRef(new Animated.Value(dimensionsY - initialHeight)).current;
     const topPaneRef = useRef<View>(null);
     const [itemDragged, setItemDragged] = useState<boolean>(false);
-    const pulseAnimation = useRef(new Animated.Value(0)).current;
+    const pulseAnimation = useRef(new Animated.Value(0.5)).current;
+    const [keyboardShown, setKeyboardShown] = useState<boolean>(false);
 
     const menuSelection = [
-        { key: 'Favorites', iconComponent: <FontAwesome5 name="star" color={theme.iconColor2} size={30} /> },
-        { key: 'Categories', iconComponent: <MaterialIcons name="category" color={theme.iconColor2} size={30} /> },
-        { key: 'All', iconComponent: <FontAwesome5 name="clipboard-list" color={theme.iconColor2} size={30} /> },
+        { key: 'Favorites', iconComponent: <FontAwesome5 name="star" color={theme.iconColor2} size={24} /> },
+        { key: 'Categories', iconComponent: <MaterialIcons name="category" color={theme.iconColor2} size={24} /> },
+        { key: 'All', iconComponent: <FontAwesome5 name="clipboard-list" color={theme.iconColor2} size={24} /> },
     ];
 
+    // Fetch items from the store
     useEffect(() => {
+        if (items.length === 0) {
+            console.log('Fetching Items');
+            dispatch(getItemList());
+        }
         getItemsBySelection();
-        Animated.timing(heightAnim, {
-            toValue: containerHeight,
-            duration: 100,
-            useNativeDriver: false,
-        }).start();
-
-        Animated.timing(oppositeHeightAnim, {
-            toValue: dimensionsY - containerHeight,
-            duration: 100,
-            useNativeDriver: false,
-        }).start();
+        console.log('Populating Items');
     }, [menu]);
+    
+    const closeContainer = () => {
+        console.log('Closing Container');
+        Animated.timing(heightAnim, {
+            toValue: initialHeight,
+            duration: 100,
+            useNativeDriver: false,
+        }).start();
+    }
 
-    useEffect(() => {
-        dispatch(getItemList());
-    }, []);
+    const openContainer = () => {
+        console.log('Opening Container');
+        Animated.timing(heightAnim, {
+            toValue: expandedHeight,
+            duration: 100,
+            useNativeDriver: false,
+        }).start();
+    }
 
-    useEffect(() => {
-        // If panresponder has actions then animate top pane
-        if (itemDragged){
-                Animated.sequence([
-                    Animated.timing(pulseAnimation, {
-                        toValue: 1,
-                        easing: Easing.linear,
-                        duration: 200,
-                        useNativeDriver: false,
-                    }),
-                ]).start();
-        }
-        else {
-            pulseAnimation.setValue(0);
-        }
-    }, [itemDragged]);
+    const filterFavorites = () => {
+        console.log('filtering favs');
+        const filteredItems = items.filter(item => item.isFavorite === true);
+        setFavList([...filteredItems]);
+    }
 
+    const filterCategories = () => {
+        console.log('filtering cats');
+        const categories = items.map(item => item.category).filter((value, index, self) => self.indexOf(value) === index);
+        setCategoryItems(categories.map(category => {
+            return { name: category, items: items.filter(item => item.category === category) };
+        }));
+    }
+
+    // Get items based on the selection
     const getItemsBySelection = () => {
-        // Clear lists
         setFavList([]);
         setCategoryItems([]);
-
+        // Clear lists
         switch(menu){
             case 'Favorites':
-                setContainerHeight(initialHeight);
-                const filteredItems = items.filter(item => item.isFavorite === true);
-                setFavList([...filteredItems]);
+                filterFavorites();
+                openContainer();
                 break;
             case 'Categories':
-                const categories = items.map(item => item.category).filter((value, index, self) => self.indexOf(value) === index);
-                setCategoryItems(categories.map(category => {
-                    return { name: category, items: items.filter(item => item.category === category) };
-                }));
-                setContainerHeight(initialHeight);
+                filterCategories();
+                openContainer();
                 break;
             case 'All':
-                setContainerHeight(initialHeight);
+                openContainer();
                 break;
             case '':
-                setContainerHeight(expandedHeight);
+                closeContainer();
                 break;
             default:
                 break;
         }
     };
 
-    const handleDrop = (key: string, dropPosition: { x: number, y: number }) => {
+    const checkBounds = (dropPosition: { x: number, y: number }, callBack: (isWithinBounds: boolean) => void) => {
         topPaneRef.current?.measure((x, y, width, height, pageX, pageY) => {
-            const withinXBounds = dropPosition.x >= pageX && dropPosition.x <= PageX + width;
-            const withinYBounds = dropPosition.y >= pageY && dropPosition.y <= PageY + height;
-    
-            if (withinXBounds && withinYBounds) {
-                console.log(`Item ${key} dropped in the top pane!`);
-                // Get the type, type = key
-                // Get all related items based on selected key
-                // Add to shoppingList state
-            } else {
-                console.log(`Item ${key} was not dropped in the top pane.`);
-            }
+            const withinXBounds = dropPosition.x >= pageX && dropPosition.x <= pageX + width;
+            const withinYBounds = dropPosition.y >= pageY && dropPosition.y <= pageY + height;
+            callBack(withinXBounds && withinYBounds);   
         });
+        return false;
+    }
+
+    const handleDrop = async (key: string, dropPosition: { x: number, y: number }) => {
+        checkBounds(dropPosition, (iswithinBounds) => {
+            iswithinBounds && addKeyItemsToList(key);
+        })
+    };
+
+    const addKeyItemsToList = (key: string) => {
+        console.log('Key: ', key);
+        switch(key){
+            case 'Favorites':
+                setShoppingList([...shoppingList, ...items.filter(item => item.isFavorite === true).map(item => {
+                    return {
+                        id: item.id, name: item.name, category: item.category,
+                        description: item.description,
+                        quantity: item.uom,
+                        lastAddedDate: new Date(Date.now()),
+                        isPastExpiry: false
+                    };
+                })]);
+                break;
+            case 'Categories':
+                //const categoryItem = categoryItems.map(category => category.items.find(item => item.id === key)).filter(Boolean)[0];
+                const categoryItem = [...new Set(categoryItems.map(category => category.items).flat())].find(item => item.id === key);
+                if (categoryItem) {
+                    const exists = shoppingList.find((i) => i.category === categoryItem.category && i.id === categoryItem.id);
+                    if (exists) {
+                        setShoppingList(shoppingList.map((i) => {
+                            if (i.id === categoryItem.id) {
+                                i.quantity += 1;
+                            }
+                            return i;
+                        }));
+                        return;
+                    }
+                    setShoppingList([...shoppingList, ...items.filter(x => x.category === key).map(item => {
+                        return {
+                            id: item.id, name: item.name, category: item.category,
+                            description: item.description,
+                            quantity: item.uom,
+                            lastAddedDate: new Date(Date.now()),
+                            isPastExpiry: false
+                        };
+                    })]);
+                }
+                break;
+            default:
+                break;
+        }
+    };
+
+    const handleDrag = (key: string, dragPosition: { x: number, y: number}) => {
+        checkBounds(dragPosition, (iswithinBounds) => {
+            iswithinBounds ?
+            Animated.timing(pulseAnimation, {
+                toValue: 1,
+                duration: 200,
+                useNativeDriver: false,
+            }).start() :
+            Animated.timing(pulseAnimation, {
+                toValue: 0.5,
+                duration: 200,
+                useNativeDriver: false,
+            }).start();
+        })
     };
     
     return (
@@ -140,77 +200,62 @@ export default function CreateShoppingList() {
                 width: '100%',
             }}>
                 {/* Top Pane for Displaying Headers */}
-                <PrimaryView style={[styles.listItem]}>
-                    <View style={[styles.flexRow, styles.justifiedApart, { width: '80%' }]}>
-                        <View style={[styles.flexRow, { width: 'auto' }]}>
-                            <TextSecondary style={[styles.listText]}>Name</TextSecondary>
-                            <TextSecondary style={[styles.listText, { borderColor: theme.textSecondary, borderLeftWidth: 1, marginLeft: 20, paddingLeft: 30 }]}>Category</TextSecondary>
-                        </View>
-                        <View style={[styles.flexRow, { width: 'auto' }]}>
-                            <TextSecondary style={[styles.listText]}>Qty</TextSecondary>
-                        </View>
+                <View style={[styles.justifiedCenter, { width: '100%', marginTop: 20, marginBottom: 20 }]}>
+                    <View style={[{ backgroundColor: theme.background2, elevation: 5, borderRadius: 15, width: '80%', padding: 10 }]}>
+                        <TextInput
+                            style={[{}]}
+                            placeholder="Search for items"
+                            placeholderTextColor={theme.textSecondary}
+                        />
                     </View>
-                </PrimaryView>
+                </View>
                 {/* Center Scroll View for Shopping List */}
                 <Animated.ScrollView style={{ height: centreContainerHeight }}>
-                    {   
-                        shoppingList.length < 0 ? 
-                        <TextSecondary style={[styles.title, { textAlign: 'center', height: initialHeight }]}>
-                            Drag items to create your shopping list
-                        </TextSecondary>
-                        :
-                        <RenderShoppingListItems shoppingList={shoppingList} setShoppingList={setShoppingList} />
-                    }
+                    <Animated.View ref={topPaneRef} style={{height: centreContainerHeight}}>
+                        {   
+                            shoppingList.length === 0 ? 
+                            <TextSecondary style={[styles.title, { textAlign: 'center', height: initialHeight, marginTop: 50 }]}>
+                                Drag items to create your shopping list
+                            </TextSecondary>
+                            :
+                            <View style={styles.container}>
+                                <RenderShoppingListItems shoppingList={shoppingList} setShoppingList={setShoppingList} />
+                            </View>
+                        }
+                    </Animated.View>
                 </Animated.ScrollView>
                 {/* Bottom Pane with Draggable Items */}
                 <Animated.View style={[styles.justified, { width: '100%', height: heightAnim, backgroundColor: theme.secondary }]}>
-                    <View style={[styles.flexRow, styles.justifiedApart, { width: '60%' }]}>
-                        {menu === '' && menuSelection.map((item, key) => (
+                    <View style={[styles.flexRow, styles.justifiedApart, { width: menu === '' ? '60%' : '100%' }]}>
+                        {menu === '' ? menuSelection.map((item) => (
                             <DraggableItem
                                 setItemDragged={setItemDragged}
                                 key={item.key}
                                 item={item}
-                                style={[{ padding: 10, zIndex: 100 }]}
+                                style={[{ zIndex: 100 }]}
                                 setMenu={setMenu}
                                 onDrop={handleDrop}
+                                onDrag={handleDrag}
                             />
-                        ))}
-                        {/* Drop Target in the Header */}
-                        <Animated.View
-                            ref={topPaneRef}
-                            style={[styles.justified, styles.container, {
-                                height: initialHeight,
-                                borderTopLeftRadius: 25,
-                                borderTopRightRadius: 25,
-                                backgroundColor: 'lightgrey',
-                                opacity: pulseAnimation,
-                                position: 'absolute',
-                                zIndex: 90,
-                                right: 0,
-                                bottom: initialHeight - 22.5,
-                            }]}
-                        >
-                            {itemDragged && <FontAwesome5 name="plus" color="black" size={50} />}
-                        </Animated.View>
-                    </View>
-                    {menu !== '' &&
-                        <Animated.ScrollView style={{ width: '100%'}}>
-                            <PrimaryView style={[styles.listItem]}>
-                                <ScrollView>
-                                    <View style={[styles.flexRow, styles.justifiedApart]}>
-                                        <View style={[styles.flexRow, { width: 'auto' }]}>
-                                            <TextSecondary style={[styles.listText]}>Name </TextSecondary>
-                                            <TextSecondary style={[styles.listText, {borderColor: theme.textSecondary, borderLeftWidth: 1, marginLeft: 20, paddingLeft: 30 }]}>Category</TextSecondary>
-                                        </View>
-                                        <TouchableOpacity onPress={() => setMenu('')} style={[styles.flexRow, { width: 'auto', right: 10 }]}>
-                                            <FontAwesome5 name="arrow-left" color="green" size={30} />
-                                        </TouchableOpacity>
-                                    </View>
-                                </ScrollView>
+                        ))
+                        :
+                        <View style={{ width: '100%', paddingBottom: 25 }}>
+                            <PrimaryView style={[styles.flexRow, styles.justifiedApart, { padding: 5 }]}>
+                                <View style={[styles.flexRow, { width: 'auto' }]}>
+                                    <TextSecondary style={[styles.listText]}>Name </TextSecondary>
+                                    <TextSecondary style={[styles.listText, {borderColor: theme.textSecondary, borderLeftWidth: 1, marginLeft: 20, paddingLeft: 30 }]}>Category</TextSecondary>
+                                </View>
+                                <TouchableOpacity onPress={() => setMenu('')} style={[styles.flexRow, { width: 'auto', right: 10 }]}>
+                                    <FontAwesome5 name="arrow-left" color={theme.iconColor2} size={30} />
+                                </TouchableOpacity>
                             </PrimaryView>
-                            <RenderFavoriteItems shoppingList={shoppingList} setShoppingList={setShoppingList} favList={favList} />
-                            <RenderCategoryItems categoryItems={categoryItems} setSelectedCategory={setSelectedCategory} />
-                        </Animated.ScrollView>}
+                            <ScrollView>
+                                <RenderFavoriteItems shoppingList={shoppingList} setShoppingList={setShoppingList} favList={favList} />
+                                <RenderCategoryItems categoryItems={categoryItems} setSelectedCategory={setSelectedCategory} />
+                            </ScrollView>
+                        </View>
+                        }
+                    </View>
                 </Animated.View>
             </View>
         </LinearGradient>

@@ -13,6 +13,17 @@ export const styles = StyleSheet.create({
       alignItems: 'center',
       alignContent: 'center',
     },
+    justfiedEnd: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      alignContent: 'center',
+    },
+    input: {
+      height: 40,
+      margin: 12,
+      borderWidth: 1,
+    },
     alignContentStart: {
       display: 'flex',
       alignContent: 'flex-end',

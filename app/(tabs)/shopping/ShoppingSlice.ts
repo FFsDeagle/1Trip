@@ -20,134 +20,134 @@ export interface ShoppingList {
     items?: InventoryItem[]
 }
 
-export const placeHolderList: ShoppingListTypes = {
-    savedLists: [
-        {
-            id: '1',
-            name: 'Saved List 1',
-            items: [
-                {
-                    id: '1',
-                    name: 'Item 1',
-                    quantity: 1,
-                    description: 'Description 1',
-                    category: 'Miscellaneous',
-                },
-                {
-                    id: '2',
-                    name: 'Item 2',
-                    quantity: 2,
-                    description: 'Description 2',
-                    category: 'Miscellaneous',
-                },
-            ]
-        },
-        {
-            id: '2',
-            name: 'Saved List 2',
-            items: [
-                {
-                    id: '1',
-                    name: 'Item 1',
-                    quantity: 1,
-                    description: 'Description 1',
-                    category: 'Miscellaneous',
-                },
-                {
-                    id: '2',
-                    name: 'Item 2',
-                    quantity: 2,
-                    description: 'Description 2',
-                    category: 'Miscellaneous',
-                },
-            ]
-        },
-    ],
-    generatedLists: [
-        {
-            id: '1',
-            name: 'Generated List 1',
-            items: [
-                {
-                    id: '1',
-                    name: 'Item 1',
-                    quantity: 1,
-                    description: 'Description 1',
-                    category: 'Miscellaneous',
-                },
-                {
-                    id: '2',
-                    name: 'Item 2',
-                    quantity: 2,
-                    description: 'Description 2',
-                    category: 'Miscellaneous',
-                },
-            ]
-        },
-        {
-            id: '2',
-            name: 'Generated List 2',
-            items: [
-                {
-                    id: '1',
-                    name: 'Item 1',
-                    quantity: 1,
-                    description: 'Description 1',
-                    category: 'Miscellaneous',
-                },
-                {
-                    id: '2',
-                    name: 'Item 2',
-                    quantity: 2,
-                    description: 'Description 2',
-                    category: 'Miscellaneous',
-                },
-            ]
-        },
-    ],
-    history: [
-        {
-            id: '1',
-            name: 'History List 1',
-            items: [
-                {
-                    id: '1',
-                    name: 'Item 1',
-                    quantity: 1,
-                    description: 'Description 1',
-                    category: 'Miscellaneous',
-                },
-                {
-                    id: '2',
-                    name: 'Item 2',
-                    quantity: 2,
-                    description: 'Description 2',
-                    category: 'Miscellaneous',
-                },
-            ]
-        },
-        {
-            id: '2',
-            name: 'History List 2',
-            items: [
-                {
-                    id: '1',
-                    name: 'Item 1',
-                    quantity: 1,
-                    description: 'Description 1',
-                    category: 'Miscellaneous',
-                },
-                {
-                    id: '2',
-                    name: 'Item 2',
-                    quantity: 2,
-                    description: 'Description 2',
-                    category: 'Miscellaneous',
-                },
-            ]
-        },
-    ],
-}
+// export const placeHolderList: ShoppingListTypes = {
+//     savedLists: [
+//         {
+//             id: '1',
+//             name: 'Saved List 1',
+//             items: [
+//                 {
+//                     id: '1',
+//                     name: 'Item 1',
+//                     quantity: 1,
+//                     description: 'Description 1',
+//                     category: 'Miscellaneous',
+//                 },
+//                 {
+//                     id: '2',
+//                     name: 'Item 2',
+//                     quantity: 2,
+//                     description: 'Description 2',
+//                     category: 'Miscellaneous',
+//                 },
+//             ]
+//         },
+//         {
+//             id: '2',
+//             name: 'Saved List 2',
+//             items: [
+//                 {
+//                     id: '1',
+//                     name: 'Item 1',
+//                     quantity: 1,
+//                     description: 'Description 1',
+//                     category: 'Miscellaneous',
+//                 },
+//                 {
+//                     id: '2',
+//                     name: 'Item 2',
+//                     quantity: 2,
+//                     description: 'Description 2',
+//                     category: 'Miscellaneous',
+//                 },
+//             ]
+//         },
+//     ],
+//     generatedLists: [
+//         {
+//             id: '1',
+//             name: 'Generated List 1',
+//             items: [
+//                 {
+//                     id: '1',
+//                     name: 'Item 1',
+//                     quantity: 1,
+//                     description: 'Description 1',
+//                     category: 'Miscellaneous',
+//                 },
+//                 {
+//                     id: '2',
+//                     name: 'Item 2',
+//                     quantity: 2,
+//                     description: 'Description 2',
+//                     category: 'Miscellaneous',
+//                 },
+//             ]
+//         },
+//         {
+//             id: '2',
+//             name: 'Generated List 2',
+//             items: [
+//                 {
+//                     id: '1',
+//                     name: 'Item 1',
+//                     quantity: 1,
+//                     description: 'Description 1',
+//                     category: 'Miscellaneous',
+//                 },
+//                 {
+//                     id: '2',
+//                     name: 'Item 2',
+//                     quantity: 2,
+//                     description: 'Description 2',
+//                     category: 'Miscellaneous',
+//                 },
+//             ]
+//         },
+//     ],
+//     history: [
+//         {
+//             id: '1',
+//             name: 'History List 1',
+//             items: [
+//                 {
+//                     id: '1',
+//                     name: 'Item 1',
+//                     quantity: 1,
+//                     description: 'Description 1',
+//                     category: 'Miscellaneous',
+//                 },
+//                 {
+//                     id: '2',
+//                     name: 'Item 2',
+//                     quantity: 2,
+//                     description: 'Description 2',
+//                     category: 'Miscellaneous',
+//                 },
+//             ]
+//         },
+//         {
+//             id: '2',
+//             name: 'History List 2',
+//             items: [
+//                 {
+//                     id: '1',
+//                     name: 'Item 1',
+//                     quantity: 1,
+//                     description: 'Description 1',
+//                     category: 'Miscellaneous',
+//                 },
+//                 {
+//                     id: '2',
+//                     name: 'Item 2',
+//                     quantity: 2,
+//                     description: 'Description 2',
+//                     category: 'Miscellaneous',
+//                 },
+//             ]
+//         },
+//     ],
+// }
 
 export const initialState: ShoppingListProps = {
     status: 'idle',
@@ -161,7 +161,7 @@ export const initialState: ShoppingListProps = {
 export const GetLists = createAsyncThunk(
     'shoppingList/getLists',
     async () => {
-        return placeHolderList as AxiosResponse<ShoppingListTypes>; // This is a placeholder for the actual axios call
+        return {} as AxiosResponse<ShoppingListTypes>; // This is a placeholder for the actual axios call
         return axios.get('http://localhost:5000/shopping/getLists')
         .then((response: AxiosResponse<ShoppingListTypes>) => {
             return response;

@@ -24,6 +24,8 @@ const testState: InventoryItem[] = [
         description: '1 gallon of whole milk',
         category: 'Dairy',
         isFavorite: true,
+        defaultExpiry: 7, // 7 days
+        uom: 1, // 1 gallon
     },
     {
         id: '2',
@@ -31,6 +33,8 @@ const testState: InventoryItem[] = [
         description: 'Block of aged cheddar cheese',
         category: 'Dairy',
         isFavorite: false,
+        defaultExpiry: 30, // 30 days
+        uom: 1, // 1 block
     },
     {
         id: '3',
@@ -38,6 +42,8 @@ const testState: InventoryItem[] = [
         description: 'Boneless, skinless chicken breast',
         category: 'Poultry',
         isFavorite: true,
+        defaultExpiry: 3, // 3 days
+        uom: 2, // 2 breasts
     },
     {
         id: '4',
@@ -45,6 +51,8 @@ const testState: InventoryItem[] = [
         description: 'Carton of a dozen large eggs',
         category: 'Poultry',
         isFavorite: false,
+        defaultExpiry: 21, // 21 days
+        uom: 12, // 12 eggs
     },
     {
         id: '5',
@@ -52,6 +60,8 @@ const testState: InventoryItem[] = [
         description: 'Fresh romaine lettuce',
         category: 'Produce',
         isFavorite: false,
+        defaultExpiry: 5, // 5 days
+        uom: 1, // 1 head
     },
     {
         id: '6',
@@ -59,6 +69,8 @@ const testState: InventoryItem[] = [
         description: 'Bag of organic Fuji apples',
         category: 'Produce',
         isFavorite: true,
+        defaultExpiry: 30, // 30 days
+        uom: 6, // 6 apples
     },
     {
         id: '7',
@@ -66,6 +78,8 @@ const testState: InventoryItem[] = [
         description: 'Bag of frozen green peas',
         category: 'Frozen',
         isFavorite: false,
+        defaultExpiry: 365, // 365 days (1 year)
+        uom: 1, // 1 bag
     },
     {
         id: '8',
@@ -73,6 +87,8 @@ const testState: InventoryItem[] = [
         description: 'Vanilla ice cream, 1 quart',
         category: 'Frozen',
         isFavorite: true,
+        defaultExpiry: 180, // 180 days (6 months)
+        uom: 1, // 1 quart
     },
     {
         id: '9',
@@ -80,6 +96,8 @@ const testState: InventoryItem[] = [
         description: '64 oz bottle of orange juice',
         category: 'Beverages',
         isFavorite: false,
+        defaultExpiry: 10, // 10 days
+        uom: 1, // 1 bottle
     },
     {
         id: '10',
@@ -87,6 +105,8 @@ const testState: InventoryItem[] = [
         description: '12-pack of Coca-Cola cans',
         category: 'Beverages',
         isFavorite: true,
+        defaultExpiry: 365, // 365 days (1 year)
+        uom: 12, // 12 cans
     },
     {
         id: '11',
@@ -94,6 +114,8 @@ const testState: InventoryItem[] = [
         description: 'Can of diced tomatoes',
         category: 'Canned',
         isFavorite: false,
+        defaultExpiry: 730, // 730 days (2 years)
+        uom: 1, // 1 can
     },
     {
         id: '12',
@@ -101,6 +123,8 @@ const testState: InventoryItem[] = [
         description: 'Can of black beans',
         category: 'Canned',
         isFavorite: false,
+        defaultExpiry: 730, // 730 days (2 years)
+        uom: 1, // 1 can
     },
     {
         id: '13',
@@ -108,6 +132,8 @@ const testState: InventoryItem[] = [
         description: 'Loaf of whole wheat bread',
         category: 'Bakery',
         isFavorite: true,
+        defaultExpiry: 7, // 7 days
+        uom: 1, // 1 loaf
     },
     {
         id: '14',
@@ -115,6 +141,8 @@ const testState: InventoryItem[] = [
         description: 'Pack of blueberry muffins',
         category: 'Bakery',
         isFavorite: false,
+        defaultExpiry: 5, // 5 days
+        uom: 4, // 4 muffins
     },
     {
         id: '15',
@@ -122,6 +150,8 @@ const testState: InventoryItem[] = [
         description: 'Box of spaghetti pasta',
         category: 'Pantry',
         isFavorite: false,
+        defaultExpiry: 730, // 730 days (2 years)
+        uom: 1, // 1 box
     },
     {
         id: '16',
@@ -129,6 +159,8 @@ const testState: InventoryItem[] = [
         description: '5 lb bag of jasmine rice',
         category: 'Pantry',
         isFavorite: true,
+        defaultExpiry: 1095, // 1095 days (3 years)
+        uom: 1, // 1 bag
     },
     {
         id: '17',
@@ -136,6 +168,8 @@ const testState: InventoryItem[] = [
         description: 'Bag of potato chips',
         category: 'Snacks',
         isFavorite: false,
+        defaultExpiry: 60, // 60 days (2 months)
+        uom: 1, // 1 bag
     },
     {
         id: '18',
@@ -143,6 +177,8 @@ const testState: InventoryItem[] = [
         description: 'Dark chocolate bar, 70% cocoa',
         category: 'Snacks',
         isFavorite: true,
+        defaultExpiry: 365, // 365 days (1 year)
+        uom: 1, // 1 bar
     },
     {
         id: '19',
@@ -150,6 +186,8 @@ const testState: InventoryItem[] = [
         description: '6-pack of paper towels',
         category: 'Household',
         isFavorite: false,
+        defaultExpiry: 0, // No expiry
+        uom: 6, // 6 rolls
     },
     {
         id: '20',
@@ -157,6 +195,8 @@ const testState: InventoryItem[] = [
         description: 'Bottle of liquid laundry detergent',
         category: 'Household',
         isFavorite: false,
+        defaultExpiry: 0, // No expiry
+        uom: 1, // 1 bottle
     },
     {
         id: '21',
@@ -164,6 +204,8 @@ const testState: InventoryItem[] = [
         description: 'Bottle of moisturizing shampoo',
         category: 'Personal Care',
         isFavorite: false,
+        defaultExpiry: 365, // 365 days (1 year)
+        uom: 1, // 1 bottle
     },
     {
         id: '22',
@@ -171,6 +213,8 @@ const testState: InventoryItem[] = [
         description: 'Tube of whitening toothpaste',
         category: 'Personal Care',
         isFavorite: true,
+        defaultExpiry: 730, // 730 days (2 years)
+        uom: 1, // 1 tube
     },
     {
         id: '23',
@@ -178,6 +222,8 @@ const testState: InventoryItem[] = [
         description: 'Pack of AA batteries',
         category: 'Misc',
         isFavorite: false,
+        defaultExpiry: 3650, // 3650 days (10 years)
+        uom: 4, // 4 batteries
     },
     {
         id: '24',
@@ -185,8 +231,12 @@ const testState: InventoryItem[] = [
         description: '4-pack of LED light bulbs',
         category: 'Misc',
         isFavorite: false,
+        defaultExpiry: 3650, // 3650 days (10 years)
+        uom: 4, // 4 bulbs
     },
 ];
+
+
 
 
 export interface InventoryItem {
@@ -194,7 +244,9 @@ export interface InventoryItem {
     name: string,
     description: string,
     category: string,
+    uom: number,
     isFavorite: boolean,
+    defaultExpiry: number,
 }
 
 export interface InventoryResponse {

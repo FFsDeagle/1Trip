@@ -7,16 +7,14 @@ type DraggableItemProps = {
     setMenu: Dispatch<SetStateAction<string>>;
     style: ViewStyle | ViewStyle[];
     onDrop: (key: string, dropPosition: { x: number, y: number }) => void; // New prop for handling the drop event
+    onDrag: (key: string, dragPosition: { x: number, y: number }) => void; // New prop for handling the drag event
     panResponder?: any;
     setItemDragged: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const DraggableItem = ({ setItemDragged, setMenu, item, style, onDrop }: DraggableItemProps) => {
-    const theme = useAppSelector(state => state.theme.colors);
+const DraggableItem = ({ onDrag, setItemDragged, setMenu, item, style, onDrop }: DraggableItemProps) => {
     const pan = useRef(new Animated.ValueXY()).current;
     const initialPosition = useRef({ x: 0, y: 0 }).current;
-    const [positionX, setPositionX] = React.useState(0);
-    const [positionY, setPositionY] = React.useState(0);
 
     const panResponder = useRef(
         PanResponder.create({
@@ -28,21 +26,25 @@ const DraggableItem = ({ setItemDragged, setMenu, item, style, onDrop }: Draggab
             onPanResponderGrant: () => {
                 setItemDragged(true);
             },
-            onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], { useNativeDriver: false }),
+            onPanResponderMove: (e, gesture) => {
+                Animated.event([null, { dx: pan.x, dy: pan.y }], { useNativeDriver: false })(e, gesture);
+                const dragPosition = {
+                    x: gesture.moveX,
+                    y: gesture.moveY,
+                };
+                onDrag(item.key, dragPosition);
+            },
             onPanResponderRelease: (e, gesture) => {
-
                 // Figured out correct property to use for the Gesture State
                 // MoveX/Y returns the position of the item relevant to the screens Width & Height
                 const dropPosition = {
-                    x: gesture.MoveX,
-                    y: gesture.MoveY,
+                    x: gesture.moveX,
+                    y: gesture.moveY,
                 };
 
                 // Save drop position and indicate dropped
                 onDrop(item.key, dropPosition);
                 setItemDragged(false);
-                // Old code to remove after testing
-                // handleDrop(item.key, dropPosition);
 
                 // After drop position is handled then return item to its original position
                 Animated.spring(pan, {
@@ -52,12 +54,6 @@ const DraggableItem = ({ setItemDragged, setMenu, item, style, onDrop }: Draggab
             },
         })
     ).current;
-
-    // Old code to remove after testing
-    // const handleDrop = (key: string, dropPosition: { x: number, y: number }) => {
-    //     onDrop(item.key, dropPosition);
-    //     setItemDragged(false);
-    // };
 
     const handleLayout = (event: LayoutChangeEvent) => {
         const { x, y } = event.nativeEvent.layout;

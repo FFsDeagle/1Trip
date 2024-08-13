@@ -21,6 +21,8 @@ export interface InventoryItem {
     description: string,
     category: string,
     quantity: number,
+    lastAddedDate: Date,
+    isPastExpiry: boolean,
 }
 
 export interface InventoryResponse {

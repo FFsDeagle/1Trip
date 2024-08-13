@@ -1,6 +1,6 @@
 import { PrimaryView, SecondaryView, TextPrimary } from "@/components/Themed";
 import { TouchableOpacity } from 'react-native';
-import { InventoryItem } from "../../items/ItemSlice";
+import { InventoryItem } from "../../inventory/InventorySlice";
 import { View } from "react-native";
 import { styles } from "@/components/util/Theme";
 import { useAppSelector } from "@/app/store/hooks";
@@ -15,26 +15,46 @@ export default function RenderShoppingListItems({ setShoppingList, shoppingList 
     const theme = useAppSelector(state => state.theme.colors);
 
     const decrementItem = (id: string | number) => {
-        setShoppingList(shoppingList.filter(item => item.id !== id));
+        setShoppingList(shoppingList.map((item) => {
+            if (item.id === id) {
+                // filter item if quantity is 0
+                if (item.quantity === 1) {
+                    return null;
+                }
+                item.quantity -= 1;
+            }
+            return item;
+        }).filter(Boolean) as InventoryItem[]);
     }
 
     return (
         shoppingList.map((item, key) => {
             return (
-                <SecondaryView key={key} style={[styles.listItem]}>
-                    <View style={[styles.flexRow, styles.justifiedApart, { width: '80%' }]}>
-                        <View style={[styles.flexRow, { width: 'auto' }]}>
-                            <TextPrimary style={[styles.listText]}>{item.name}</TextPrimary>
-                            <TextPrimary style={[styles.listText, { borderColor: theme.textSecondary, borderLeftWidth: 1, marginLeft: 20, paddingLeft: 30 }]}>{item.category}</TextPrimary>
+                <View key={key} style={[styles.flexRow, { padding: 5, backgroundColor: 'transparent' }]}>
+                    <View style={[styles.flexRow, { backgroundColor: theme.background3, marginLeft: 5, borderRadius: 15, width: 'auto', padding: 5, elevation: 1 }]}>
+                        <View style={[styles.flexRow, styles.justifiedApart, { width: '65%'}]}>
+                            <TextPrimary style={[styles.listText, { fontSize: 14, fontWeight: 'bold', letterSpacing: 1 }]}>{item.name}</TextPrimary>
+                            <TextPrimary style={[styles.listText, { fontSize: 12 }]}>{item.category}</TextPrimary>
                         </View>
-                        <View style={[styles.flexRow, { width: 'auto' }]}>
-                            <TextPrimary style={[styles.listText]}>1</TextPrimary>
-                            <TouchableOpacity onPress={() => decrementItem(item.id)} style={[{ backgroundColor: theme.primary, marginLeft: 20 }]}>
+                        <View style={[styles.flexRow, styles.justfiedEnd, { width: '35%' }]}>
+                            <TextPrimary style={[styles.listText, { marginRight: 10 }]}>{item.quantity}</TextPrimary>
+                            <TouchableOpacity onPress={() => setShoppingList([...shoppingList.filter((x) => x.id !== item.id)])} style={[styles.justified, { marginRight: 10 }]}>
+                                <FontAwesome name="trash" size={20} color={theme.textPrimary} />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => decrementItem(item.id)} style={[styles.justified, { marginRight: 10 }]}>
                                 <FontAwesome name="minus" size={20} color={theme.textPrimary} />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => setShoppingList([...shoppingList.map((x) => {
+                                if (x.id === item.id) {
+                                    x.quantity += 1;
+                                }
+                                return x;
+                            })])} style={[styles.justified, { marginRight: 20 }]}>
+                                <FontAwesome name="plus" size={20} color={theme.textPrimary} />
                             </TouchableOpacity>
                         </View>
                     </View>
-                </SecondaryView>
+                </View>
             )
         })
     )
