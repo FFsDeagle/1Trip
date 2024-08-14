@@ -1,6 +1,5 @@
-import { ListItem, Text } from "@rneui/base";
 import React from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { styles } from "@/components/util/Theme";
 
 export default function ReportsModal() {
@@ -13,7 +12,7 @@ export default function ReportsModal() {
     return (
         <>
         {items.map((item, index) => (
-            <ListItem
+            <TouchableOpacity
                 key={index}
             >
                 <TouchableOpacity
@@ -24,10 +23,10 @@ export default function ReportsModal() {
                     width: '100%',
                 }}
                 >
-                <ListItem.Title style={styles.title}>{item}</ListItem.Title>
+                <View style={styles.title}>{item}</View>
                 {/* <View style={styles.separator} /> */}
                 </TouchableOpacity>
-            </ListItem>
+            </TouchableOpacity>
         ))}
         </>
     )

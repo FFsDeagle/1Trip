@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
-import { ListItem } from "@rneui/base";
 import { AntDesign, Feather, Ionicons, MaterialCommunityIcons, FontAwesome6 } from "@expo/vector-icons";
 import { styles } from "@/components/util/Theme";
 import { WidgetGridItemProps } from "@/constants/Types";
 import { LinearGradient } from "expo-linear-gradient";
+import { useAppSelector } from "@/app/store/hooks";
 
 export default function MenuGridWidget() {
     const [gridItems, setGridItems] = useState<WidgetGridItemProps[]>([])
+    const theme = useAppSelector(state => state.theme);
 
     // Static grid items for testing
     // Can add more dynamic types to the grid items such as a component to render
@@ -19,56 +20,48 @@ export default function MenuGridWidget() {
             title: 'Local',
             icon: 'shoppingcart',
             size: 1,
-            iconColor: '#C8E5EE',
         },
         {
             component: AntDesign,
             title: 'Reports',
             icon: 'filetext1',
             size: 30,
-            iconColor: '#C8E5EE',
         },
         {
             component: AntDesign,
             title: 'Settings',
             icon: 'setting',
             size: 30,
-            iconColor: '#C8E5EE', 
         },
         {
             component: AntDesign,
             title: 'Inventory',
             icon: 'inbox',
             size: 30,
-            iconColor: '#C8E5EE',
         },
         {
             component: Ionicons,
             title: 'Cooking',
             icon: 'restaurant-outline',
             size: 30,
-            iconColor: '#C8E5EE',
         },
         {
             component: MaterialCommunityIcons,
             title: 'Post',
             icon: 'post',
             size: 30,
-            iconColor: '#C8E5EE', 
         },
         {
             component: Feather,
             title: 'Messenger',
             icon: 'message-circle',
             size: 30,
-            iconColor: '#C8E5EE',
         },
         {
             component: FontAwesome6,
             title: 'News',
             icon: 'newspaper',
             size: 30,
-            iconColor: '#C8E5EE', 
         }
     ]
     
@@ -109,11 +102,11 @@ export default function MenuGridWidget() {
                                 <item.component
                                     name={item.icon as any}
                                     size={30}
-                                    color={item.iconColor}
+                                    color={theme.colors.iconColor}
                                 />
-                                <ListItem.Title style={[styles.description, {color: item.iconColor}]}>
+                                <Text style={[styles.description, {color: theme.colors.iconColor2, fontSize: 16}]}>
                                     {item.title}
-                                </ListItem.Title>
+                                </Text>
                             </View>
                         </TouchableOpacity>
                     )}

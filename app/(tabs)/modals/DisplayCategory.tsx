@@ -1,4 +1,3 @@
-import { ListItem, Text } from "@rneui/base";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import { styles } from "@/components/util/Theme";
@@ -26,7 +25,7 @@ export default function DisplayCategory() {
         <SecondaryView style={styles.container}>
             {
                 items.map((item, index) => (
-                    <ListItem
+                    <TouchableOpacity
                         key={index}
                         style={styles.listItem}
                     >
@@ -39,9 +38,9 @@ export default function DisplayCategory() {
                             }}
                             onPress={() => navigate.navigate(item.navigation)}
                         >
-                            <ListItem.Title style={styles.title}>{item.name}</ListItem.Title>
+                            <SecondaryView style={styles.title}>{item.name}</SecondaryView>
                         </TouchableOpacity>
-                    </ListItem>
+                    </TouchableOpacity>
                 ))
             }
         </SecondaryView>

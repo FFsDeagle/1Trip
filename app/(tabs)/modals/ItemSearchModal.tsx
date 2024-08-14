@@ -1,9 +1,9 @@
-import { ListItem } from "@rneui/base";
 import { TouchableOpacity, View } from "react-native";
 import { styles } from "@/components/util/Theme";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { ItemsStackParamList } from "@/constants/Types";
 import { NavigationProp } from "@react-navigation/native";
+import { SecondaryView } from "@/components/Themed";
 
 export default function ItemSearchModal() {
     const navigation = useNavigation<NavigationProp<ItemsStackParamList>>();
@@ -24,7 +24,7 @@ export default function ItemSearchModal() {
     return (
         <View>
             {items.map((item, index) => (
-                <ListItem
+                <TouchableOpacity
                     key={index}
                 >
                     <TouchableOpacity
@@ -36,9 +36,9 @@ export default function ItemSearchModal() {
                         }}
                         onPress={() => navigation.navigate('ItemInfo', { searchValue: item.name })}
                     >
-                        <ListItem.Title style={styles.title}>{item.name}</ListItem.Title>
+                        <SecondaryView style={styles.title}>{item.name}</SecondaryView>
                     </TouchableOpacity>
-                </ListItem>
+                </TouchableOpacity>
             ))}
         </View>
     )

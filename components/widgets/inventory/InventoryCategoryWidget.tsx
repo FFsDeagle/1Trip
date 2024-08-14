@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
-import { ListItem } from "@rneui/base";
 import { AntDesign, Feather, Ionicons, MaterialCommunityIcons, FontAwesome6, MaterialIcons, Fontisto } from "@expo/vector-icons";
 import { styles } from "@/components/util/Theme";
 import { WidgetGridItemProps } from "@/constants/Types";
@@ -144,9 +143,9 @@ export default function InventoryCategoryWidget() {
                                     size={30}
                                     color={theme.colors.iconColor}
                                 />
-                                <ListItem.Title style={[styles.description, {color: theme.colors.iconColor}]}>
+                                <Text style={[styles.description, {color: theme.colors.iconColor}]}>
                                     {item.title}
-                                </ListItem.Title>
+                                </Text>
                             </View>
                         </TouchableOpacity>
                     )}

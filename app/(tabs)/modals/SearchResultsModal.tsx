@@ -1,4 +1,3 @@
-import { ListItem } from "@rneui/base";
 import { TouchableOpacity, View } from "react-native";
 import { styles } from "@/components/util/Theme";
 import { useLocalSearchParams, useNavigation } from "expo-router";
