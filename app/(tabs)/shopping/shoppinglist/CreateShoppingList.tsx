@@ -231,7 +231,7 @@ export default function CreateShoppingList() {
             }}>
                 {/* Top Pane for Displaying Headers */}
                 <View style={[styles.justifiedCenter, { width: '100%', marginTop: 20, marginBottom: 20 }]}>
-                    <View style={[{ backgroundColor: theme.background2, elevation: 5, borderRadius: 15, width: '80%', padding: 10 }]}>
+                    <View style={[{ backgroundColor: theme.background2, elevation: 5, borderRadius: 15, width: '90%', padding: 10 }]}>
                         <TextInput
                             style={[{}]}
                             placeholder="Search for items"
@@ -276,7 +276,8 @@ export default function CreateShoppingList() {
                                     <TextSecondary style={[styles.listText, {borderColor: theme.textSecondary, borderLeftWidth: 1, marginLeft: 20, paddingLeft: 30 }]}>Category</TextSecondary>
                                 </View>
                                 <TouchableOpacity onPress={handleBack} style={[styles.flexRow, { width: 'auto', right: 10 }]}>
-                                    <FontAwesome5 name="arrow-left" color={theme.iconColor2} size={30} />
+                                    {menu === '' ? <FontAwesome5 name="arrow-left" color={theme.iconColor2} size={30} />
+                                    : <FontAwesome5 name="times" color={theme.iconColor2} size={30} />}
                                 </TouchableOpacity>
                             </PrimaryView>
                             <ScrollView>

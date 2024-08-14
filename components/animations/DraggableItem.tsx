@@ -1,6 +1,8 @@
 import React, { Dispatch, SetStateAction, useRef } from "react";
 import { Animated, PanResponder, TouchableOpacity, ViewStyle, LayoutChangeEvent } from "react-native";
 import { useAppSelector } from "@/app/store/hooks";
+import { TextPrimary, TextSecondary } from "../Themed";
+import { styles } from "../util/Theme";
 
 type DraggableItemProps = {
     item: { key: string; iconComponent: JSX.Element };
@@ -68,10 +70,14 @@ const DraggableItem = ({ onDrag, setItemDragged, setMenu, item, style, onDrop }:
             style={[style,
                 {
                     transform: [{translateX: pan.x}, {translateY: pan.y}],
+                    padding: 5,
                 }
             ]}>
-            <TouchableOpacity onPress={() => setMenu(item.key)}>
+            <TouchableOpacity style={[styles.flexColumn, styles.justifiedCenter]} onPress={() => setMenu(item.key)}>
                 {React.createElement(item.iconComponent.type, item.iconComponent.props)}
+                <TextPrimary style={{ fontSize: 10, marginTop: 5, fontWeight: "500" }}>
+                    {item.key}
+                </TextPrimary>
             </TouchableOpacity>
         </Animated.View>
     );
