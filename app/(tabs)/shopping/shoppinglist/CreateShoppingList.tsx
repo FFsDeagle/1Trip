@@ -25,12 +25,12 @@ export default function CreateShoppingList() {
     const [favList, setFavList] = useState<InventoryItem[]>([] as InventoryItem[]);
     const [categoryItems, setCategoryItems] = useState<CategorySelection[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string>('');
+    const [selectedCategoryItems, setSelectedCategoryItems] = useState<InventoryItem[]>([]);
     const theme = useAppSelector(state => state.theme.colors);
     const items = useAppSelector(state => state.item.items);
     const dimensionsY = Dimensions.get('window').height;
-    const [containerHeight, setContainerHeight] = useState<number>(dimensionsY / 7.3);
     const dispatch = useAppDispatch();
-    const initialHeight = dimensionsY / 7.3;
+    const initialHeight = dimensionsY / 12;
     const expandedHeight = dimensionsY / 2.5;
     const heightAnim = useRef(new Animated.Value(initialHeight)).current;
     const centreContainerHeight = dimensionsY - (initialHeight * 2 + 30);
@@ -48,15 +48,22 @@ export default function CreateShoppingList() {
     // Fetch items from the store
     useEffect(() => {
         if (items.length === 0) {
-            console.log('Fetching Items');
             dispatch(getItemList());
         }
         getItemsBySelection();
-        console.log('Populating Items');
     }, [menu]);
+
+    useEffect(() => {
+        getItemsByCategory();
+    },[selectedCategory]);
+
+    const getItemsByCategory = () => {
+        const items = categoryItems.map(category => category.items).flat();
+        const selectedItems = items.filter(item => item.category === selectedCategory);
+        setSelectedCategoryItems([...selectedItems]);
+    }
     
     const closeContainer = () => {
-        console.log('Closing Container');
         Animated.timing(heightAnim, {
             toValue: initialHeight,
             duration: 100,
@@ -65,7 +72,6 @@ export default function CreateShoppingList() {
     }
 
     const openContainer = () => {
-        console.log('Opening Container');
         Animated.timing(heightAnim, {
             toValue: expandedHeight,
             duration: 100,
@@ -74,13 +80,11 @@ export default function CreateShoppingList() {
     }
 
     const filterFavorites = () => {
-        console.log('filtering favs');
         const filteredItems = items.filter(item => item.isFavorite === true);
         setFavList([...filteredItems]);
     }
 
     const filterCategories = () => {
-        console.log('filtering cats');
         const categories = items.map(item => item.category).filter((value, index, self) => self.indexOf(value) === index);
         setCategoryItems(categories.map(category => {
             return { name: category, items: items.filter(item => item.category === category) };
@@ -92,12 +96,14 @@ export default function CreateShoppingList() {
         setFavList([]);
         setCategoryItems([]);
         // Clear lists
+        console.log('getItemsBySelection: ', menu);
         switch(menu){
             case 'Favorites':
                 filterFavorites();
                 openContainer();
                 break;
             case 'Categories':
+                console.log('Filtering Categories');
                 filterCategories();
                 openContainer();
                 break;
@@ -187,6 +193,30 @@ export default function CreateShoppingList() {
         })
     };
     
+    const handleBack = () => {
+        console.log('Handling Back', menu);
+        switch(menu){
+            case 'Favorites':
+                setMenu('');
+                setFavList([]);
+                break;
+            case 'Categories':
+                setMenu('');
+                setCategoryItems([]);
+                setSelectedCategoryItems([]);
+                break;
+            case 'individualCategory':
+                setSelectedCategory('');
+                setMenu('Categories');
+                break;
+            case 'All':
+                setMenu('');
+                break;
+            default:
+                break;
+        }
+    };
+
     return (
         <LinearGradient 
             style={[styles.container]}
@@ -225,8 +255,8 @@ export default function CreateShoppingList() {
                     </Animated.View>
                 </Animated.ScrollView>
                 {/* Bottom Pane with Draggable Items */}
-                <Animated.View style={[styles.justified, { width: '100%', height: heightAnim, backgroundColor: theme.secondary }]}>
-                    <View style={[styles.flexRow, styles.justifiedApart, { width: menu === '' ? '60%' : '100%' }]}>
+                <Animated.View style={[menu === '' ? styles.justified : styles.justifiedStart, { width: '100%', height: heightAnim, backgroundColor: theme.secondary }]}>
+                    <View style={[styles.flexRow, styles.justifiedApart, { width: menu === '' ? '60%' : '100%', height: menu === '' ? 'auto' : '100%' }]}>
                         {menu === '' ? menuSelection.map((item) => (
                             <DraggableItem
                                 setItemDragged={setItemDragged}
@@ -239,19 +269,19 @@ export default function CreateShoppingList() {
                             />
                         ))
                         :
-                        <View style={{ width: '100%', paddingBottom: 25 }}>
+                        <View style={{ width: '100%', }}>
                             <PrimaryView style={[styles.flexRow, styles.justifiedApart, { padding: 5 }]}>
                                 <View style={[styles.flexRow, { width: 'auto' }]}>
                                     <TextSecondary style={[styles.listText]}>Name </TextSecondary>
                                     <TextSecondary style={[styles.listText, {borderColor: theme.textSecondary, borderLeftWidth: 1, marginLeft: 20, paddingLeft: 30 }]}>Category</TextSecondary>
                                 </View>
-                                <TouchableOpacity onPress={() => setMenu('')} style={[styles.flexRow, { width: 'auto', right: 10 }]}>
+                                <TouchableOpacity onPress={handleBack} style={[styles.flexRow, { width: 'auto', right: 10 }]}>
                                     <FontAwesome5 name="arrow-left" color={theme.iconColor2} size={30} />
                                 </TouchableOpacity>
                             </PrimaryView>
                             <ScrollView>
                                 <RenderFavoriteItems shoppingList={shoppingList} setShoppingList={setShoppingList} favList={favList} />
-                                <RenderCategoryItems categoryItems={categoryItems} setSelectedCategory={setSelectedCategory} />
+                                <RenderCategoryItems shoppingList={shoppingList} setShoppingList={setShoppingList} setMenu={setMenu} selectedCategoryItems={selectedCategoryItems} categoryItems={categoryItems} setSelectedCategory={setSelectedCategory} />
                             </ScrollView>
                         </View>
                         }
