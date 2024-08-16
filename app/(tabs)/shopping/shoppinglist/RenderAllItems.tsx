@@ -1,26 +1,21 @@
+import { TouchableOpacity, View } from "react-native";
+import { InventoryItem } from "../../items/ItemSlice";
+import { Dispatch, SetStateAction } from "react";
+import { InventoryItem as Item } from "../../inventory/InventorySlice";
 import { TextSecondary } from "@/components/Themed";
 import { styles } from "@/components/util/Theme";
-import { CategorySelection } from "./CreateShoppingList";
-import { TouchableOpacity } from "@/components/Themed";
-import { View } from "react-native";
-import { Dispatch, useState, SetStateAction } from "react";
-import { InventoryItem } from "../../items/ItemSlice";
-import { InventoryItem as Item } from "../../inventory/InventorySlice";
 
-type RenderFavoriteItemsProps = {
-    categoryItems: CategorySelection[];
-    setSelectedCategory: Dispatch<SetStateAction<string>>;
-    selectedCategoryItems: InventoryItem[];
-    setMenu: Dispatch<SetStateAction<string>>;
-    setShoppingList: Dispatch<SetStateAction<Item[]>>;
+type RenderAllItemsProps = {
+    items: InventoryItem[];
     shoppingList: Item[];
+    setShoppingList: Dispatch<SetStateAction<Item[]>>;
 }
 
-export default function RenderCategoryItems({ shoppingList, setShoppingList, setMenu, selectedCategoryItems, categoryItems, setSelectedCategory }: RenderFavoriteItemsProps) {
+export function RenderAllItems({ items, shoppingList, setShoppingList, }: RenderAllItemsProps){
     return (
         <View>
             {
-                selectedCategoryItems.length > 0 ? selectedCategoryItems.map((item, key) => {
+                items.length > 0 && items.map((item, key) => {
                     return (
                         <TouchableOpacity
                             onPress={() => {
@@ -52,25 +47,8 @@ export default function RenderCategoryItems({ shoppingList, setShoppingList, set
                             </TextSecondary>
                         </TouchableOpacity>
                     )
-                }) :
-                categoryItems && categoryItems.map((item, key) => {
-                    return (
-                        <TouchableOpacity
-                            onPress={() => {
-                                setSelectedCategory(item.name);
-                                setMenu('individualCategory');
-                                console.log('individualCategory Set in RenderCategoryItems');
-                            }}
-                            key={key} 
-                            style={styles.listItem}
-                        >
-                            <TextSecondary>
-                                {item.name}
-                            </TextSecondary>
-                        </TouchableOpacity>
-                )})
+                })
             }
-
         </View>
-    );
+    )
 }

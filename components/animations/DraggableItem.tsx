@@ -1,15 +1,14 @@
 import React, { Dispatch, SetStateAction, useRef } from "react";
 import { Animated, PanResponder, TouchableOpacity, ViewStyle, LayoutChangeEvent } from "react-native";
-import { useAppSelector } from "@/app/store/hooks";
-import { TextPrimary, TextSecondary } from "../Themed";
+import { TextPrimary } from "../Themed";
 import { styles } from "../util/Theme";
 
 type DraggableItemProps = {
     item: { key: string; iconComponent: JSX.Element };
     setMenu: Dispatch<SetStateAction<string>>;
     style: ViewStyle | ViewStyle[];
-    onDrop: (key: string, dropPosition: { x: number, y: number }) => void; // New prop for handling the drop event
-    onDrag: (key: string, dragPosition: { x: number, y: number }) => void; // New prop for handling the drag event
+    onDrop: (key: string, dropPosition: { x: number, y: number }) => void;
+    onDrag: (key: string, dragPosition: { x: number, y: number }) => void;
     panResponder?: any;
     setItemDragged: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -37,7 +36,6 @@ const DraggableItem = ({ onDrag, setItemDragged, setMenu, item, style, onDrop }:
                 onDrag(item.key, dragPosition);
             },
             onPanResponderRelease: (e, gesture) => {
-                // Figured out correct property to use for the Gesture State
                 // MoveX/Y returns the position of the item relevant to the screens Width & Height
                 const dropPosition = {
                     x: gesture.moveX,

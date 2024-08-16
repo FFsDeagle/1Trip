@@ -13,6 +13,7 @@ import RenderFavoriteItems from "./RenderFavoriteItems";
 import RenderCategoryItems from "./RenderCategoryItems";
 import DraggableItem from "@/components/animations/DraggableItem";
 import RenderShoppingListItems from "./RenderShoppingListItems";
+import { RenderAllItems } from "./RenderAllItems";
 
 export type CategorySelection = {
     name: string;
@@ -272,10 +273,11 @@ export default function CreateShoppingList() {
                         <View style={{ width: '100%', }}>
                             <PrimaryView style={[styles.flexRow, styles.justifiedApart, { padding: 5 }]}>
                                 <View style={[styles.flexRow, { width: 'auto' }]}>
-                                    <TextSecondary style={[styles.listText]}>Name </TextSecondary>
-                                    <TextSecondary style={[styles.listText, {borderColor: theme.textSecondary, borderLeftWidth: 1, marginLeft: 20, paddingLeft: 30 }]}>Category</TextSecondary>
+                                    <TextSecondary style={[styles.header2]}>{
+                                            selectedCategory === '' ? menu : selectedCategory
+                                    }</TextSecondary>
                                 </View>
-                                <TouchableOpacity onPress={handleBack} style={[styles.flexRow, { width: 'auto', right: 10 }]}>
+                                <TouchableOpacity onPress={handleBack} style={[styles.justified, styles.flexRow, { width: 'auto', padding: 5, right: 15 }]}>
                                     {menu === '' ? <FontAwesome5 name="arrow-left" color={theme.iconColor2} size={30} />
                                     : <FontAwesome5 name="times" color={theme.iconColor2} size={30} />}
                                 </TouchableOpacity>
@@ -283,6 +285,7 @@ export default function CreateShoppingList() {
                             <ScrollView>
                                 <RenderFavoriteItems shoppingList={shoppingList} setShoppingList={setShoppingList} favList={favList} />
                                 <RenderCategoryItems shoppingList={shoppingList} setShoppingList={setShoppingList} setMenu={setMenu} selectedCategoryItems={selectedCategoryItems} categoryItems={categoryItems} setSelectedCategory={setSelectedCategory} />
+                                <RenderAllItems items={items} shoppingList={shoppingList} setShoppingList={setShoppingList} />
                             </ScrollView>
                         </View>
                         }
