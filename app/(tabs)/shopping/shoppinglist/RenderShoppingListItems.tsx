@@ -27,6 +27,15 @@ export default function RenderShoppingListItems({ setShoppingList, shoppingList 
         }).filter(Boolean) as InventoryItem[]);
     }
 
+    const incrementItem = (id: string | number) => {
+        setShoppingList([...shoppingList.map((x) => {
+            if (x.id === id) {
+                x.quantity += 1;
+            }
+            return x;
+        })])
+    }
+
     return (
         shoppingList.map((item, key) => {
             return (
@@ -44,12 +53,7 @@ export default function RenderShoppingListItems({ setShoppingList, shoppingList 
                             <TouchableOpacity onPress={() => decrementItem(item.id)} style={[styles.justified, { marginRight: 10 }]}>
                                 <FontAwesome name="minus" size={20} color={theme.textPrimary} />
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => setShoppingList([...shoppingList.map((x) => {
-                                if (x.id === item.id) {
-                                    x.quantity += 1;
-                                }
-                                return x;
-                            })])} style={[styles.justified, { marginRight: 20 }]}>
+                            <TouchableOpacity onPress={() => incrementItem(item.id)} style={[styles.justified, { marginRight: 20 }]}>
                                 <FontAwesome name="plus" size={20} color={theme.textPrimary} />
                             </TouchableOpacity>
                         </View>

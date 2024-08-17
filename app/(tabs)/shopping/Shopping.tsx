@@ -60,6 +60,7 @@ export default function Items() {
         name="StartShopping"
         options={{
           headerShown: true,
+          headerTitle: "Start Shopping",
           headerStyle: {
             backgroundColor: theme.colors.background,
           },

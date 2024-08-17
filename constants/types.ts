@@ -1,6 +1,7 @@
 import { NavigationProp } from '@react-navigation/native';
 import { FontAwesome6 } from "@expo/vector-icons";
 import { ShoppingList } from '@/app/(tabs)/shopping/ShoppingSlice';
+import { InventoryItem } from '@/app/(tabs)/inventory/InventorySlice';
 
 export type RootFontList = {
     Fontawesome6: typeof FontAwesome6
@@ -51,7 +52,7 @@ export type ShoppingStackParamList = {
     CreateShoppingList: undefined;
     ViewShoppingList: { list: ShoppingList };
     ViewShoppingListType: { list: ViewShoppingListTypeProps };
-    StartShopping: { list: ShoppingList };
+    StartShopping: { list: InventoryItem[] };
     Settings: undefined;
 }
 

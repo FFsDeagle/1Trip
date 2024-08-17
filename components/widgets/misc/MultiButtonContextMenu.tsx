@@ -1,5 +1,5 @@
 import { styles } from "@/components/util/Theme";
-import { Animated, View } from "react-native";
+import { Animated, Dimensions, PanResponder, View } from "react-native";
 import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { SecondaryView, TouchableOpacity } from "@/components/Themed";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -15,6 +15,30 @@ export default function MultiButtonContextMenu(props: MultiButtonContextMenuProp
     const [buttonList, setButtonList] = useState<ReactNode[]>([]);
     const theme = useAppSelector((state) => state.theme);
     const expandAnim = useRef(new Animated.Value(0)).current;
+    const pan = useRef(new Animated.ValueXY()).current;
+    const panResponder = useRef(
+        PanResponder.create({
+          onMoveShouldSetPanResponder: () => true,
+          onPanResponderGrant: () => {
+            // Extract the offset to use as the initial starting point for the pan
+            pan.extractOffset();
+          },
+          onPanResponderMove: Animated.event(
+            [null, { dx: pan.x, dy: pan.y }],
+            { useNativeDriver: false }
+          ),
+          onPanResponderRelease: () => {
+            // Flatten the offset to save the position
+            pan.flattenOffset();
+    
+            // Animate the snap to the left or right side of the screen
+            Animated.spring(pan.x, {
+              toValue: 0,
+              useNativeDriver: false,
+            }).start();
+          }
+        })
+      ).current;
 
     // Initialize buttons list with a cancel button
     useEffect(() => {
@@ -50,7 +74,10 @@ export default function MultiButtonContextMenu(props: MultiButtonContextMenuProp
     }, [expandAnim, showItems, buttonList]);
 
     return (
-        <Animated.View style={[styles.absoluteBottomRight, { width: expandAnim }]}>
+        <Animated.View 
+            style={[styles.absoluteBottomRight, { width: expandAnim, transform: [{translateX: pan.x}, {translateY: pan.y}] }]}
+            {...panResponder.panHandlers}
+        >
             {!showItems && (
                 <TouchableOpacity
                     style={{

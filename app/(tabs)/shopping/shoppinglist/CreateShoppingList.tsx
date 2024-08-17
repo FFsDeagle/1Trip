@@ -1,6 +1,5 @@
 import { LinearGradient, PrimaryView, ScrollView, TextSecondary } from "@/components/Themed";
 import { Dimensions, TouchableOpacity, TextInput } from "react-native";
-import BackButton from "@/components/util/BackButton";
 import { styles } from "@/components/util/Theme";
 import { useEffect, useRef, useState } from "react";
 import { InventoryItem } from "../../items/ItemSlice";
@@ -14,6 +13,11 @@ import RenderCategoryItems from "./RenderCategoryItems";
 import DraggableItem from "@/components/animations/DraggableItem";
 import RenderShoppingListItems from "./RenderShoppingListItems";
 import { RenderAllItems } from "./RenderAllItems";
+import MultiButtonContextMenu from "@/components/widgets/misc/MultiButtonContextMenu";
+import { useNavigation } from "expo-router";
+import { ShoppingStackParamList } from "@/constants/Types";
+import { NavigationProp } from "@react-navigation/native";
+import AnimatedModal from "@/components/animations/AnimatedModal";
 
 export type CategorySelection = {
     name: string;
@@ -39,6 +43,8 @@ export default function CreateShoppingList() {
     const [itemDragged, setItemDragged] = useState<boolean>(false);
     const pulseAnimation = useRef(new Animated.Value(0.5)).current;
     const [keyboardShown, setKeyboardShown] = useState<boolean>(false);
+    const navigation = useNavigation<NavigationProp<ShoppingStackParamList>>();
+    const [showModal, setShowModal] = useState<boolean>(false);
 
     const menuSelection = [
         { key: 'Favorites', iconComponent: <FontAwesome5 name="star" color={theme.iconColor2} size={24} /> },
@@ -135,18 +141,37 @@ export default function CreateShoppingList() {
     };
 
     const addKeyItemsToList = (key: string) => {
-        console.log('Key: ', key);
         switch(key){
             case 'Favorites':
-                setShoppingList([...shoppingList, ...items.filter(item => item.isFavorite === true).map(item => {
-                    return {
-                        id: item.id, name: item.name, category: item.category,
-                        description: item.description,
-                        quantity: item.uom,
-                        lastAddedDate: new Date(Date.now()),
-                        isPastExpiry: false
-                    };
-                })]);
+                setShoppingList((prevShoppingList) => {
+                    // Map over the previous shopping list to update existing items
+                    const updatedShoppingList = prevShoppingList.map(item => {
+                        const foundItem = items.find(c => c.id === item.id);
+                        if (foundItem && foundItem.isFavorite) {
+                            return {
+                                ...item,
+                                quantity: item.quantity + (foundItem.uom ?? 0),
+                                lastAddedDate: new Date(Date.now()).toISOString(),
+                                isPastExpiry: false
+                            };
+                        }
+                        return item;
+                    });
+            
+                    // Add new items that are favorites and not already in the list
+                    const newItems = items
+                        .filter(item => item.isFavorite && !prevShoppingList.find(e => e.id === item.id))
+                        .map(item => ({
+                            id: item.id,
+                            name: item.name,
+                            category: item.category,
+                            description: item.description,
+                            quantity: item.uom,
+                            lastAddedDate: new Date(Date.now()).toISOString(),
+                            isPastExpiry: false
+                        }));
+                    return [...updatedShoppingList, ...newItems];
+                });
                 break;
             case 'Categories':
                 //const categoryItem = categoryItems.map(category => category.items.find(item => item.id === key)).filter(Boolean)[0];
@@ -167,7 +192,7 @@ export default function CreateShoppingList() {
                             id: item.id, name: item.name, category: item.category,
                             description: item.description,
                             quantity: item.uom,
-                            lastAddedDate: new Date(Date.now()),
+                            lastAddedDate: new Date(Date.now()).toISOString(),
                             isPastExpiry: false
                         };
                     })]);
@@ -218,18 +243,30 @@ export default function CreateShoppingList() {
         }
     };
 
+    const validateAndNavigate = () => {
+        if (shoppingList.length === 0){
+            setShowModal(true);
+            return;
+        }
+        navigation.navigate('StartShopping', { list: shoppingList })
+    }
+
     return (
         <LinearGradient 
             style={[styles.container]}
             colors={[]}
         >
-            <View style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-start',
-                height: '100%',
-                width: '100%',
-            }}>
+            {showModal && <AnimatedModal message="Add items to your list to proceed" setShowModal={setShowModal} showModal={showModal} />}
+            <View 
+                pointerEvents={showModal ? "none" : "auto"}
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-start',
+                    height: '100%',
+                    width: '100%',
+                }}
+            >
                 {/* Top Pane for Displaying Headers */}
                 <View style={[styles.justifiedCenter, { width: '100%', marginTop: 20, marginBottom: 20 }]}>
                     <View style={[{ backgroundColor: theme.background2, elevation: 5, borderRadius: 15, width: '90%', padding: 10 }]}>
@@ -292,6 +329,14 @@ export default function CreateShoppingList() {
                     </View>
                 </Animated.View>
             </View>
+            <MultiButtonContextMenu 
+                buttons={[
+                    <TouchableOpacity 
+                        onPress={() => validateAndNavigate()}>
+                        <FontAwesome5 name="shopping-cart" size={24} color={theme.iconColor} />
+                    </TouchableOpacity>
+                ]} 
+            />
         </LinearGradient>
     );
 };

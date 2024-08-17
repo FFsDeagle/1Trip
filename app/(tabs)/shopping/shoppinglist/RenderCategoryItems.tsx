@@ -40,7 +40,7 @@ export default function RenderCategoryItems({ shoppingList, setShoppingList, set
                                     id: item.id, name: item.name, category: item.category,
                                     description: item.description,
                                     quantity: item.uom,
-                                    lastAddedDate: new Date(Date.now()),
+                                    lastAddedDate: new Date(Date.now()).toISOString(),
                                     isPastExpiry: false
                                 }]);
                             }}
