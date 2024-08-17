@@ -53,7 +53,6 @@ export default function AddShoppingListButton() {
             justifyContent: 'center',
             alignItems: 'center',
             elevation: 5,
-            borderWidth: 2, 
         }} 
           onPress={() => {
               navigation.navigate('CreateShoppingList');

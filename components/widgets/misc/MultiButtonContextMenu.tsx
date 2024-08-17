@@ -89,7 +89,6 @@ export default function MultiButtonContextMenu(props: MultiButtonContextMenuProp
                         justifyContent: "center",
                         alignItems: "center",
                         elevation: 5,
-                        borderWidth: 2,
                         zIndex: 100,
                     }}
                     onPress={() => setShowItems(true)}
@@ -99,16 +98,15 @@ export default function MultiButtonContextMenu(props: MultiButtonContextMenuProp
             )}
             {showItems && (
                 <SecondaryView
-                    style={{
+                    style={[styles.justified, {
                         padding: 10,
                         borderRadius: 50,
                         display: "flex",
                         flexDirection: "column",
                         height: 50,
                         elevation: 5,
-                        borderWidth: 2,
                         zIndex: 50,
-                    }}
+                    }]}
                 >
                     <SecondaryView style={{ display: "flex", flexDirection: "row" }}>
                         {buttonList.map((button, index) => (

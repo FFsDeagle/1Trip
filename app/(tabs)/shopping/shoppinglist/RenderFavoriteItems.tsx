@@ -31,7 +31,7 @@ export default function RenderFavoriteItems({ shoppingList, setShoppingList ,fav
                         id: item.id, name: item.name, category: item.category,
                         description: item.description,
                         quantity: item.uom,
-                        lastAddedDate: new Date(Date.now()),
+                        lastAddedDate: new Date(Date.now()).toISOString(),
                         isPastExpiry: false
                     }]);
                 }} key={item.id} style={styles.listItem}>
