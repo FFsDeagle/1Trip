@@ -23,7 +23,7 @@ export default function StartShopping({ route }: ViewShoppingListProps){
     const [checkedList, setCheckedList] = useState<InventoryItem[]>([]);
 
     const handleSubmit = () => {
-        dispatch(AddListToInventory(list as InventoryItem[]));
+        dispatch(AddListToInventory(checkedList as InventoryItem[]));
         navigation.navigate('ShoppingMain');
     }
 
@@ -95,11 +95,11 @@ export default function StartShopping({ route }: ViewShoppingListProps){
             <MultiButtonContextMenu 
                 // Add buttons to the context menu
                 buttons={[
-                <TouchableOpacity 
-                    onPress={handleSubmit}
-                >
-                    <FontAwesome5 name="cash-register" size={24} color={theme.iconColor} />
-                </TouchableOpacity>
+                    <TouchableOpacity 
+                        onPress={handleSubmit}
+                    >
+                        <FontAwesome5 name="cash-register" size={24} color={theme.iconColor} />
+                    </TouchableOpacity>
                 ]} 
             />
         </SecondaryView>

@@ -18,7 +18,9 @@ export default function MultiButtonContextMenu(props: MultiButtonContextMenuProp
     const pan = useRef(new Animated.ValueXY()).current;
     const panResponder = useRef(
         PanResponder.create({
-          onMoveShouldSetPanResponder: () => true,
+          onMoveShouldSetPanResponder: (e, gesture) => {
+            return Math.abs(gesture.dx) > 10 || Math.abs(gesture.dy) > 10;
+          },
           onPanResponderGrant: () => {
             // Extract the offset to use as the initial starting point for the pan
             pan.extractOffset();
@@ -45,7 +47,7 @@ export default function MultiButtonContextMenu(props: MultiButtonContextMenuProp
         setButtonList([
             ...props.buttons,
             <TouchableOpacity
-                style={{ marginLeft: 25 }}
+                style={[styles.justified, { marginRight: 5 }]}
                 key="cancel"
                 onPress={() => setShowItems(false)}
             >
@@ -68,7 +70,7 @@ export default function MultiButtonContextMenu(props: MultiButtonContextMenuProp
     useEffect(() => {
         Animated.timing(expandAnim, {
             toValue: showItems ? buttonList.length * 50 : 50,
-            duration: 50,
+            duration: 100,
             useNativeDriver: false,
         }).start();
     }, [expandAnim, showItems, buttonList]);
@@ -106,12 +108,13 @@ export default function MultiButtonContextMenu(props: MultiButtonContextMenuProp
                         height: 50,
                         elevation: 5,
                         zIndex: 50,
+                        overflow: 'hidden'
                     }]}
                 >
-                    <SecondaryView style={{ display: "flex", flexDirection: "row" }}>
+                    <SecondaryView style={[styles.flexRow, styles.justifiedApart]}>
                         {buttonList.map((button, index) => (
                             <SecondaryView
-                                style={{ display: "flex", flexDirection: "row" }}
+                                style={[styles.justified, {zIndex: 40, marginLeft: 10, marginRight: 10 }]}
                                 key={index}
                             >
                                 {button}

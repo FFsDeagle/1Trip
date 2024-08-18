@@ -15,26 +15,32 @@ export default function RenderShoppingListItems({ setShoppingList, shoppingList 
     const theme = useAppSelector(state => state.theme.colors);
 
     const decrementItem = (id: string | number) => {
-        setShoppingList(shoppingList.map((item) => {
-            if (item.id === id) {
-                // filter item if quantity is 0
-                if (item.quantity === 1) {
-                    return null;
+        setShoppingList((prevList) =>
+          prevList
+            .map((item) => {
+              if (item.id === id) {
+                if (item.quantity > 1) {
+                  return { ...item, quantity: item.quantity - 1 }; // Create a new object with updated quantity
+                } else {
+                  return null; // Return null if quantity is 1 (we'll filter it out)
                 }
-                item.quantity -= 1;
+              }
+              return item;
+            })
+            .filter(Boolean) as InventoryItem[] // Filter out null values
+        );
+      };
+      
+      const incrementItem = (id: string | number) => {
+        setShoppingList((prevList) =>
+          prevList.map((item) => {
+            if (item.id === id) {
+              return { ...item, quantity: item.quantity + 1 }; // Create a new object with updated quantity
             }
             return item;
-        }).filter(Boolean) as InventoryItem[]);
-    }
-
-    const incrementItem = (id: string | number) => {
-        setShoppingList([...shoppingList.map((x) => {
-            if (x.id === id) {
-                x.quantity += 1;
-            }
-            return x;
-        })])
-    }
+          })
+        );
+      };
 
     return (
         shoppingList.map((item, key) => {

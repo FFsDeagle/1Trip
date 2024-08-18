@@ -7,11 +7,14 @@ import { useEffect } from "react";
 import { getItemList } from "./ItemSlice";
 
 export default function ItemMain() {
-  const theme = useAppSelector(state => state.theme.colors);
   const dispatch = useAppDispatch();
+  const items = useAppSelector(state => state.item.items);
 
+  // Check if products have already been fetched to prevent unnessesary API calls
   useEffect(() => {
-    dispatch(getItemList());
+    if (items.length === 0) {
+      dispatch(getItemList());
+    }
   }, [dispatch])
 
   return (

@@ -1,153 +1,24 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
 import { useAppDispatch } from "@/app/store/hooks";
 import { AddListToInventory, InventoryItem } from "../inventory/InventorySlice";
 
 export interface ShoppingListProps {
     status: 'idle' | 'loading' | 'failed' | 'success',
-    lists?: ShoppingListTypes,
+    lists: ShoppingListTypes,
 }
 
 export interface ShoppingListTypes {
-    savedLists?: ShoppingList[],
-    generatedLists?: ShoppingList[],
-    history?: ShoppingList[],
+    savedLists: ShoppingList[],
+    generatedLists: ShoppingList[],
+    history: ShoppingList[],
 }
 
 export interface ShoppingList {
-    id: string,
+    id?: string,
     name: string,
-    items?: InventoryItem[]
+    items: InventoryItem[]
 }
-
-// export const placeHolderList: ShoppingListTypes = {
-//     savedLists: [
-//         {
-//             id: '1',
-//             name: 'Saved List 1',
-//             items: [
-//                 {
-//                     id: '1',
-//                     name: 'Item 1',
-//                     quantity: 1,
-//                     description: 'Description 1',
-//                     category: 'Miscellaneous',
-//                 },
-//                 {
-//                     id: '2',
-//                     name: 'Item 2',
-//                     quantity: 2,
-//                     description: 'Description 2',
-//                     category: 'Miscellaneous',
-//                 },
-//             ]
-//         },
-//         {
-//             id: '2',
-//             name: 'Saved List 2',
-//             items: [
-//                 {
-//                     id: '1',
-//                     name: 'Item 1',
-//                     quantity: 1,
-//                     description: 'Description 1',
-//                     category: 'Miscellaneous',
-//                 },
-//                 {
-//                     id: '2',
-//                     name: 'Item 2',
-//                     quantity: 2,
-//                     description: 'Description 2',
-//                     category: 'Miscellaneous',
-//                 },
-//             ]
-//         },
-//     ],
-//     generatedLists: [
-//         {
-//             id: '1',
-//             name: 'Generated List 1',
-//             items: [
-//                 {
-//                     id: '1',
-//                     name: 'Item 1',
-//                     quantity: 1,
-//                     description: 'Description 1',
-//                     category: 'Miscellaneous',
-//                 },
-//                 {
-//                     id: '2',
-//                     name: 'Item 2',
-//                     quantity: 2,
-//                     description: 'Description 2',
-//                     category: 'Miscellaneous',
-//                 },
-//             ]
-//         },
-//         {
-//             id: '2',
-//             name: 'Generated List 2',
-//             items: [
-//                 {
-//                     id: '1',
-//                     name: 'Item 1',
-//                     quantity: 1,
-//                     description: 'Description 1',
-//                     category: 'Miscellaneous',
-//                 },
-//                 {
-//                     id: '2',
-//                     name: 'Item 2',
-//                     quantity: 2,
-//                     description: 'Description 2',
-//                     category: 'Miscellaneous',
-//                 },
-//             ]
-//         },
-//     ],
-//     history: [
-//         {
-//             id: '1',
-//             name: 'History List 1',
-//             items: [
-//                 {
-//                     id: '1',
-//                     name: 'Item 1',
-//                     quantity: 1,
-//                     description: 'Description 1',
-//                     category: 'Miscellaneous',
-//                 },
-//                 {
-//                     id: '2',
-//                     name: 'Item 2',
-//                     quantity: 2,
-//                     description: 'Description 2',
-//                     category: 'Miscellaneous',
-//                 },
-//             ]
-//         },
-//         {
-//             id: '2',
-//             name: 'History List 2',
-//             items: [
-//                 {
-//                     id: '1',
-//                     name: 'Item 1',
-//                     quantity: 1,
-//                     description: 'Description 1',
-//                     category: 'Miscellaneous',
-//                 },
-//                 {
-//                     id: '2',
-//                     name: 'Item 2',
-//                     quantity: 2,
-//                     description: 'Description 2',
-//                     category: 'Miscellaneous',
-//                 },
-//             ]
-//         },
-//     ],
-// }
 
 export const initialState: ShoppingListProps = {
     status: 'idle',
@@ -158,10 +29,16 @@ export const initialState: ShoppingListProps = {
     }
 }
 
+const emptyLists: ShoppingListTypes = {
+    savedLists: [] as ShoppingList[],
+    generatedLists: [] as ShoppingList[],
+    history: [] as ShoppingList[],
+}
+
 export const GetLists = createAsyncThunk(
     'shoppingList/getLists',
     async () => {
-        return {} as AxiosResponse<ShoppingListTypes>; // This is a placeholder for the actual axios call
+        return emptyLists as unknown as AxiosResponse<ShoppingListTypes>; // This is a placeholder for the actual axios call
         return axios.get('http://localhost:5000/shopping/getLists')
         .then((response: AxiosResponse<ShoppingListTypes>) => {
             return response;
@@ -205,10 +82,10 @@ export const ShoppingListSlice = createSlice({
         builder.addCase(SaveShoppingList.pending, (state) => {
             state.status = 'loading';
         })
-        builder.addCase(SaveShoppingList.fulfilled, (state, action) => {
+        builder.addCase(SaveShoppingList.fulfilled, (state, action: PayloadAction<ShoppingList>) => {
             state.status = 'success';
-            state.lists?.savedLists?.push(action.payload);
-        })
+            state.lists.savedLists.push(action.payload);
+        });
         builder.addCase(SaveShoppingList.rejected, (state) => {
             state.status = 'failed';
         })

@@ -18,6 +18,9 @@ import { useNavigation } from "expo-router";
 import { ShoppingStackParamList } from "@/constants/Types";
 import { NavigationProp } from "@react-navigation/native";
 import AnimatedModal from "@/components/animations/AnimatedModal";
+import { SaveShoppingList } from "../ShoppingSlice";
+import { ShoppingList } from "../ShoppingSlice";
+import AnimatedModalWithInput from "@/components/animations/AnimatedModalWithInput";
 
 export type CategorySelection = {
     name: string;
@@ -45,12 +48,27 @@ export default function CreateShoppingList() {
     const [keyboardShown, setKeyboardShown] = useState<boolean>(false);
     const navigation = useNavigation<NavigationProp<ShoppingStackParamList>>();
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [showNameModal, setShowNameModal] = useState<boolean>(false);
+    const [listSaved, setListSaved] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [name, setName] = useState<string>('');
 
     const menuSelection = [
-        { key: 'Favorites', iconComponent: <FontAwesome5 name="star" color={theme.iconColor2} size={24} /> },
-        { key: 'Categories', iconComponent: <MaterialIcons name="category" color={theme.iconColor2} size={24} /> },
-        { key: 'All', iconComponent: <FontAwesome5 name="clipboard-list" color={theme.iconColor2} size={24} /> },
+        { key: 'Favorites', iconComponent: <FontAwesome5 name="star" color={theme.iconColor} size={24} /> },
+        { key: 'Categories', iconComponent: <MaterialIcons name="category" color={theme.iconColor} size={24} /> },
+        { key: 'All', iconComponent: <FontAwesome5 name="clipboard-list" color={theme.iconColor} size={24} /> },
     ];
+
+    useEffect(() => {
+        if (listSaved){
+            const listToSave: ShoppingList = {
+                name: name,
+                items: shoppingList
+            }
+            dispatch(SaveShoppingList(listToSave));
+            navigation.navigate('ShoppingMain');
+        }
+    }, [listSaved])
 
     // Fetch items from the store
     useEffect(() => {
@@ -103,14 +121,12 @@ export default function CreateShoppingList() {
         setFavList([]);
         setCategoryItems([]);
         // Clear lists
-        console.log('getItemsBySelection: ', menu);
         switch(menu){
             case 'Favorites':
                 filterFavorites();
                 openContainer();
                 break;
             case 'Categories':
-                console.log('Filtering Categories');
                 filterCategories();
                 openContainer();
                 break;
@@ -220,7 +236,6 @@ export default function CreateShoppingList() {
     };
     
     const handleBack = () => {
-        console.log('Handling Back', menu);
         switch(menu){
             case 'Favorites':
                 setMenu('');
@@ -251,12 +266,22 @@ export default function CreateShoppingList() {
         navigation.navigate('StartShopping', { list: shoppingList })
     }
 
+    const saveList = () => {
+        // Display Modal & prompt to set a name
+        if (shoppingList.length === 0){
+            setShowModal(true);
+        } else {
+            setShowNameModal(true);
+        }
+    }
+
     return (
         <LinearGradient 
             style={[styles.container]}
             colors={[]}
         >
             {showModal && <AnimatedModal message="Add items to your list to proceed" setShowModal={setShowModal} showModal={showModal} />}
+            {!showModal && showNameModal && <AnimatedModalWithInput name={name} setName={setName} message="Give your Shopping List a name" setListSaved={setListSaved} setShowModal={setShowNameModal} showModal={showNameModal} />}
             <View 
                 pointerEvents={showModal ? "none" : "auto"}
                 style={{
@@ -293,7 +318,7 @@ export default function CreateShoppingList() {
                     </Animated.View>
                 </Animated.ScrollView>
                 {/* Bottom Pane with Draggable Items */}
-                <Animated.View style={[menu === '' ? styles.justified : styles.justifiedStart, { width: '100%', height: heightAnim, backgroundColor: theme.secondary }]}>
+                {!showNameModal && <Animated.View style={[menu === '' ? styles.justified : styles.justifiedStart, { width: '100%', height: heightAnim, backgroundColor: theme.primary }]}>
                     <View style={[styles.flexRow, styles.justifiedApart, { width: menu === '' ? '60%' : '100%', height: menu === '' ? 'auto' : '100%' }]}>
                         {menu === '' ? menuSelection.map((item) => (
                             <DraggableItem
@@ -327,14 +352,20 @@ export default function CreateShoppingList() {
                         </View>
                         }
                     </View>
-                </Animated.View>
+                </Animated.View>}
             </View>
             <MultiButtonContextMenu 
                 buttons={[
                     <TouchableOpacity 
-                        onPress={() => validateAndNavigate()}>
-                        <FontAwesome5 name="shopping-cart" size={24} color={theme.iconColor} />
-                    </TouchableOpacity>
+                        onPress={() => navigation.goBack()}
+                    >
+                        <FontAwesome5 name="arrow-left" size={24} color={theme.iconColor} />
+                    </TouchableOpacity>,
+                    <TouchableOpacity 
+                        onPress={saveList}
+                    >
+                        <FontAwesome5 name="save" size={24} color={theme.iconColor} />
+                    </TouchableOpacity>,
                 ]} 
             />
         </LinearGradient>

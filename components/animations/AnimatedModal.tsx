@@ -21,13 +21,17 @@ export default function AnimatedModal({ message, setShowModal, showModal }: Anim
                 toValue: 0,
                 useNativeDriver: true
             }).start();
-        } else {
-            Animated.spring(slideAnim, {
-                toValue: Dimensions.get('window').height,
-                useNativeDriver: true
-            }).start();
         }
     },[])
+
+    const hideModalWithDelay = () => {
+        Animated.spring(slideAnim, {
+            toValue: Dimensions.get('window').height,
+            useNativeDriver: true,
+        }).start(() => {
+            setShowModal(false);
+        });
+    }
 
     return (
         <Animated.View style={[styles.container, styles.justified, {
@@ -52,7 +56,7 @@ export default function AnimatedModal({ message, setShowModal, showModal }: Anim
                     padding: 10,
                     marginTop: 10,
                     backgroundColor: theme.background3
-                }} onPress={() => setShowModal(false)}>
+                }} onPress={hideModalWithDelay}>
                     <TextPrimary>
                         Okay
                     </TextPrimary>

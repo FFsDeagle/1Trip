@@ -14,7 +14,6 @@ type ViewShoppingListProps = {
 export default function ViewShoppingListType({ route }: ViewShoppingListProps) {
     const { list } = route.params;
     const navigation = useNavigation<NavigationProp<ShoppingStackParamList>>();
-    console.log('ViewShoppingListTypeProps', list);
 
     useEffect(() => {
         navigation.setOptions({
@@ -24,7 +23,7 @@ export default function ViewShoppingListType({ route }: ViewShoppingListProps) {
 
     return (
         <SecondaryView>
-            <RenderShoppingLists title={'Saved Lists' as string} listType={list.listType as keyof ShoppingListTypes} />
+            <RenderShoppingLists listType={list.listType as keyof ShoppingListTypes} />
         </SecondaryView>
     )
 }
