@@ -34,9 +34,8 @@ export default function AnimatedModalWithInput({ setName, name, setListSaved, me
         Animated.spring(slideAnim, {
             toValue: Dimensions.get('window').height,
             useNativeDriver: true,
-        }).start(() => {
-            setShowModal(false);
-        });
+        }).start();
+        setShowModal(false);
     }
 
     const saveList = () => {

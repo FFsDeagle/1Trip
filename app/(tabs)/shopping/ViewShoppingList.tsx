@@ -86,7 +86,7 @@ export default function ViewShoppingList({ route }: ViewShoppingListProps) {
         // Add buttons to the context menu
         buttons={[
           <TouchableOpacity 
-            onPress={() => navigation.navigate('StartShopping', { list: list.items as InventoryItem[] })}
+            onPress={() => navigation.navigate('StartShopping', { name: list.name as string, list: list.items as InventoryItem[] })}
           >
             <FontAwesome5 name="shopping-cart" size={24} color={theme.iconColor} />
           </TouchableOpacity>

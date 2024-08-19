@@ -7,6 +7,7 @@ import ViewShoppingList from './ViewShoppingList';
 import StartShopping from './StartShopping';
 import ViewShoppingListType from './ViewShoppingListType';
 import Config from '../settings/Settings';
+import ViewHistoryList from './ViewHistoryList';
 
 export default function Items() {
   // Load categories
@@ -101,6 +102,22 @@ export default function Items() {
         }}
         component={Settings}
       />
+      <ItemsStack.Screen
+        name="ViewHistoryList"
+        options={{
+          headerShown: true,
+          headerTitle: "History List",
+          headerStyle: {
+            backgroundColor: theme.colors.background,
+          },
+          headerTintColor: theme.colors.tint,
+          headerTitleStyle: {
+            color: theme.colors.headerTitleColor,
+          },
+        }}
+      >
+        {(props: any) => <ViewHistoryList {...props} />}
+      </ItemsStack.Screen>
     </ItemsStack.Navigator>
   );
 };

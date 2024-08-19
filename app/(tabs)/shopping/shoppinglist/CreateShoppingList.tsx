@@ -258,12 +258,13 @@ export default function CreateShoppingList() {
         }
     };
 
+    // Unused for now, may remove later
     const validateAndNavigate = () => {
         if (shoppingList.length === 0){
             setShowModal(true);
             return;
         }
-        navigation.navigate('StartShopping', { list: shoppingList })
+        navigation.navigate('StartShopping', { name: name, list: shoppingList })
     }
 
     const saveList = () => {

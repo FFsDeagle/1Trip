@@ -23,7 +23,7 @@ export default function ViewShoppingListType({ route }: ViewShoppingListProps) {
 
     return (
         <SecondaryView>
-            <RenderShoppingLists listType={list.listType as keyof ShoppingListTypes} />
+            <RenderShoppingLists title={list.title} listType={list.listType as keyof ShoppingListTypes} />
         </SecondaryView>
     )
 }

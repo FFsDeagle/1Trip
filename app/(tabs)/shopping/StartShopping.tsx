@@ -8,13 +8,14 @@ import { NavigationProp, RouteProp, useNavigation } from "@react-navigation/nati
 import { FlatList, TouchableOpacity, View } from "react-native";
 import { AddListToInventory, InventoryItem } from "../inventory/InventorySlice";
 import { useEffect, useState } from "react";
+import { SaveIncompleteList, ShoppingList } from "./ShoppingSlice";
 
 type ViewShoppingListProps = {
     route: RouteProp<ShoppingStackParamList, 'StartShopping'>;
 };
 
 export default function StartShopping({ route }: ViewShoppingListProps){
-    const { list } = route.params;
+    const { list, name } = route.params;
     const theme = useAppSelector(state => state.theme.colors);
     const items = useAppSelector(state => state.inventory.inventoryItems);
     const navigation = useNavigation<NavigationProp<ShoppingStackParamList>>();
@@ -23,6 +24,14 @@ export default function StartShopping({ route }: ViewShoppingListProps){
     const [checkedList, setCheckedList] = useState<InventoryItem[]>([]);
 
     const handleSubmit = () => {
+        // Get unchecked items and save into incompleteLists
+        const remainingItems: ShoppingList = {
+            name: name,
+            items: shoppingList.filter(item => checkedList.map(checkedItem => item.id !== checkedItem.id))
+        }
+        if (remainingItems.items.length > 0){
+            dispatch(SaveIncompleteList(remainingItems as ShoppingList))
+        }
         dispatch(AddListToInventory(checkedList as InventoryItem[]));
         navigation.navigate('ShoppingMain');
     }

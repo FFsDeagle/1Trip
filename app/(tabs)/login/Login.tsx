@@ -77,12 +77,14 @@ export default function Login ({ navigation }: { navigation: any }){
         setIsLoading(true);
         if (login.username === '' || login.password === '') {
             console.log('Username or password is empty');
+            setIsLoading(false);
             return;
         }
         try {
             await dispatch(loginAsync({ userName: login.username, password: login.password }))
         } catch (error) {
             console.log('Error during login:', error);
+            setIsLoading(false);
         }
     };
 
