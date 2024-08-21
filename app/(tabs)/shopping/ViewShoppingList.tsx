@@ -9,7 +9,7 @@ import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { useAppSelector } from "@/app/store/hooks";
 import { useNavigation } from "expo-router";
 import MultiButtonContextMenu from "@/components/widgets/misc/MultiButtonContextMenu";
-import { ShoppingStackParamList } from "@/constants/Types";
+import { ShoppingStackParamList } from "@/constants/types";
 import { InventoryItem } from "../inventory/InventorySlice";
 
 type ShoppingStackParam = {

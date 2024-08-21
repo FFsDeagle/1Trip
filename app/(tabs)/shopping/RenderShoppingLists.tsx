@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native';
 import { DeleteList, ShoppingList, ShoppingListTypes } from './ShoppingSlice';
 import { Dimensions, FlatList, View } from "react-native";
 import { styles } from "@/components/util/Theme";
-import { ShoppingStackParamList } from "@/constants/Types";
+import { ShoppingStackParamList } from "@/constants/types";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { FontAwesome, FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
@@ -46,7 +46,7 @@ export default function RenderShoppingLists({ title, listType }: RenderShoppingL
                             data={list}
                             renderItem={({item, index}: { item: ShoppingList, index: number }) => (
                                 <View
-                                    key={index}
+                                    key={index + 1}
                                     style={[
                                         {
                                             width: '45%', 

@@ -15,7 +15,7 @@ import RenderShoppingListItems from "./RenderShoppingListItems";
 import { RenderAllItems } from "./RenderAllItems";
 import MultiButtonContextMenu from "@/components/widgets/misc/MultiButtonContextMenu";
 import { useNavigation } from "expo-router";
-import { ShoppingStackParamList } from "@/constants/Types";
+import { ShoppingStackParamList } from "@/constants/types";
 import { NavigationProp } from "@react-navigation/native";
 import AnimatedModal from "@/components/animations/AnimatedModal";
 import { SaveShoppingList } from "../ShoppingSlice";

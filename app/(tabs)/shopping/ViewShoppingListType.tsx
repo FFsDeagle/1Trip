@@ -3,7 +3,7 @@ import RenderShoppingLists from "./RenderShoppingLists";
 import { ShoppingListTypes } from "./ShoppingSlice";
 import { useEffect } from "react";
 import { useNavigation } from "expo-router";
-import { ShoppingStackParamList } from "@/constants/Types";
+import { ShoppingStackParamList } from "@/constants/types";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
 
   

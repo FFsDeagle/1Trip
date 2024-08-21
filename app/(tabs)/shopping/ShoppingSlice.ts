@@ -94,6 +94,20 @@ export const SaveShoppingList = createAsyncThunk(
     }
 )
 
+export const SaveToHistory = createAsyncThunk(
+    'shoppingList/saveToHistory',
+    async (list: ShoppingList) => {
+        return list;
+        return axios.post('http://localhost:5000/shopping/saveToHistory', list)
+        .then((response: AxiosResponse) => {
+            return response;
+        }).catch((error) => {
+            console.log("Error occurred when saving list", error);
+            return error;
+        })
+    }
+)
+
 export const ShoppingListSlice = createSlice({
     name: 'shoppingList',
     initialState: initialState,
@@ -116,7 +130,6 @@ export const ShoppingListSlice = createSlice({
         builder.addCase(SaveShoppingList.fulfilled, (state, action: PayloadAction<ShoppingList>) => {
             state.status = 'success';
             state.lists.savedLists.push(action.payload);
-            state.lists.history.push(action.payload);
         })
         builder.addCase(SaveShoppingList.rejected, (state) => {
             state.status = 'failed';
@@ -139,6 +152,15 @@ export const ShoppingListSlice = createSlice({
             state.lists.savedLists = state.lists.savedLists.filter(list => list.id !== action.payload.id);
         })
         builder.addCase(DeleteList.rejected, (state) => {
+            state.status = 'failed';
+        })
+        builder.addCase(SaveToHistory.pending, (state) => {
+            state.status = 'loading';
+        })
+        builder.addCase(SaveToHistory.fulfilled, (state, action: PayloadAction<ShoppingList>) => {
+            state.lists.history.push(action.payload);
+        })
+        builder.addCase(SaveToHistory.rejected, (state) => {
             state.status = 'failed';
         })
     }

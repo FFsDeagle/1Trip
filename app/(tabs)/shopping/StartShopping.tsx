@@ -2,13 +2,13 @@ import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { ScrollView, SecondaryView, TextPrimary, TextSecondary } from "@/components/Themed";
 import { styles } from "@/components/util/Theme";
 import MultiButtonContextMenu from "@/components/widgets/misc/MultiButtonContextMenu";
-import { ShoppingStackParamList } from "@/constants/Types";
+import { ShoppingStackParamList } from "@/constants/types";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { NavigationProp, RouteProp, useNavigation } from "@react-navigation/native";
 import { FlatList, TouchableOpacity, View } from "react-native";
 import { AddListToInventory, InventoryItem } from "../inventory/InventorySlice";
 import { useEffect, useState } from "react";
-import { SaveIncompleteList, ShoppingList } from "./ShoppingSlice";
+import { SaveIncompleteList, SaveToHistory, ShoppingList } from "./ShoppingSlice";
 
 type ViewShoppingListProps = {
     route: RouteProp<ShoppingStackParamList, 'StartShopping'>;
@@ -33,6 +33,11 @@ export default function StartShopping({ route }: ViewShoppingListProps){
             dispatch(SaveIncompleteList(remainingItems as ShoppingList))
         }
         dispatch(AddListToInventory(checkedList as InventoryItem[]));
+        const historyList: ShoppingList = {
+            items: checkedList as InventoryItem[],
+            name: name,
+        }
+        dispatch(SaveToHistory(historyList as ShoppingList))
         navigation.navigate('ShoppingMain');
     }
 

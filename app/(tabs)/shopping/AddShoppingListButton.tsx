@@ -3,7 +3,7 @@ import { TouchableOpacity } from "@/components/Themed";
 import { useNavigation } from "expo-router";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
-import { ShoppingStackParamList } from "@/constants/Types";
+import { ShoppingStackParamList } from "@/constants/types";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "@/app/store/hooks";
 
