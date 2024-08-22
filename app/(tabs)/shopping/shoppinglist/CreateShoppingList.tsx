@@ -1,5 +1,5 @@
 import { LinearGradient, PrimaryView, ScrollView, TextSecondary } from "@/components/Themed";
-import { Dimensions, TouchableOpacity, TextInput } from "react-native";
+import { Dimensions, TouchableOpacity, TextInput, NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 import { styles } from "@/components/util/Theme";
 import { useEffect, useRef, useState } from "react";
 import { InventoryItem } from "../../items/ItemSlice";
@@ -21,6 +21,8 @@ import AnimatedModal from "@/components/animations/AnimatedModal";
 import { SaveShoppingList } from "../ShoppingSlice";
 import { ShoppingList } from "../ShoppingSlice";
 import AnimatedModalWithInput from "@/components/animations/AnimatedModalWithInput";
+import LoadingIndicator from "@/components/animations/LoadingIndicator";
+import SearchWithContextMenu from "@/components/util/SearchWithContextMenu";
 
 export type CategorySelection = {
     name: string;
@@ -32,6 +34,7 @@ export default function CreateShoppingList() {
     const [menu, setMenu] = useState<string>('');
     const [favList, setFavList] = useState<InventoryItem[]>([] as InventoryItem[]);
     const [categoryItems, setCategoryItems] = useState<CategorySelection[]>([]);
+    const [allItems, setAllItems] = useState<InventoryItem[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string>('');
     const [selectedCategoryItems, setSelectedCategoryItems] = useState<InventoryItem[]>([]);
     const theme = useAppSelector(state => state.theme.colors);
@@ -52,6 +55,9 @@ export default function CreateShoppingList() {
     const [listSaved, setListSaved] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [name, setName] = useState<string>('');
+    const [contextMenu, setContextMenu] = useState<boolean>(false);
+    const [parentContainerTouched, setParentContainerTouched] = useState<boolean>(false);
+    const [searchResultsItem, setSearchResultsItem] = useState<InventoryItem>({} as InventoryItem);
 
     const menuSelection = [
         { key: 'Favorites', iconComponent: <FontAwesome5 name="star" color={theme.iconColor} size={24} /> },
@@ -69,6 +75,25 @@ export default function CreateShoppingList() {
             navigation.navigate('ShoppingMain');
         }
     }, [listSaved])
+
+    // For added search items
+    useEffect(() => {
+        if (searchResultsItem && Object.keys(searchResultsItem).length === 0) return;
+        const itemToAdd: ShoppingListItem = {
+            id: searchResultsItem.id,
+            name: searchResultsItem.name,
+            category: searchResultsItem.category,
+            description: searchResultsItem.description,
+            quantity: searchResultsItem.uom,
+            lastAddedDate: new Date(Date.now()).toISOString(),
+            isPastExpiry: false
+        }
+        setShoppingList([...shoppingList, itemToAdd]);
+    },[searchResultsItem])
+
+    useEffect(() => {
+        initializeDraggables();
+    },[])
 
     // Fetch items from the store
     useEffect(() => {
@@ -104,6 +129,15 @@ export default function CreateShoppingList() {
         }).start();
     }
 
+    const initializeDraggables = async () => {
+        if (items.length > 0) return;
+        setLoading(true);
+        await dispatch(getItemList()).then(() => {
+            filterFavorites();
+            setLoading(false);
+        });
+    }
+
     const filterFavorites = () => {
         const filteredItems = items.filter(item => item.isFavorite === true);
         setFavList([...filteredItems]);
@@ -111,15 +145,21 @@ export default function CreateShoppingList() {
 
     const filterCategories = () => {
         const categories = items.map(item => item.category).filter((value, index, self) => self.indexOf(value) === index);
+        console.log(categories);
         setCategoryItems(categories.map(category => {
             return { name: category, items: items.filter(item => item.category === category) };
         }));
+    }
+
+    const filterAll = () => {
+        setAllItems(items);
     }
 
     // Get items based on the selection
     const getItemsBySelection = () => {
         setFavList([]);
         setCategoryItems([]);
+        setAllItems([]);
         // Clear lists
         switch(menu){
             case 'Favorites':
@@ -131,6 +171,7 @@ export default function CreateShoppingList() {
                 openContainer();
                 break;
             case 'All':
+                filterAll();
                 openContainer();
                 break;
             case '':
@@ -236,15 +277,16 @@ export default function CreateShoppingList() {
     };
     
     const handleBack = () => {
+        setFavList([]);
+        setCategoryItems([]);
+        setSelectedCategoryItems([]);
+        setAllItems([]);
         switch(menu){
             case 'Favorites':
                 setMenu('');
-                setFavList([]);
                 break;
             case 'Categories':
                 setMenu('');
-                setCategoryItems([]);
-                setSelectedCategoryItems([]);
                 break;
             case 'individualCategory':
                 setSelectedCategory('');
@@ -258,15 +300,6 @@ export default function CreateShoppingList() {
         }
     };
 
-    // Unused for now, may remove later
-    const validateAndNavigate = () => {
-        if (shoppingList.length === 0){
-            setShowModal(true);
-            return;
-        }
-        navigation.navigate('StartShopping', { name: name, list: shoppingList })
-    }
-
     const saveList = () => {
         // Display Modal & prompt to set a name
         if (shoppingList.length === 0){
@@ -274,6 +307,10 @@ export default function CreateShoppingList() {
         } else {
             setShowNameModal(true);
         }
+    }
+
+    if (loading) {
+        return <LoadingIndicator displayText="Fetching your Inventory Items" />
     }
 
     return (
@@ -294,15 +331,7 @@ export default function CreateShoppingList() {
                 }}
             >
                 {/* Top Pane for Displaying Headers */}
-                <View style={[styles.justifiedCenter, { width: '100%', marginTop: 20, marginBottom: 20 }]}>
-                    <View style={[{ backgroundColor: theme.background2, elevation: 5, borderRadius: 15, width: '90%', padding: 10 }]}>
-                        <TextInput
-                            style={[{}]}
-                            placeholder="Search for items"
-                            placeholderTextColor={theme.textSecondary}
-                        />
-                    </View>
-                </View>
+                <SearchWithContextMenu placeholder="Search for items" searchContext={items} onTouchParentContainer={parentContainerTouched} setSelectedItem={setSearchResultsItem} displayElement={setKeyboardShown} />
                 {/* Center Scroll View for Shopping List */}
                 <Animated.ScrollView style={{ height: centreContainerHeight }}>
                     <Animated.View ref={topPaneRef} style={{height: centreContainerHeight}}>
@@ -319,7 +348,7 @@ export default function CreateShoppingList() {
                     </Animated.View>
                 </Animated.ScrollView>
                 {/* Bottom Pane with Draggable Items */}
-                {!showNameModal && <Animated.View style={[menu === '' ? styles.justified : styles.justifiedStart, { width: '100%', height: heightAnim, backgroundColor: theme.primary }]}>
+                {!showNameModal && !keyboardShown && <Animated.View style={[menu === '' ? styles.justified : styles.justifiedStart, { width: '100%', height: heightAnim, backgroundColor: theme.primary }]}>
                     <View style={[styles.flexRow, styles.justifiedApart, { width: menu === '' ? '60%' : '100%', height: menu === '' ? 'auto' : '100%' }]}>
                         {menu === '' ? menuSelection.map((item) => (
                             <DraggableItem
@@ -348,7 +377,7 @@ export default function CreateShoppingList() {
                             <ScrollView>
                                 <RenderFavoriteItems shoppingList={shoppingList} setShoppingList={setShoppingList} favList={favList} />
                                 <RenderCategoryItems shoppingList={shoppingList} setShoppingList={setShoppingList} setMenu={setMenu} selectedCategoryItems={selectedCategoryItems} categoryItems={categoryItems} setSelectedCategory={setSelectedCategory} />
-                                <RenderAllItems items={items} shoppingList={shoppingList} setShoppingList={setShoppingList} />
+                                <RenderAllItems items={allItems} shoppingList={shoppingList} setShoppingList={setShoppingList} />
                             </ScrollView>
                         </View>
                         }

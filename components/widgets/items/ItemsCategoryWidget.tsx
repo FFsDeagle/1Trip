@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { AntDesign, Feather, Ionicons, MaterialCommunityIcons, FontAwesome6, MaterialIcons, Fontisto } from "@expo/vector-icons";
 import { styles } from "@/components/util/Theme";
-import { WidgetGridItemProps } from "@/constants/Types";
+import { WidgetGridItemProps } from "@/constants/types";
 import { useRouter } from "expo-router";
 import { LinearGradient, TextSecondary } from "@/components/Themed";
 import { useAppSelector } from "@/app/store/hooks";

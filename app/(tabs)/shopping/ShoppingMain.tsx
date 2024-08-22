@@ -21,11 +21,11 @@ export default function ShoppingMain() {
   }, []);
 
   return (
-    <LinearGradientSecondary colors={[]} style={[styles.container]}>
+    <LinearGradient colors={[]} style={[styles.container]}>
       <ScrollView contentContainerStyle={{backgroundColor: 'transparent'}}>
           <ShoppingListWidget />
       </ScrollView>
       <AddShoppingListButton />
-    </LinearGradientSecondary>
+    </LinearGradient>
   )
 };

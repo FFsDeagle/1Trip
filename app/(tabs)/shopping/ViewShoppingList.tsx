@@ -12,24 +12,53 @@ import MultiButtonContextMenu from "@/components/widgets/misc/MultiButtonContext
 import { ShoppingStackParamList } from "@/constants/types";
 import { InventoryItem } from "../inventory/InventorySlice";
 
-type ShoppingStackParam = {
-  ViewShoppingList: { list: ShoppingList };
-};
+
 
 type ViewShoppingListProps = {
-  route: RouteProp<ShoppingStackParam, "ViewShoppingList">;
+  route: RouteProp<ShoppingStackParamList, "ViewShoppingList">;
 };
 
 export default function ViewShoppingList({ route }: ViewShoppingListProps) {
-  const { list } = route.params; 
-  const [shoppingList, setShoppingList] = useState<InventoryItem[]>(list.items);
+  const { list, listType } = route.params; 
+  const [shoppingList, setShoppingList] = useState<InventoryItem[]>([]);
   const theme = useAppSelector(state => state.theme.colors);
   const navigation = useNavigation<NavigationProp<ShoppingStackParamList>>();
+
+  // To be added to slice
+  // Add functionality to create custom categories
+  // Stored on slice/db
+  const categoryOrder = [
+    "Dairy",
+    "Meat",
+    "Produce",
+    "Frozen",
+    "Beverages",
+    "Canned",
+    "Bakery",
+    "Pantry",
+    "Snacks",
+    "Household",
+    "Personal Care",
+    "Miscellaneous"
+  ]
+
 
   useEffect(() => {
     // Set the header title when the component mounts
     navigation.setOptions({ headerTitle: list.name });
   }, [navigation]);
+
+  useEffect(() => {
+    // Organize shopping list by categories asc
+    const categorizedList = [...list.items].sort((a, b) => {
+      const indexA = categoryOrder.indexOf(a.category);
+      const indexB = categoryOrder.indexOf(b.category);
+      if (indexA < indexB) return 1;
+      else if (indexA > indexB) return -1;
+      return 0;
+    });
+    setShoppingList(categorizedList);
+  }, []);
 
   const decrementItem = (id: string | number) => {
     setShoppingList((prevList) =>
@@ -60,14 +89,14 @@ export default function ViewShoppingList({ route }: ViewShoppingListProps) {
   };
 
   return (
-    <SecondaryView style={styles.container}>
+    <SecondaryView style={[styles.container, styles.flexColumn, styles.justifiedStart]}>
       {shoppingList.map((item, key) => {
         return (
           <View key={key} style={[styles.flexRow, { padding: 5, backgroundColor: 'transparent' }]}>
-              <View style={[styles.flexRow, { backgroundColor: theme.background3, marginLeft: 5, borderRadius: 15, width: 'auto', padding: 5, elevation: 1 }]}>
+              <View style={[styles.flexRow, { backgroundColor: 'rgba(0,0,0,0.1)', borderRadius: 5, width: 'auto', padding: 5 }]}>
                   <View style={[styles.flexRow, styles.justifiedApart, { width: '65%'}]}>
                       <TextPrimary style={[styles.listText, { fontSize: 14, fontWeight: 'bold', letterSpacing: 1 }]}>{item.name}</TextPrimary>
-                      <TextPrimary style={[styles.listText, { fontSize: 12 }]}>{item.category}</TextPrimary>
+                      <TextPrimary style={[styles.listText, { fontSize: 12, letterSpacing: 1 }]}>{item.category}</TextPrimary>
                   </View>
                   <View style={[styles.flexRow, styles.justfiedEnd, { width: '35%' }]}>
                       <TextPrimary style={[styles.listText, { marginRight: 10 }]}>{item.quantity}</TextPrimary>
@@ -86,7 +115,7 @@ export default function ViewShoppingList({ route }: ViewShoppingListProps) {
         // Add buttons to the context menu
         buttons={[
           <TouchableOpacity 
-            onPress={() => navigation.navigate('StartShopping', { name: list.name as string, list: list.items as InventoryItem[] })}
+            onPress={() => navigation.navigate('StartShopping', { name: list.name as string, list: list.items as InventoryItem[], listType })}
           >
             <FontAwesome5 name="shopping-cart" size={24} color={theme.iconColor} />
           </TouchableOpacity>

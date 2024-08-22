@@ -32,7 +32,6 @@ export default function InventoryMain() {
 
     // Aggregate items by category
     items.forEach(item => {
-      console.log('Item Category:', item.category);
       if (categoryMap.has(item.category)) {
         categoryMap.set(item.category, categoryMap.get(item.category) + item.quantity);
       } else {

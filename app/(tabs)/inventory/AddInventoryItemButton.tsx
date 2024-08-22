@@ -3,7 +3,7 @@ import { TouchableOpacity } from "@/components/Themed";
 import { useNavigation } from "expo-router";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
-import { InventoryStackParamList } from "@/constants/Types";
+import { InventoryStackParamList } from "@/constants/types";
 import { useEffect, useState } from "react";
 import { useAppSelector } from "@/app/store/hooks";
 
@@ -53,7 +53,6 @@ export default function AddInventoryItemButton() {
             justifyContent: 'center',
             alignItems: 'center',
             elevation: 5,
-            borderWidth: 2, 
         }} 
           onPress={() => {
               navigation.navigate('AddItem');

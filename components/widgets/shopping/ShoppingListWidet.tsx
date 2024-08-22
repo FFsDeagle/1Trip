@@ -97,7 +97,7 @@ export default function ShoppingListWidget() {
                                     return (
                                         <TouchableOpacity 
                                             key={key} 
-                                            onPress={() => navigation.navigate('ViewShoppingList', { name: list.name, list })}
+                                            onPress={() => navigation.navigate('ViewShoppingList', { name: list.name, list, listType: card.listType })}
                                             style={[
                                                 styles.container,
                                                 styles.justifiedCenter,

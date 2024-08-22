@@ -1,6 +1,6 @@
 import { styles } from "@/components/util/Theme";
 import { useNavigation } from "expo-router";
-import { ItemsStackParamList } from "@/constants/Types";
+import { ItemsStackParamList } from "@/constants/types";
 import { NavigationProp, RouteProp, useRoute } from "@react-navigation/native";
 import BackButton from "@/components/util/BackButton";
 import { SecondaryView, TextPrimary, TextSecondary, TouchableOpacityItem } from "@/components/Themed";

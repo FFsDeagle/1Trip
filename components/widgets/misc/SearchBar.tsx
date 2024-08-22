@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { TextInput, View } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import { SearchBarProp } from "@/constants/Types";
+import { SearchBarProp } from "@/constants/types";
 import { Link, useRouter } from "expo-router";
 
 export default function SearchBarWidget({ componentToRender }: SearchBarProp) {

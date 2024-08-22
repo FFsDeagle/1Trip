@@ -64,7 +64,7 @@ export default function RenderShoppingLists({ title, listType }: RenderShoppingL
                                             {item.name}
                                         </TextSecondary>
                                         <TouchableOpacity
-                                            onPress={() => navigation.navigate(readonly ? 'ViewHistoryList' : 'ViewShoppingList', { name: listType, list: item as ShoppingList } )}>
+                                            onPress={() => navigation.navigate(readonly ? 'ViewHistoryList' : 'ViewShoppingList', { name: listType, list: item as ShoppingList, listType } )}>
                                                 <FontAwesome6 name="eye" size={16}/>
                                         </TouchableOpacity>
                                     </View>
