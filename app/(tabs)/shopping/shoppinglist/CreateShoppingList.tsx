@@ -1,7 +1,7 @@
 import { LinearGradient, PrimaryView, ScrollView, TextSecondary } from "@/components/Themed";
 import { Dimensions, TouchableOpacity, TextInput, NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 import { styles } from "@/components/util/Theme";
-import { useEffect, useRef, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import { InventoryItem } from "../../items/ItemSlice";
 import { InventoryItem as ShoppingListItem } from "../../inventory/InventorySlice";
 import { Animated, View } from "react-native";
@@ -18,18 +18,24 @@ import { useNavigation } from "expo-router";
 import { ShoppingStackParamList } from "@/constants/types";
 import { NavigationProp } from "@react-navigation/native";
 import AnimatedModal from "@/components/animations/AnimatedModal";
-import { SaveShoppingList } from "../ShoppingSlice";
+import { DeleteList, SaveShoppingList, UpdateShoppingList } from "../ShoppingSlice";
 import { ShoppingList } from "../ShoppingSlice";
 import AnimatedModalWithInput from "@/components/animations/AnimatedModalWithInput";
 import LoadingIndicator from "@/components/animations/LoadingIndicator";
 import SearchWithContextMenu from "@/components/util/SearchWithContextMenu";
+
+type ShoppingListNavigationProps = {
+    route: RouteParams;
+}
+
+type RouteParams = { params: {name: string, list: ShoppingList, listType: string} };
 
 export type CategorySelection = {
     name: string;
     items: InventoryItem[];
 };
 
-export default function CreateShoppingList() {
+export default function CreateShoppingList({ route }: ShoppingListNavigationProps) {
     const [shoppingList, setShoppingList] = useState<ShoppingListItem[]>([]);
     const [menu, setMenu] = useState<string>('');
     const [favList, setFavList] = useState<InventoryItem[]>([] as InventoryItem[]);
@@ -55,9 +61,8 @@ export default function CreateShoppingList() {
     const [listSaved, setListSaved] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [name, setName] = useState<string>('');
-    const [contextMenu, setContextMenu] = useState<boolean>(false);
-    const [parentContainerTouched, setParentContainerTouched] = useState<boolean>(false);
     const [searchResultsItem, setSearchResultsItem] = useState<InventoryItem>({} as InventoryItem);
+    const [isEditing, setIsEditing] = useState<boolean>(false);
 
     const menuSelection = [
         { key: 'Favorites', iconComponent: <FontAwesome5 name="star" color={theme.iconColor} size={24} /> },
@@ -65,14 +70,37 @@ export default function CreateShoppingList() {
         { key: 'All', iconComponent: <FontAwesome5 name="clipboard-list" color={theme.iconColor} size={24} /> },
     ];
 
+    // If list is loaded from the edit option
+    useEffect(() => {
+        if (route.params && route.params.list !== null) {
+            const list = route.params.list as ShoppingList;
+            console.log('list', list);
+            setShoppingList(list.items as ShoppingListItem[]);
+            setName(list.name);
+            setIsEditing(true);
+        }
+    }, [])
+
     useEffect(() => {
         if (listSaved){
             const listToSave: ShoppingList = {
                 name: name,
                 items: shoppingList
             }
-            dispatch(SaveShoppingList(listToSave));
-            navigation.navigate('ShoppingMain');
+            if (isEditing){
+                // If list is empty delete it
+                if (shoppingList.length === 0){
+                    dispatch(DeleteList(listToSave));
+                    navigation.navigate('ShoppingMain');
+                }else {
+                    // Update the list
+                    dispatch(UpdateShoppingList(listToSave));
+                    navigation.navigate('ShoppingMain');
+                }
+            } else {
+                dispatch(SaveShoppingList(listToSave));
+                navigation.navigate('ShoppingMain');
+            }
         }
     }, [listSaved])
 
@@ -145,7 +173,6 @@ export default function CreateShoppingList() {
 
     const filterCategories = () => {
         const categories = items.map(item => item.category).filter((value, index, self) => self.indexOf(value) === index);
-        console.log(categories);
         setCategoryItems(categories.map(category => {
             return { name: category, items: items.filter(item => item.category === category) };
         }));
@@ -302,6 +329,10 @@ export default function CreateShoppingList() {
 
     const saveList = () => {
         // Display Modal & prompt to set a name
+        if (isEditing) {
+            setListSaved(true);
+            return;
+        }
         if (shoppingList.length === 0){
             setShowModal(true);
         } else {
@@ -331,11 +362,11 @@ export default function CreateShoppingList() {
                 }}
             >
                 {/* Top Pane for Displaying Headers */}
-                <SearchWithContextMenu placeholder="Search for items" searchContext={items} onTouchParentContainer={parentContainerTouched} setSelectedItem={setSearchResultsItem} displayElement={setKeyboardShown} />
+                <SearchWithContextMenu placeholder="Search for items" searchContext={items} setSelectedItem={setSearchResultsItem} displayElement={setKeyboardShown} />
                 {/* Center Scroll View for Shopping List */}
                 <Animated.ScrollView style={{ height: centreContainerHeight }}>
                     <Animated.View ref={topPaneRef} style={{height: centreContainerHeight}}>
-                        {   
+                        {
                             shoppingList.length === 0 ? 
                             <TextSecondary style={[styles.title, { textAlign: 'center', height: initialHeight, marginTop: 50 }]}>
                                 Drag items to create your shopping list
@@ -387,14 +418,14 @@ export default function CreateShoppingList() {
             <MultiButtonContextMenu 
                 buttons={[
                     <TouchableOpacity 
-                        onPress={() => navigation.goBack()}
+                    onPress={() => navigation.goBack()}
                     >
                         <FontAwesome5 name="arrow-left" size={24} color={theme.iconColor} />
                     </TouchableOpacity>,
                     <TouchableOpacity 
                         onPress={saveList}
                     >
-                        <FontAwesome5 name="save" size={24} color={theme.iconColor} />
+                        <FontAwesome5 name={"save"} size={24} color={theme.iconColor} />
                     </TouchableOpacity>,
                 ]} 
             />

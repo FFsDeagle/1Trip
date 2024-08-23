@@ -7,8 +7,15 @@ import { SecondaryView, TextPrimary, TextSecondary, TouchableOpacity, TouchableO
 
 type InventoryItemInfoRouteProp = RouteProp<InventoryStackParamList, 'InventoryItemInfo'>;
 
-export default function InventoryItemInfo() {
-  const route = useRoute<InventoryItemInfoRouteProp>();
+type InventoryItemInfoProps = {
+    route: {
+        params: {
+            searchValue: string;
+        };
+    };
+};
+
+export default function InventoryItemInfo({ route }: InventoryItemInfoProps) {
     const navigation = useNavigation<NavigationProp<InventoryStackParamList, 'InventoryMain'>>();
 
     const { searchValue } = route.params;

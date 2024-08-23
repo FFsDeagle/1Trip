@@ -37,11 +37,12 @@ export default function Items() {
       />
       <ItemsStack.Screen
         name="CreateShoppingList"
-        component={CreateShoppingList}
         options={{
           headerShown: false,
         }}
-      />
+      >
+        {(props: any) => <CreateShoppingList {...props} />}
+      </ItemsStack.Screen>
       <ItemsStack.Screen
         name="ViewShoppingList"
         options={{

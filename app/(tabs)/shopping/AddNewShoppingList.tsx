@@ -1,6 +1,6 @@
 import { useAppSelector } from "@/app/store/hooks";
 import { TouchableOpacity } from "@/components/Themed";
-import { ShoppingStackParamList } from "@/constants/Types";
+import { ShoppingStackParamList } from "@/constants/types";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 

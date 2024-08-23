@@ -5,10 +5,10 @@ import MultiButtonContextMenu from "@/components/widgets/misc/MultiButtonContext
 import { ShoppingStackParamList } from "@/constants/types";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { NavigationProp, RouteProp, useNavigation } from "@react-navigation/native";
-import { FlatList, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { AddListToInventory, InventoryItem } from "../inventory/InventorySlice";
-import { useEffect, useState } from "react";
-import { DeleteList, SaveIncompleteList, SaveToHistory, ShoppingList } from "./ShoppingSlice";
+import { useState } from "react";
+import { DeleteIncompleteList, SaveIncompleteList, SaveToHistory, ShoppingList } from "./ShoppingSlice";
 
 type ViewShoppingListProps = {
     route: RouteProp<ShoppingStackParamList, 'StartShopping'>;
@@ -38,7 +38,7 @@ export default function StartShopping({ route }: ViewShoppingListProps){
             name: name,
         }
         if (listType === "incompleteLists"){
-            dispatch(DeleteList(mutatedList))
+            dispatch(DeleteIncompleteList(mutatedList))
         }
         dispatch(SaveToHistory(mutatedList as ShoppingList))
         navigation.navigate('ShoppingMain');

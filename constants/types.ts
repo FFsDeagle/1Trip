@@ -39,7 +39,12 @@ export type InventoryStackParamList = {
     InventoryMain: undefined;
     InventoryItemInfo: { searchValue: string };
     AddItem: undefined;
+    ItemSearch: ItemSearchProps;
 }
+
+export type ItemSearchProps = { placeholder: string, nav: keyof InventoryStackParamList }
+
+
 
 export type ItemsStackParamList = {
     ItemMain: undefined;
@@ -49,7 +54,7 @@ export type ItemsStackParamList = {
 export type ShoppingStackParamList = {
     ShoppingMain: undefined;
     ShoppingItemInfo: { searchValue: string };
-    CreateShoppingList: undefined;
+    CreateShoppingList: { name: string, list: ShoppingList, listType: string };
     ViewShoppingList: { name: string, list: ShoppingList, listType: string };
     ViewShoppingListType: { list: ViewShoppingListTypeProps };
     StartShopping: { name: string, list: InventoryItem[], listType: string };

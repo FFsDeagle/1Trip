@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { SecondaryView, TextPrimary, TextSecondary } from "@/components/Themed";
 import { TouchableOpacity } from 'react-native';
 import { ShoppingList } from "./ShoppingSlice";
@@ -23,6 +23,14 @@ export default function ViewShoppingList({ route }: ViewShoppingListProps) {
   const [shoppingList, setShoppingList] = useState<InventoryItem[]>([]);
   const theme = useAppSelector(state => state.theme.colors);
   const navigation = useNavigation<NavigationProp<ShoppingStackParamList>>();
+  const [displayEditButton, setDisplayEditButton] = useState<boolean>(false);
+  const [buttonList, setButtonList] = useState<ReactElement[]>([
+    <TouchableOpacity 
+      onPress={() => navigation.navigate('StartShopping', { name: list.name as string, list: list.items as InventoryItem[], listType })}
+    >
+      <FontAwesome5 name="shopping-cart" size={24} color={theme.iconColor} />
+    </TouchableOpacity>
+  ]);
 
   // To be added to slice
   // Add functionality to create custom categories
@@ -42,6 +50,17 @@ export default function ViewShoppingList({ route }: ViewShoppingListProps) {
     "Miscellaneous"
   ]
 
+  useEffect(() => {
+    if (listType === 'savedList' || listType === 'historyList'){
+      setButtonList([...buttonList, 
+        <TouchableOpacity 
+          onPress={() => navigation.navigate('CreateShoppingList', { name: list.name as string, list: list as ShoppingList, listType })}
+        >
+          <FontAwesome5 name="shopping-cart" size={24} color={theme.iconColor} />
+        </TouchableOpacity>
+      ])
+    }
+  },[])
 
   useEffect(() => {
     // Set the header title when the component mounts
@@ -100,12 +119,6 @@ export default function ViewShoppingList({ route }: ViewShoppingListProps) {
                   </View>
                   <View style={[styles.flexRow, styles.justfiedEnd, { width: '35%' }]}>
                       <TextPrimary style={[styles.listText, { marginRight: 10 }]}>{item.quantity}</TextPrimary>
-                      <TouchableOpacity onPress={() => decrementItem(item.id)} style={[styles.justified, { marginRight: 10 }]}>
-                          <FontAwesome name="minus" size={20} color={theme.textPrimary} />
-                      </TouchableOpacity>
-                      <TouchableOpacity onPress={() => incrementItem(item.id)} style={[styles.justified, { marginRight: 20 }]}>
-                          <FontAwesome name="plus" size={20} color={theme.textPrimary} />
-                      </TouchableOpacity>
                   </View>
               </View>
           </View>
@@ -118,7 +131,12 @@ export default function ViewShoppingList({ route }: ViewShoppingListProps) {
             onPress={() => navigation.navigate('StartShopping', { name: list.name as string, list: list.items as InventoryItem[], listType })}
           >
             <FontAwesome5 name="shopping-cart" size={24} color={theme.iconColor} />
-          </TouchableOpacity>
+          </TouchableOpacity>,
+          <TouchableOpacity
+            onPress={() => navigation.navigate('CreateShoppingList', { name: list.name as string, list, listType })}
+          >
+            <FontAwesome5 name="edit" size={24} color={theme.iconColor} />
+          </TouchableOpacity>          
         ]} 
       />
     </SecondaryView>

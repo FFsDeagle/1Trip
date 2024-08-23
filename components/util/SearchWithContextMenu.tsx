@@ -8,7 +8,7 @@ import { ScrollView, SecondaryView, TextSecondary, TouchableOpacity } from "../T
 type SearchWithContextMenuProps = {
     placeholder: string;
     searchContext: InventoryItem[];
-    onTouchParentContainer: boolean;
+    onTouchParentContainer?: boolean;
     setSelectedItem: Dispatch<SetStateAction<InventoryItem>>;
     displayElement?: Dispatch<SetStateAction<boolean>>;
 }
@@ -21,11 +21,11 @@ export default function SearchWithContextMenu ({ displayElement, onTouchParentCo
     useEffect(() => {
         const keyboardShown = Keyboard.addListener('keyboardDidShow', () => {
             displayElement && displayElement(true);
-            console.log('shown')
         })
         const keyboardHidden = Keyboard.addListener('keyboardDidHide', () => {
             displayElement && displayElement(false);
-            console.log('hidden')
+            setSearchResults([]);
+            onChangeText('');
         })
 
         return () => {
@@ -39,6 +39,10 @@ export default function SearchWithContextMenu ({ displayElement, onTouchParentCo
     }, [onTouchParentContainer])
 
     useEffect(() => {
+        search();
+    }, [value])
+
+    const search = () => {
         console.log(value);
         if (value === '') {
             setSearchResults([]);
@@ -46,7 +50,7 @@ export default function SearchWithContextMenu ({ displayElement, onTouchParentCo
             const filteredResults = searchContext.filter(item => item.name.toLowerCase().includes(value.toLowerCase()));
             setSearchResults([...filteredResults]);
         }
-    }, [value])
+    }
 
     const handlePress = (result: InventoryItem) => {
         setSelectedItem(result);
