@@ -64,17 +64,22 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
     const [searchResultsItem, setSearchResultsItem] = useState<InventoryItem>({} as InventoryItem);
     const [isEditing, setIsEditing] = useState<boolean>(false);
 
+    // Menu Selection can be a list of 
     const menuSelection = [
         { key: 'Favorites', iconComponent: <FontAwesome5 name="star" color={theme.iconColor} size={24} /> },
         { key: 'Categories', iconComponent: <MaterialIcons name="category" color={theme.iconColor} size={24} /> },
         { key: 'All', iconComponent: <FontAwesome5 name="clipboard-list" color={theme.iconColor} size={24} /> },
     ];
 
+    useEffect(() => {
+        // Sort shopping list by category
+        setShoppingList(shoppingList.sort((a, b) => a.category.localeCompare(b.category)));
+    },[shoppingList])
+
     // If list is loaded from the edit option
     useEffect(() => {
         if (route.params && route.params.list !== null) {
             const list = route.params.list as ShoppingList;
-            console.log('list', list);
             setShoppingList(list.items as ShoppingListItem[]);
             setName(list.name);
             setIsEditing(true);
@@ -115,6 +120,17 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
             quantity: searchResultsItem.uom,
             lastAddedDate: new Date(Date.now()).toISOString(),
             isPastExpiry: false
+        }
+        setSearchResultsItem({} as InventoryItem);
+        const itemAlreadyExists = shoppingList.find(item => item.id === itemToAdd.id);
+        if (itemAlreadyExists !== undefined) {
+            setShoppingList(shoppingList.map(item => {
+                if (item.id === itemToAdd.id) {
+                    item.quantity += itemToAdd.quantity;
+                }
+                return item;
+            }));
+            return;
         }
         setShoppingList([...shoppingList, itemToAdd]);
     },[searchResultsItem])
@@ -367,8 +383,8 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
                 <Animated.ScrollView style={{ height: centreContainerHeight }}>
                     <Animated.View ref={topPaneRef} style={{height: centreContainerHeight}}>
                         {
-                            shoppingList.length === 0 ? 
-                            <TextSecondary style={[styles.title, { textAlign: 'center', height: initialHeight, marginTop: 50 }]}>
+                            shoppingList.length === 0 ?
+                            <TextSecondary style={[styles.title, { textAlign: 'center', height: initialHeight, marginTop: 10 }]}>
                                 Drag items to create your shopping list
                             </TextSecondary>
                             :
@@ -418,7 +434,7 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
             <MultiButtonContextMenu 
                 buttons={[
                     <TouchableOpacity 
-                    onPress={() => navigation.goBack()}
+                        onPress={() => navigation.goBack()}
                     >
                         <FontAwesome5 name="arrow-left" size={24} color={theme.iconColor} />
                     </TouchableOpacity>,

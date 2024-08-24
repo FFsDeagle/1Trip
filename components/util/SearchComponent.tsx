@@ -20,8 +20,6 @@ export default function SearchComponent({ route }: RouteParams) {
     const [value, onChangeText] = useState<string>('');
     const [searchResults, setSearchResults] = useState<InventoryItem[]>([]);
 
-    console.log('SearchComponent.tsx: items:', items);
-
     useEffect(() => {
         search();
     }, [value])
@@ -50,10 +48,9 @@ export default function SearchComponent({ route }: RouteParams) {
                         value={value}
                         onChange={e => onChangeText(e.nativeEvent.text)}
                         placeholderTextColor={theme.textSecondary}
-                        
                     />
                 </View>
-                {searchResults.length > 0 && 
+                {searchResults.length > 0 &&
                     <ScrollView keyboardShouldPersistTaps='always' style={[{ height: 'auto', maxHeight: Dimensions.get('window').height / 3, width: '80%', overflow: 'hidden', borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }]}>
                         {
                             searchResults.map(result => {

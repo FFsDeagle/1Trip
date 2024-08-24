@@ -12,11 +12,7 @@ export const initialState: InventoryState = {
     status: 'idle',
     items: [] as InventoryItem[],
 }
-// id: string,
-// name: string,
-// description: string,
-// category: string,
-// quantity: number,
+
 const testState: InventoryItem[] = [
     {
         id: '1',
@@ -235,9 +231,6 @@ const testState: InventoryItem[] = [
         uom: 4, // 4 bulbs
     },
 ];
-
-
-
 
 export interface InventoryItem {
     id: string,
