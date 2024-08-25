@@ -13,6 +13,7 @@ type SearchWithContextMenuProps = {
     onTouchParentContainer?: boolean;
     setSelectedItem: Dispatch<SetStateAction<InventoryItem>>;
     displayElement?: Dispatch<SetStateAction<boolean>>;
+    popUpShown: boolean;
 }
 
 type Category = {
@@ -20,7 +21,7 @@ type Category = {
     isSelected: boolean;
 }
 
-export default function SearchWithContextMenu ({ displayElement, onTouchParentContainer, placeholder, searchContext, setSelectedItem }: SearchWithContextMenuProps) {
+export default function SearchWithContextMenu ({ popUpShown, displayElement, onTouchParentContainer, placeholder, searchContext, setSelectedItem }: SearchWithContextMenuProps) {
     const [searchResults, setSearchResults] = useState<InventoryItem[]>([]);
     const [value, onChangeText] = useState<string>('');
     const [displayCategory, setDisplayCategory] = useState<Category>({ isSelected: false, name: '' });
@@ -66,13 +67,11 @@ export default function SearchWithContextMenu ({ displayElement, onTouchParentCo
     }, [onTouchParentContainer])
 
     useEffect(() => {
-        if (!keyboardShown) return;
-        console.log('test');
+        if (!keyboardShown || popUpShown) return;
         search();
-    }, [value, displayCategory])
+    }, [value, displayCategory, keyboardShown])
 
     const search = () => {
-        console.log('searching..');
         if (displayCategory.name !== ''){
             searchCategoryResults();
             return;

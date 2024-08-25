@@ -2,7 +2,7 @@ import { LinearGradient, PrimaryView, ScrollView, TextSecondary } from "@/compon
 import { Dimensions, TouchableOpacity, TextInput, NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 import { styles } from "@/components/util/Theme";
 import { ReactElement, useEffect, useRef, useState } from "react";
-import { InventoryItem } from "../../items/ItemSlice";
+import { FavouriteList, getFavouriteList, InventoryItem } from "../../items/ItemSlice";
 import { InventoryItem as ShoppingListItem } from "../../inventory/InventorySlice";
 import { Animated, View } from "react-native";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
@@ -42,7 +42,6 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
     const [categoryItems, setCategoryItems] = useState<CategorySelection[]>([]);
     const [allItems, setAllItems] = useState<InventoryItem[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string>('');
-    const [selectedCategoryItems, setSelectedCategoryItems] = useState<InventoryItem[]>([]);
     const theme = useAppSelector(state => state.theme.colors);
     const items = useAppSelector(state => state.item.items);
     const dimensionsY = Dimensions.get('window').height;
@@ -63,13 +62,15 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
     const [name, setName] = useState<string>('');
     const [searchResultsItem, setSearchResultsItem] = useState<InventoryItem>({} as InventoryItem);
     const [isEditing, setIsEditing] = useState<boolean>(false);
+    const favoriteLists = useAppSelector(state => state.item.favouriteLists);
 
-    // Menu Selection can be a list of 
-    const menuSelection = [
-        { key: 'Favorites', iconComponent: <FontAwesome5 name="star" color={theme.iconColor} size={24} /> },
-        { key: 'Categories', iconComponent: <MaterialIcons name="category" color={theme.iconColor} size={24} /> },
-        { key: 'All', iconComponent: <FontAwesome5 name="clipboard-list" color={theme.iconColor} size={24} /> },
-    ];
+    useEffect(() => {
+        dispatch(getFavouriteList());
+    },[])
+
+    // useEffect(() => {
+    //     setFavItems(favoriteLists);
+    // },[favoriteLists])
 
     useEffect(() => {
         // Sort shopping list by category
@@ -139,91 +140,13 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
         initializeDraggables();
     },[])
 
-    // Fetch items from the store
-    useEffect(() => {
-        if (items.length === 0) {
-            dispatch(getItemList());
-        }
-        getItemsBySelection();
-    }, [menu]);
-
-    useEffect(() => {
-        getItemsByCategory();
-    },[selectedCategory]);
-
-    const getItemsByCategory = () => {
-        const items = categoryItems.map(category => category.items).flat();
-        const selectedItems = items.filter(item => item.category === selectedCategory);
-        setSelectedCategoryItems([...selectedItems]);
-    }
-    
-    const closeContainer = () => {
-        Animated.timing(heightAnim, {
-            toValue: initialHeight,
-            duration: 100,
-            useNativeDriver: false,
-        }).start();
-    }
-
-    const openContainer = () => {
-        Animated.timing(heightAnim, {
-            toValue: expandedHeight,
-            duration: 100,
-            useNativeDriver: false,
-        }).start();
-    }
-
     const initializeDraggables = async () => {
         if (items.length > 0) return;
         setLoading(true);
         await dispatch(getItemList()).then(() => {
-            filterFavorites();
             setLoading(false);
         });
     }
-
-    const filterFavorites = () => {
-        const filteredItems = items.filter(item => item.isFavorite === true);
-        setFavList([...filteredItems]);
-    }
-
-    const filterCategories = () => {
-        const categories = items.map(item => item.category).filter((value, index, self) => self.indexOf(value) === index);
-        setCategoryItems(categories.map(category => {
-            return { name: category, items: items.filter(item => item.category === category) };
-        }));
-    }
-
-    const filterAll = () => {
-        setAllItems(items);
-    }
-
-    // Get items based on the selection
-    const getItemsBySelection = () => {
-        setFavList([]);
-        setCategoryItems([]);
-        setAllItems([]);
-        // Clear lists
-        switch(menu){
-            case 'Favorites':
-                filterFavorites();
-                openContainer();
-                break;
-            case 'Categories':
-                filterCategories();
-                openContainer();
-                break;
-            case 'All':
-                filterAll();
-                openContainer();
-                break;
-            case '':
-                closeContainer();
-                break;
-            default:
-                break;
-        }
-    };
 
     const checkBounds = (dropPosition: { x: number, y: number }, callBack: (isWithinBounds: boolean) => void) => {
         topPaneRef.current?.measure((x, y, width, height, pageX, pageY) => {
@@ -234,73 +157,46 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
         return false;
     }
 
-    const handleDrop = async (key: string, dropPosition: { x: number, y: number }) => {
+    const handleDrop = async (id: string, dropPosition: { x: number, y: number }) => {
         checkBounds(dropPosition, (iswithinBounds) => {
-            iswithinBounds && addKeyItemsToList(key);
+            iswithinBounds && addKeyItemsToList(id);
         })
     };
 
-    const addKeyItemsToList = (key: string) => {
-        switch(key){
-            case 'Favorites':
-                setShoppingList((prevShoppingList) => {
-                    // Map over the previous shopping list to update existing items
-                    const updatedShoppingList = prevShoppingList.map(item => {
-                        const foundItem = items.find(c => c.id === item.id);
-                        if (foundItem && foundItem.isFavorite) {
-                            return {
-                                ...item,
-                                quantity: item.quantity + (foundItem.uom ?? 0),
-                                lastAddedDate: new Date(Date.now()).toISOString(),
-                                isPastExpiry: false
-                            };
-                        }
-                        return item;
-                    });
-            
-                    // Add new items that are favorites and not already in the list
-                    const newItems = items
-                        .filter(item => item.isFavorite && !prevShoppingList.find(e => e.id === item.id))
-                        .map(item => ({
-                            id: item.id,
-                            name: item.name,
-                            category: item.category,
-                            description: item.description,
-                            quantity: item.uom,
-                            lastAddedDate: new Date(Date.now()).toISOString(),
-                            isPastExpiry: false
-                        }));
-                    return [...updatedShoppingList, ...newItems];
-                });
-                break;
-            case 'Categories':
-                //const categoryItem = categoryItems.map(category => category.items.find(item => item.id === key)).filter(Boolean)[0];
-                const categoryItem = [...new Set(categoryItems.map(category => category.items).flat())].find(item => item.id === key);
-                if (categoryItem) {
-                    const exists = shoppingList.find((i) => i.category === categoryItem.category && i.id === categoryItem.id);
-                    if (exists) {
-                        setShoppingList(shoppingList.map((i) => {
-                            if (i.id === categoryItem.id) {
-                                i.quantity += 1;
-                            }
-                            return i;
-                        }));
-                        return;
-                    }
-                    setShoppingList([...shoppingList, ...items.filter(x => x.category === key).map(item => {
-                        return {
-                            id: item.id, name: item.name, category: item.category,
-                            description: item.description,
-                            quantity: item.uom,
-                            lastAddedDate: new Date(Date.now()).toISOString(),
-                            isPastExpiry: false
-                        };
-                    })]);
+    const addKeyItemsToList = (id: string) => {
+        setShoppingList((prevShoppingList) => {
+            // Map over the previous shopping list to update existing items
+            const selectedFavList = favoriteLists.find(list => list.id === id)?.items.map(item => { return item; });
+            if (selectedFavList === undefined) return [...prevShoppingList];
+            const updatedShoppingList = prevShoppingList.map(item => {
+                const foundItem = selectedFavList.find(c => c.id === item.id);
+                if (foundItem) {
+                    console.log('Updating list', foundItem);
+                    return {
+                        ...item,
+                        quantity: item.quantity + (foundItem.uom ?? 0),
+                        lastAddedDate: new Date(Date.now()).toISOString(),
+                        isPastExpiry: false
+                    };
                 }
-                break;
-            default:
-                break;
-        }
+                return item;
+            });
+
+            // Add new items that are favorites and not already in the list
+
+            const itemsToAdd = selectedFavList.filter(item => !prevShoppingList.find(c => c.id === item.id)).map(item => {
+                return {
+                    id: item.id,
+                    name: item.name,
+                    category: item.category,
+                    description: item.description,
+                    quantity: item.uom,
+                    lastAddedDate: new Date(Date.now()).toISOString(),
+                    isPastExpiry: false
+                };
+            });
+            return [...updatedShoppingList, ...itemsToAdd];
+        });
     };
 
     const handleDrag = (key: string, dragPosition: { x: number, y: number}) => {
@@ -317,30 +213,6 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
                 useNativeDriver: false,
             }).start();
         })
-    };
-    
-    const handleBack = () => {
-        setFavList([]);
-        setCategoryItems([]);
-        setSelectedCategoryItems([]);
-        setAllItems([]);
-        switch(menu){
-            case 'Favorites':
-                setMenu('');
-                break;
-            case 'Categories':
-                setMenu('');
-                break;
-            case 'individualCategory':
-                setSelectedCategory('');
-                setMenu('Categories');
-                break;
-            case 'All':
-                setMenu('');
-                break;
-            default:
-                break;
-        }
     };
 
     const saveList = () => {
@@ -378,7 +250,7 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
                 }}
             >
                 {/* Top Pane for Displaying Headers */}
-                <SearchWithContextMenu placeholder="Search for items" searchContext={items} setSelectedItem={setSearchResultsItem} displayElement={setKeyboardShown} />
+                <SearchWithContextMenu popUpShown={showNameModal} placeholder="Search for items" searchContext={items} setSelectedItem={setSearchResultsItem} displayElement={setKeyboardShown} />
                 {/* Center Scroll View for Shopping List */}
                 <Animated.ScrollView style={{ height: centreContainerHeight }}>
                     <Animated.View ref={topPaneRef} style={{height: centreContainerHeight}}>
@@ -396,37 +268,19 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
                 </Animated.ScrollView>
                 {/* Bottom Pane with Draggable Items */}
                 {!showNameModal && !keyboardShown && <Animated.View style={[menu === '' ? styles.justified : styles.justifiedStart, { width: '100%', height: heightAnim, backgroundColor: theme.primary }]}>
-                    <View style={[styles.flexRow, styles.justifiedApart, { width: menu === '' ? '60%' : '100%', height: menu === '' ? 'auto' : '100%' }]}>
-                        {menu === '' ? menuSelection.map((item) => (
+                    <View style={[styles.flexRow, styles.justifiedCenter, { width: '100%', height: menu === '' ? 'auto' : '100%' }]}>
+                        {
+                        favoriteLists && favoriteLists.map((item) => (
                             <DraggableItem
                                 setItemDragged={setItemDragged}
-                                key={item.key}
-                                item={item}
+                                key={item.id}
+                                item={{ name: item.name, key: item.id, iconComponent: <FontAwesome5 name="square" color={theme.iconColor} size={24} /> }}
                                 style={[{ zIndex: 100 }]}
                                 setMenu={setMenu}
                                 onDrop={handleDrop}
                                 onDrag={handleDrag}
                             />
                         ))
-                        :
-                        <View style={{ width: '100%', }}>
-                            <PrimaryView style={[styles.flexRow, styles.justifiedApart, { padding: 5 }]}>
-                                <View style={[styles.flexRow, { width: 'auto' }]}>
-                                    <TextSecondary style={[styles.header2]}>{
-                                            selectedCategory === '' ? menu : selectedCategory
-                                    }</TextSecondary>
-                                </View>
-                                <TouchableOpacity onPress={handleBack} style={[styles.justified, styles.flexRow, { width: 'auto', padding: 5, right: 15 }]}>
-                                    {menu === '' ? <FontAwesome5 name="arrow-left" color={theme.iconColor2} size={30} />
-                                    : <FontAwesome5 name="times" color={theme.iconColor2} size={30} />}
-                                </TouchableOpacity>
-                            </PrimaryView>
-                            <ScrollView>
-                                <RenderFavoriteItems shoppingList={shoppingList} setShoppingList={setShoppingList} favList={favList} />
-                                <RenderCategoryItems shoppingList={shoppingList} setShoppingList={setShoppingList} setMenu={setMenu} selectedCategoryItems={selectedCategoryItems} categoryItems={categoryItems} setSelectedCategory={setSelectedCategory} />
-                                <RenderAllItems items={allItems} shoppingList={shoppingList} setShoppingList={setShoppingList} />
-                            </ScrollView>
-                        </View>
                         }
                     </View>
                 </Animated.View>}

@@ -4,7 +4,7 @@ import { TextPrimary } from "../Themed";
 import { styles } from "../util/Theme";
 
 type DraggableItemProps = {
-    item: { key: string; iconComponent: JSX.Element };
+    item: { name: string, key: string; iconComponent: JSX.Element };
     setMenu: Dispatch<SetStateAction<string>>;
     style: ViewStyle | ViewStyle[];
     onDrop: (key: string, dropPosition: { x: number, y: number }) => void;
@@ -69,12 +69,14 @@ const DraggableItem = ({ onDrag, setItemDragged, setMenu, item, style, onDrop }:
                 {
                     transform: [{translateX: pan.x}, {translateY: pan.y}],
                     padding: 5,
+                    marginLeft: 10,
+                    marginRight: 10,
                 }
             ]}>
             <TouchableOpacity style={[styles.flexColumn, styles.justifiedCenter]} onPress={() => setMenu(item.key)}>
                 {React.createElement(item.iconComponent.type, item.iconComponent.props)}
                 <TextPrimary style={{ fontSize: 10, marginTop: 5, fontWeight: "500" }}>
-                    {item.key}
+                    {item.name}
                 </TextPrimary>
             </TouchableOpacity>
         </Animated.View>
