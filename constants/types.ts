@@ -42,14 +42,14 @@ export type InventoryStackParamList = {
     ItemSearch: ItemSearchProps;
 }
 
-export type ItemSearchProps = { placeholder: string, nav: keyof InventoryStackParamList }
-
-
-
 export type ItemsStackParamList = {
     ItemMain: undefined;
     ItemInfo: { searchValue: string };
+    ProductSearch: ProductSearchProps;
 }
+
+export type ItemSearchProps = { placeholder: string, nav: keyof InventoryStackParamList }
+export type ProductSearchProps = { placeholder: string, nav: keyof ItemsStackParamList }
 
 export type ShoppingStackParamList = {
     ShoppingMain: undefined;

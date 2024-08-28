@@ -1,21 +1,21 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { LinearGradient, TextSecondary, ScrollView } from "../Themed";
-import SearchWithContextMenu from "./SearchWithContextMenu";
+import { LinearGradient, TextSecondary, ScrollView } from "../../../components/Themed";
+import SearchWithContextMenu from "@/components/util/SearchWithContextMenu";
+import { InventoryItem } from "@/app/(tabs)/inventory/InventorySlice";
 import { Dimensions, TextInput, TouchableOpacity, View } from "react-native";
-import { styles } from "./Theme";
+import { styles } from "@/components/util/Theme";
 import { useAppSelector } from "@/app/store/hooks";
-import { InventoryStackParamList, RootStackParamList } from "@/constants/types";
+import { ItemsStackParamList } from "@/constants/types";
 import { useNavigation } from "expo-router";
 import { NavigationProp } from "@react-navigation/native";
-import BackButton from "./BackButton";
-import { InventoryItem } from "@/app/(tabs)/items/ItemSlice";
+import BackButton from "@/components/util/BackButton";
 
 type RouteParams = { route: { params: { placeholder: string } }};
 
-export default function SearchComponent({ route }: RouteParams) {
-    const items = useAppSelector(state => state.item.items);
+export default function ProductSearch({ route }: RouteParams) {
+    const items = useAppSelector(styles => styles.inventory.inventoryItems);
     const { placeholder } = route.params;
-    const navigation = useNavigation<NavigationProp<InventoryStackParamList>>();
+    const navigation = useNavigation<NavigationProp<ItemsStackParamList>>();
     const theme = useAppSelector(state => state.theme.colors);
     const [value, onChangeText] = useState<string>('');
     const [searchResults, setSearchResults] = useState<InventoryItem[]>([]);
@@ -35,7 +35,7 @@ export default function SearchComponent({ route }: RouteParams) {
 
     const handlePress = (result: InventoryItem) => {
         onChangeText('');
-        navigation.navigate('InventoryItemInfo', { searchValue: result.name });
+        navigation.navigate('ItemInfo', { searchValue: result.name });
     }
 
     return (
