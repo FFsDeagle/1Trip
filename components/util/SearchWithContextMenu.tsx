@@ -16,7 +16,7 @@ type SearchWithContextMenuProps = {
     popUpShown: boolean;
 }
 
-type Category = {
+export type Category = {
     name: string;
     isSelected: boolean;
 }

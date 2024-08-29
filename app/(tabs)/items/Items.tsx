@@ -8,8 +8,8 @@ import { useNavigation } from 'expo-router';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { NavigationProp } from '@react-navigation/native';
 import { ItemsStackParamList } from '@/constants/types';
-import SearchComponent from '@/components/util/SearchComponent';
 import ProductSearch from './ProductSearch';
+import AddProduct from './AddProduct';
 
 export default function Items() {
   // Load categories
@@ -49,10 +49,19 @@ export default function Items() {
         name="ProductSearch"
         options={{
           headerShown: false,
+          animation: 'fade_from_bottom',
         }}
       >
         {(props: any) => <ProductSearch {...props} />}
       </ItemsStack.Screen>
+      <ItemsStack.Screen
+        component={AddProduct}
+        name="AddProduct"
+        options={{
+          headerShown: false,
+          animation: 'fade_from_bottom',
+        }}
+      />
     </ItemsStack.Navigator>
   );
 };

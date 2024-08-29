@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { LinearGradient, TextSecondary } from "../../../components/Themed";
 import { Category } from "@/components/util/SearchWithContextMenu";
-import { InventoryItem } from "@/app/(tabs)/items/ItemSlice";
+import { InventoryItem } from "@/app/(tabs)/inventory/InventorySlice";
 import { Keyboard, TextInput, TouchableOpacity, ScrollView, View } from "react-native";
 import { styles } from "@/components/util/Theme";
 import { useAppSelector } from "@/app/store/hooks";
-import { ItemsStackParamList } from "@/constants/types";
+import { InventoryStackParamList } from "@/constants/types";
 import { useNavigation } from "expo-router";
 import { NavigationProp } from "@react-navigation/native";
 import BackButton from "@/components/util/BackButton";
@@ -13,10 +13,10 @@ import { AntDesign } from "@expo/vector-icons";
 
 type RouteParams = { route: { params: { placeholder: string } }};
 
-export default function ProductSearch({ route }: RouteParams) {
-    const items = useAppSelector(styles => styles.item.items);
+export default function InventorySearch({ route }: RouteParams) {
+    const items = useAppSelector(styles => styles.inventory.inventoryItems);
     const { placeholder } = route.params;
-    const navigation = useNavigation<NavigationProp<ItemsStackParamList>>();
+    const navigation = useNavigation<NavigationProp<InventoryStackParamList>>();
     const theme = useAppSelector(state => state.theme.colors);
     const [value, onChangeText] = useState<string>('');
     const [searchResults, setSearchResults] = useState<InventoryItem[]>([]);
@@ -81,7 +81,7 @@ export default function ProductSearch({ route }: RouteParams) {
 
     const handlePress = (result: InventoryItem) => {
         onChangeText('');
-        navigation.navigate('ItemInfo', { searchValue: result.name });
+        navigation.navigate('InventoryItemInfo', { searchValue: result.name });
     }
 
     const handleCategorySelect = (selectedCategory: Category) => {

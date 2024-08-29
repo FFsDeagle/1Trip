@@ -1,10 +1,11 @@
 import { styles } from "@/components/util/Theme";
-import { ScrollView, SecondaryView, TextSecondary } from "@/components/Themed";
+import { ScrollView, SecondaryView } from "@/components/Themed";
 import ItemsCategoryWidget from "@/components/widgets/items/ItemsCategoryWidget";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import FavItemsWidget from "@/components/widgets/items/FavItemsWidget";
 import { useEffect } from "react";
 import { getItemList } from "./ItemSlice";
+import AddNewItemButton from "./AddNewItemButton";
 
 export default function ItemMain() {
   const dispatch = useAppDispatch();
@@ -23,6 +24,7 @@ export default function ItemMain() {
         <ItemsCategoryWidget />
         <FavItemsWidget />
       </ScrollView>
+      <AddNewItemButton />
     </SecondaryView>
   )
 };

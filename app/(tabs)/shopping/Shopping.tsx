@@ -39,6 +39,7 @@ export default function Items() {
         name="CreateShoppingList"
         options={{
           headerShown: false,
+          animation: 'fade_from_bottom',
         }}
       >
         {(props: any) => <CreateShoppingList {...props} />}
