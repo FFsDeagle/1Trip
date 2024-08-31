@@ -6,24 +6,110 @@ import axios, { AxiosResponse } from "axios";
 export interface InventoryState {
     status: 'idle' | 'loading' | 'failed' | 'success'
     items: InventoryItem[],
+    favouriteLists: FavouriteList[],
 }
 
 export const initialState: InventoryState = {
     status: 'idle',
     items: [] as InventoryItem[],
+    favouriteLists: [] as FavouriteList[],
 }
-// id: string,
-// name: string,
-// description: string,
-// category: string,
-// quantity: number,
+
+export interface FavouriteList {
+    id: string,
+    name: string,
+    items: InventoryItem[],
+}
+
+const testFavList: FavouriteList[] = [
+    {
+        id: '1',
+        name: 'Dairy',
+        items: [
+            {
+                id: '1',
+                name: 'Milk',
+                description: '1 gallon of whole milk',
+                category: 'Dairy',
+                defaultExpiry: 7, // 7 days
+                uom: 1, // 1 gallon
+            },
+            {
+                id: '2',
+                name: 'Cheddar Cheese',
+                description: 'Block of aged cheddar cheese',
+                category: 'Dairy',
+                defaultExpiry: 30, // 30 days
+                uom: 1, // 1 block
+            }
+        ],
+    },
+    {
+        id: '2',
+        name: 'Poultry',
+        items: [
+            {
+                id: '3',
+                name: 'Chicken Breast',
+                description: 'Boneless, skinless chicken breast',
+                category: 'Poultry',
+                defaultExpiry: 3, // 3 days
+                uom: 2, // 2 breasts
+            },
+            {
+                id: '4',
+                name: 'Eggs',
+                description: 'Carton of a dozen large eggs',
+                category: 'Poultry',
+                defaultExpiry: 21, // 21 days
+                uom: 12, // 12 eggs
+            }
+        ],
+    },
+    {
+        id: '3',
+        name: 'Produce',
+        items: [
+            {
+                id: '5',
+                name: 'Lettuce',
+                description: 'Fresh romaine lettuce',
+                category: 'Produce',
+                defaultExpiry: 5, // 5 days
+                uom: 1, // 1 head
+            },
+            {
+                id: '6',
+                name: 'Apples',
+                description: 'Bag of organic Fuji apples',
+                category: 'Produce',
+                defaultExpiry: 30, // 30 days
+                uom: 6, // 6 apples
+            }
+        ],
+    },
+    {
+        id: '4',
+        name: 'Frozen',
+        items: [
+            {
+                id: '7',
+                name: 'Frozen Peas',
+                description: 'Bag of frozen green peas',
+                category: 'Frozen',
+                defaultExpiry: 365, // 365 days (1 year)
+                uom: 1, // 1 bag
+            },
+        ],
+    },
+]
+
 const testState: InventoryItem[] = [
     {
         id: '1',
         name: 'Milk',
         description: '1 gallon of whole milk',
         category: 'Dairy',
-        isFavorite: true,
         defaultExpiry: 7, // 7 days
         uom: 1, // 1 gallon
     },
@@ -32,7 +118,6 @@ const testState: InventoryItem[] = [
         name: 'Cheddar Cheese',
         description: 'Block of aged cheddar cheese',
         category: 'Dairy',
-        isFavorite: false,
         defaultExpiry: 30, // 30 days
         uom: 1, // 1 block
     },
@@ -41,7 +126,6 @@ const testState: InventoryItem[] = [
         name: 'Chicken Breast',
         description: 'Boneless, skinless chicken breast',
         category: 'Poultry',
-        isFavorite: true,
         defaultExpiry: 3, // 3 days
         uom: 2, // 2 breasts
     },
@@ -50,7 +134,6 @@ const testState: InventoryItem[] = [
         name: 'Eggs',
         description: 'Carton of a dozen large eggs',
         category: 'Poultry',
-        isFavorite: false,
         defaultExpiry: 21, // 21 days
         uom: 12, // 12 eggs
     },
@@ -59,7 +142,6 @@ const testState: InventoryItem[] = [
         name: 'Lettuce',
         description: 'Fresh romaine lettuce',
         category: 'Produce',
-        isFavorite: false,
         defaultExpiry: 5, // 5 days
         uom: 1, // 1 head
     },
@@ -68,7 +150,6 @@ const testState: InventoryItem[] = [
         name: 'Apples',
         description: 'Bag of organic Fuji apples',
         category: 'Produce',
-        isFavorite: true,
         defaultExpiry: 30, // 30 days
         uom: 6, // 6 apples
     },
@@ -77,7 +158,6 @@ const testState: InventoryItem[] = [
         name: 'Frozen Peas',
         description: 'Bag of frozen green peas',
         category: 'Frozen',
-        isFavorite: false,
         defaultExpiry: 365, // 365 days (1 year)
         uom: 1, // 1 bag
     },
@@ -86,7 +166,6 @@ const testState: InventoryItem[] = [
         name: 'Ice Cream',
         description: 'Vanilla ice cream, 1 quart',
         category: 'Frozen',
-        isFavorite: true,
         defaultExpiry: 180, // 180 days (6 months)
         uom: 1, // 1 quart
     },
@@ -95,7 +174,6 @@ const testState: InventoryItem[] = [
         name: 'Orange Juice',
         description: '64 oz bottle of orange juice',
         category: 'Beverages',
-        isFavorite: false,
         defaultExpiry: 10, // 10 days
         uom: 1, // 1 bottle
     },
@@ -104,7 +182,6 @@ const testState: InventoryItem[] = [
         name: 'Coca-Cola',
         description: '12-pack of Coca-Cola cans',
         category: 'Beverages',
-        isFavorite: true,
         defaultExpiry: 365, // 365 days (1 year)
         uom: 12, // 12 cans
     },
@@ -113,7 +190,6 @@ const testState: InventoryItem[] = [
         name: 'Canned Tomatoes',
         description: 'Can of diced tomatoes',
         category: 'Canned',
-        isFavorite: false,
         defaultExpiry: 730, // 730 days (2 years)
         uom: 1, // 1 can
     },
@@ -122,7 +198,6 @@ const testState: InventoryItem[] = [
         name: 'Canned Beans',
         description: 'Can of black beans',
         category: 'Canned',
-        isFavorite: false,
         defaultExpiry: 730, // 730 days (2 years)
         uom: 1, // 1 can
     },
@@ -131,7 +206,6 @@ const testState: InventoryItem[] = [
         name: 'Bread',
         description: 'Loaf of whole wheat bread',
         category: 'Bakery',
-        isFavorite: true,
         defaultExpiry: 7, // 7 days
         uom: 1, // 1 loaf
     },
@@ -140,7 +214,6 @@ const testState: InventoryItem[] = [
         name: 'Muffins',
         description: 'Pack of blueberry muffins',
         category: 'Bakery',
-        isFavorite: false,
         defaultExpiry: 5, // 5 days
         uom: 4, // 4 muffins
     },
@@ -149,7 +222,6 @@ const testState: InventoryItem[] = [
         name: 'Pasta',
         description: 'Box of spaghetti pasta',
         category: 'Pantry',
-        isFavorite: false,
         defaultExpiry: 730, // 730 days (2 years)
         uom: 1, // 1 box
     },
@@ -158,7 +230,6 @@ const testState: InventoryItem[] = [
         name: 'Rice',
         description: '5 lb bag of jasmine rice',
         category: 'Pantry',
-        isFavorite: true,
         defaultExpiry: 1095, // 1095 days (3 years)
         uom: 1, // 1 bag
     },
@@ -167,7 +238,6 @@ const testState: InventoryItem[] = [
         name: 'Chips',
         description: 'Bag of potato chips',
         category: 'Snacks',
-        isFavorite: false,
         defaultExpiry: 60, // 60 days (2 months)
         uom: 1, // 1 bag
     },
@@ -176,7 +246,6 @@ const testState: InventoryItem[] = [
         name: 'Chocolate Bar',
         description: 'Dark chocolate bar, 70% cocoa',
         category: 'Snacks',
-        isFavorite: true,
         defaultExpiry: 365, // 365 days (1 year)
         uom: 1, // 1 bar
     },
@@ -185,7 +254,6 @@ const testState: InventoryItem[] = [
         name: 'Paper Towels',
         description: '6-pack of paper towels',
         category: 'Household',
-        isFavorite: false,
         defaultExpiry: 0, // No expiry
         uom: 6, // 6 rolls
     },
@@ -194,7 +262,6 @@ const testState: InventoryItem[] = [
         name: 'Laundry Detergent',
         description: 'Bottle of liquid laundry detergent',
         category: 'Household',
-        isFavorite: false,
         defaultExpiry: 0, // No expiry
         uom: 1, // 1 bottle
     },
@@ -203,7 +270,6 @@ const testState: InventoryItem[] = [
         name: 'Shampoo',
         description: 'Bottle of moisturizing shampoo',
         category: 'Personal Care',
-        isFavorite: false,
         defaultExpiry: 365, // 365 days (1 year)
         uom: 1, // 1 bottle
     },
@@ -212,7 +278,6 @@ const testState: InventoryItem[] = [
         name: 'Toothpaste',
         description: 'Tube of whitening toothpaste',
         category: 'Personal Care',
-        isFavorite: true,
         defaultExpiry: 730, // 730 days (2 years)
         uom: 1, // 1 tube
     },
@@ -221,7 +286,6 @@ const testState: InventoryItem[] = [
         name: 'Batteries',
         description: 'Pack of AA batteries',
         category: 'Misc',
-        isFavorite: false,
         defaultExpiry: 3650, // 3650 days (10 years)
         uom: 4, // 4 batteries
     },
@@ -230,14 +294,37 @@ const testState: InventoryItem[] = [
         name: 'Light Bulbs',
         description: '4-pack of LED light bulbs',
         category: 'Misc',
-        isFavorite: false,
         defaultExpiry: 3650, // 3650 days (10 years)
         uom: 4, // 4 bulbs
     },
 ];
 
+export const getFavouriteList = createAsyncThunk(
+    'item/getFavouriteList',
+    async () => {
+        return testFavList;
+        return axios.get('http://localhost:5000/inventory/getFavouriteList')
+        .then((response: AxiosResponse<FavouriteList[]>) => {
+            return response;
+        }).catch((error) => {
+            console.log("Error occurred when getting favourite list", error);
+            return error;
+        })
+    }
+)
 
-
+export const addFavouriteList = createAsyncThunk(
+    'item/addFavouriteList',
+    async ({ name, items }: FavouriteList) => {
+        return axios.post('http://localhost:5000/inventory/addFavouriteList', { params: ({ name, items })})
+        .then((response: AxiosResponse<InventoryResponse>) => {
+            return response;
+        }).catch((error) => {
+            console.log("Error occurred when adding favourite list", error);
+            return error;
+        })
+    }
+)
 
 export interface InventoryItem {
     id: string,
@@ -245,7 +332,6 @@ export interface InventoryItem {
     description: string,
     category: string,
     uom: number,
-    isFavorite: boolean,
     defaultExpiry: number,
 }
 
@@ -350,6 +436,26 @@ export const inventorySlice = createSlice({
             state.items = action.payload;
         })
         builder.addCase(getItemList.rejected, (state) => {
+            state.status = 'failed';
+        })
+        builder.addCase(getFavouriteList.pending, (state) => {
+            state.status = 'loading';
+        })
+        builder.addCase(getFavouriteList.fulfilled, (state, action) => {
+            state.status = 'success';
+            state.favouriteLists = action.payload;
+        })
+        builder.addCase(getFavouriteList.rejected, (state) => {
+            state.status = 'failed';
+        })
+        builder.addCase(addFavouriteList.pending, (state) => {
+            state.status = 'loading';
+        })
+        builder.addCase(addFavouriteList.fulfilled, (state, action) => {
+            state.status = 'success';
+            state.favouriteLists.push(action.payload);
+        })
+        builder.addCase(addFavouriteList.rejected, (state) => {
             state.status = 'failed';
         })
     }

@@ -1,6 +1,6 @@
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { SecondaryView, TextPrimary, TextSecondary } from "@/components/Themed";
-import { TouchableOpacity } from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native';
 import { ShoppingList } from "./ShoppingSlice";
 import { FlatList, View } from "react-native";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
@@ -109,21 +109,23 @@ export default function ViewShoppingList({ route }: ViewShoppingListProps) {
 
   return (
     <SecondaryView style={[styles.container, styles.flexColumn, styles.justifiedStart]}>
-      {shoppingList.map((item, key) => {
-        return (
-          <View key={key} style={[styles.flexRow, { padding: 5, backgroundColor: 'transparent' }]}>
-              <View style={[styles.flexRow, { backgroundColor: 'rgba(0,0,0,0.1)', borderRadius: 5, width: 'auto', padding: 5 }]}>
-                  <View style={[styles.flexRow, styles.justifiedApart, { width: '65%'}]}>
-                      <TextPrimary style={[styles.listText, { fontSize: 14, fontWeight: 'bold', letterSpacing: 1 }]}>{item.name}</TextPrimary>
-                      <TextPrimary style={[styles.listText, { fontSize: 12, letterSpacing: 1 }]}>{item.category}</TextPrimary>
-                  </View>
-                  <View style={[styles.flexRow, styles.justfiedEnd, { width: '35%' }]}>
-                      <TextPrimary style={[styles.listText, { marginRight: 10 }]}>{item.quantity}</TextPrimary>
-                  </View>
-              </View>
-          </View>
-        )
-      })}
+      <ScrollView>
+        {shoppingList.map((item, key) => {
+          return (
+            <View key={key} style={[styles.flexRow, { padding: 5, backgroundColor: 'transparent' }]}>
+                <View style={[styles.flexRow, { backgroundColor: 'rgba(0,0,0,0.1)', borderRadius: 5, width: 'auto', padding: 5 }]}>
+                    <View style={[styles.flexRow, styles.justifiedApart, { width: '65%'}]}>
+                        <TextPrimary style={[styles.listText, { fontSize: 14, fontWeight: 'bold', letterSpacing: 1 }]}>{item.name}</TextPrimary>
+                        <TextPrimary style={[styles.listText, { fontSize: 12, letterSpacing: 1 }]}>{item.category}</TextPrimary>
+                    </View>
+                    <View style={[styles.flexRow, styles.justfiedEnd, { width: '35%' }]}>
+                        <TextPrimary style={[styles.listText, { marginRight: 10 }]}>{item.quantity}</TextPrimary>
+                    </View>
+                </View>
+            </View>
+          )
+        })}
+      </ScrollView>
       <MultiButtonContextMenu 
         // Add buttons to the context menu
         buttons={[

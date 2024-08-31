@@ -3,11 +3,19 @@ import ItemMain from './ItemMain';
 import ItemInfo from './ItemInfo';
 import SearchBarWidget from '@/components/widgets/misc/SearchBar';
 import { useAppSelector } from '@/app/store/hooks';
+import { TouchableOpacity } from 'react-native';
+import { useNavigation } from 'expo-router';
+import { FontAwesome6 } from '@expo/vector-icons';
+import { NavigationProp } from '@react-navigation/native';
+import { ItemsStackParamList } from '@/constants/types';
+import ProductSearch from './ProductSearch';
+import AddProduct from './AddProduct';
 
 export default function Items() {
   // Load categories
   const ItemsStack = createNativeStackNavigator();
   const theme = useAppSelector(state => state.theme);
+  const navigation = useNavigation<NavigationProp<ItemsStackParamList>>();
 
   return (
     <ItemsStack.Navigator>
@@ -16,7 +24,9 @@ export default function Items() {
         component={ItemMain}
         options={{
           headerShown: true,
-          headerRight: () => <SearchBarWidget componentToRender={"ItemSearchModal"} />,
+          headerRight: () => <TouchableOpacity onPress={() => navigation.navigate('ProductSearch', { nav: 'ItemInfo', placeholder: "Search for your Products.."})}>
+              <FontAwesome6 name="magnifying-glass" size={24} color="white" />
+            </TouchableOpacity>,
           headerStyle: {
             // backgroundColor: Colors[colorScheme ?? 'light'].background,
             backgroundColor: theme.colors.background,
@@ -33,6 +43,23 @@ export default function Items() {
         component={ItemInfo}
         options={{
           headerShown: false,
+        }}
+      />
+      <ItemsStack.Screen
+        name="ProductSearch"
+        options={{
+          headerShown: false,
+          animation: 'fade_from_bottom',
+        }}
+      >
+        {(props: any) => <ProductSearch {...props} />}
+      </ItemsStack.Screen>
+      <ItemsStack.Screen
+        component={AddProduct}
+        name="AddProduct"
+        options={{
+          headerShown: false,
+          animation: 'fade_from_bottom',
         }}
       />
     </ItemsStack.Navigator>

@@ -10,7 +10,7 @@ import { useNavigation } from 'expo-router';
 import { NavigationProp } from '@react-navigation/native';
 import { InventoryStackParamList } from '@/constants/types';
 import { FontAwesome6 } from '@expo/vector-icons';
-import SearchComponent from '@/components/util/SearchComponent';
+import InventorySearch from './InventorySearch';
 
 export default function Inventory() {
   // Load categories
@@ -26,7 +26,7 @@ export default function Inventory() {
         options={{
           headerShown: true,
           headerTitle: 'Inventory',
-          headerRight: () => <TouchableOpacity onPress={() => navigation.navigate('ItemSearch', { nav: 'InventoryItemInfo', placeholder: "Search for your inventory items.."})}>
+          headerRight: () => <TouchableOpacity onPress={() => navigation.navigate('ItemSearch', { nav: 'InventoryItemInfo', placeholder: "Search your inventory.."})}>
               <FontAwesome6 name="magnifying-glass" size={24} color="white" />
             </TouchableOpacity>,
           headerStyle: {
@@ -52,15 +52,17 @@ export default function Inventory() {
         component={AddItem}
         options={{
           headerShown: false,
+          animation: 'fade_from_bottom',
         }}
       />
       <InventoryStack.Screen
         name="ItemSearch"
         options={{
           headerShown: false,
+          animation: 'fade_from_bottom',
         }}
       >
-        {(props: any) => <SearchComponent {...props} />}
+        {(props: any) => <InventorySearch {...props} />}
       </InventoryStack.Screen>
     </InventoryStack.Navigator>
   );

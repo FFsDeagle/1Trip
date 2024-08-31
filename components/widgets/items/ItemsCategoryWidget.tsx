@@ -109,9 +109,11 @@ export default function ItemsCategoryWidget() {
           colors={[]}        
         >
           <View style={[styles.flexRow, styles.justifiedStart]}>
-            <Text style={[styles.getStartedText, { textAlign: 'left' }]}>
-              Categories
-            </Text>
+            <View style={[styles.flexRow, styles.justifiedApart]}>
+              <Text style={[styles.getStartedText, { textAlign: 'left' }]}>
+                Categories
+              </Text>
+            </View>
           </View>
             {gridItems && 
                 <FlatList

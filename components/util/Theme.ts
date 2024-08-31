@@ -46,6 +46,12 @@ export const styles = StyleSheet.create({
       flexDirection: 'row',
       width: '100%',
     },
+    flexEnd: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      width: '100%',
+    },
     flexBottom: {
       display: 'flex',
       flexDirection: 'column',
