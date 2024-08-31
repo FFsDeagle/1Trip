@@ -198,6 +198,14 @@ export const styles = StyleSheet.create({
       padding: 5,
       fontSize: 16,
     },
+    inputItem: {
+      padding: 10,
+      borderRadius: 10,
+      borderBottomColor: 'rgba(255,255,255,0.5)',
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      width: '90%',
+      marginBottom: 15,
+    },
     subtitle: {
       fontSize: 12,
       color: 'rgba(0,0,0,0.4)',

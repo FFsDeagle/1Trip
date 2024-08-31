@@ -7,12 +7,19 @@ export interface InventoryState {
     status: 'idle' | 'loading' | 'failed' | 'success'
     items: InventoryItem[],
     favouriteLists: FavouriteList[],
+    categories: Categories[],
 }
 
 export const initialState: InventoryState = {
     status: 'idle',
     items: [] as InventoryItem[],
     favouriteLists: [] as FavouriteList[],
+    categories: [] as Categories[],
+}
+
+export interface Categories {
+    id: number,
+    name: string,
 }
 
 export interface FavouriteList {
@@ -103,6 +110,21 @@ const testFavList: FavouriteList[] = [
         ],
     },
 ]
+
+const testCategories: Categories[] = [
+    { id: 1, name: 'Dairy' },
+    { id: 2, name: 'Poultry' },
+    { id: 3, name: 'Produce' },
+    { id: 4, name: 'Frozen' },
+    { id: 5, name: 'Beverages' },
+    { id: 6, name: 'Canned' },
+    { id: 7, name: 'Bakery' },
+    { id: 8, name: 'Pantry' },
+    { id: 9, name: 'Snacks' },
+    { id: 10, name: 'Household' },
+    { id: 11, name: 'Personal Care' },
+    { id: 12, name: 'Misc' },
+];
 
 const testState: InventoryItem[] = [
     {
@@ -342,8 +364,9 @@ export interface InventoryResponse {
 // Add item to inventory list in database
 export const addItem = createAsyncThunk(
     'item/addItem',
-    async ({ category, description, name }: InventoryItem) => {
-        return axios.post('http://localhost:5000/inventory/addItem', { params: ({ category, description, name })})
+    async (product: InventoryItem) => {
+        return product;
+        return axios.post('http://localhost:5000/inventory/addItem', { params: ({ product })})
         .then((response: AxiosResponse<InventoryResponse>) => {
             return response;
         }).catch((error) => {
@@ -381,6 +404,62 @@ export const itemSearch = createAsyncThunk(
     }
 )
 
+export const getCategories = createAsyncThunk(
+    'item/getCategories',
+    async () => {
+        return testCategories;
+        return axios.get('http://localhost:5000/inventory/getCategories')
+        .then((response: AxiosResponse<Categories[]>) => {
+            return response;
+        }).catch((error) => {
+            console.log("Error occurred when getting categories", error);
+            return error;
+        })
+    }
+)
+
+export const addCategories = createAsyncThunk(
+    'item/addCategories',
+    async (category: Categories) => {
+        return category;
+        return axios.post('http://localhost:5000/inventory/addCategories', { params: ({ category })})
+        .then((response: AxiosResponse<InventoryResponse>) => {
+            return response;
+        }).catch((error) => {
+            console.log("Error occurred when adding category", error);
+            return error;
+        })
+    }
+)
+
+export const deleteCategories = createAsyncThunk(
+    'item/deleteCategories',
+    async (id: Categories) => {
+        return id;
+        return axios.post('http://localhost:5000/inventory/deleteCategories', { params: { id }})
+        .then((response: AxiosResponse<InventoryResponse>) => {
+            return response;
+        }).catch((error) => {
+            console.log("Error occurred when deleting category", error);
+            return error;
+        })
+    }
+)
+
+export const updateCategories = createAsyncThunk(
+    'item/updateCategories',
+    async (category: Categories) => {
+        return category;
+        return axios.post('http://localhost:5000/inventory/updateCategories', { params: ({ category })})
+        .then((response: AxiosResponse<InventoryResponse>) => {
+            return response;
+        }).catch((error) => {
+            console.log("Error occurred when updating category", error);
+            return error;
+        })
+    }
+)
+
 export const getItemList = createAsyncThunk(
     'item/getItemList',
     async () => {
@@ -404,7 +483,7 @@ export const inventorySlice = createSlice({
         builder.addCase(addItem.pending, (state) => {
             state.status = 'loading';
         })
-        builder.addCase(addItem.fulfilled, (state, action) => {
+        builder.addCase(addItem.fulfilled, (state, action: PayloadAction<InventoryItem>) => {
             state.items.push(action.payload);
         })
         builder.addCase(addItem.rejected, (state) => {
@@ -456,6 +535,51 @@ export const inventorySlice = createSlice({
             state.favouriteLists.push(action.payload);
         })
         builder.addCase(addFavouriteList.rejected, (state) => {
+            state.status = 'failed';
+        })
+        builder.addCase(getCategories.pending, (state) => {
+            state.status = 'loading';
+        })
+        builder.addCase(getCategories.fulfilled, (state, action: PayloadAction<Categories[]>) => {
+            state.status = 'success';
+            state.categories = action.payload;
+        })
+        builder.addCase(getCategories.rejected, (state) => {
+            state.status = 'failed';
+        })
+        builder.addCase(addCategories.pending, (state) => {
+            state.status = 'loading';
+        })
+        builder.addCase(addCategories.fulfilled, (state, action) => {
+            state.status = 'success';
+            state.categories.push(action.payload);
+        })
+        builder.addCase(addCategories.rejected, (state) => {
+            state.status = 'failed';
+        })
+        builder.addCase(deleteCategories.pending, (state) => {
+            state.status = 'loading';
+        })
+        builder.addCase(deleteCategories.fulfilled, (state, action) => {
+            state.status = 'success';
+            state.categories = state.categories.filter((category) => category.id !== action.payload.id);
+        })
+        builder.addCase(deleteCategories.rejected, (state) => {
+            state.status = 'failed';
+        })
+        builder.addCase(updateCategories.pending, (state) => {
+            state.status = 'loading';
+        })
+        builder.addCase(updateCategories.fulfilled, (state, action) => {
+            state.status = 'success';
+            state.categories = state.categories.map((category) => {
+                if (category.id === action.payload.id) {
+                    return action.payload;
+                }
+                return category;
+            })
+        })
+        builder.addCase(updateCategories.rejected, (state) => {
             state.status = 'failed';
         })
     }

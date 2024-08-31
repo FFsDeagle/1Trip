@@ -10,6 +10,8 @@ import { NavigationProp } from '@react-navigation/native';
 import { ItemsStackParamList } from '@/constants/types';
 import ProductSearch from './ProductSearch';
 import AddProduct from './AddProduct';
+import AddNewProduct from './AddNewProduct';
+import AddNewCategory from './AddNewCategory';
 
 export default function Items() {
   // Load categories
@@ -60,6 +62,22 @@ export default function Items() {
         options={{
           headerShown: false,
           animation: 'fade_from_bottom',
+        }}
+      />
+      <ItemsStack.Screen
+        component={AddNewProduct}
+        name="AddNewProduct"
+        options={{
+          headerShown: false,
+          animation: 'slide_from_right',
+        }}
+      />
+      <ItemsStack.Screen
+        component={AddNewCategory}
+        name="AddNewCategory"
+        options={{
+          headerShown: false,
+          animation: 'slide_from_right',
         }}
       />
     </ItemsStack.Navigator>

@@ -4,7 +4,7 @@ import ItemsCategoryWidget from "@/components/widgets/items/ItemsCategoryWidget"
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import FavItemsWidget from "@/components/widgets/items/FavItemsWidget";
 import { useEffect } from "react";
-import { getItemList } from "./ItemSlice";
+import { getCategories, getItemList } from "./ItemSlice";
 import AddNewItemButton from "./AddNewItemButton";
 
 export default function ItemMain() {
@@ -15,6 +15,7 @@ export default function ItemMain() {
   useEffect(() => {
     if (items.length === 0) {
       dispatch(getItemList());
+      dispatch(getCategories());
     }
   }, [dispatch])
 
