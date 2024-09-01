@@ -69,7 +69,7 @@ export default function Items() {
         name="AddNewProduct"
         options={{
           headerShown: false,
-          animation: 'slide_from_right',
+          animation: 'fade',
         }}
       />
       <ItemsStack.Screen
@@ -77,7 +77,7 @@ export default function Items() {
         name="AddNewCategory"
         options={{
           headerShown: false,
-          animation: 'slide_from_right',
+          animation: 'fade',
         }}
       />
     </ItemsStack.Navigator>

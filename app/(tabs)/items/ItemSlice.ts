@@ -18,7 +18,7 @@ export const initialState: InventoryState = {
 }
 
 export interface Categories {
-    id: number,
+    id?: number,
     name: string,
 }
 
@@ -376,6 +376,34 @@ export const addItem = createAsyncThunk(
     }
 )
 
+export const updateItem = createAsyncThunk(
+    'item/updateItem',
+    async (product: InventoryItem) => {
+        return product;
+        return axios.post('http://localhost:5000/inventory/updateItem', { params: ({ product })})
+        .then((response: AxiosResponse<InventoryResponse>) => {
+            return response;
+        }).catch((error) => {
+            console.log("Error occurred when updating item", error);
+            return error;
+        })
+    }
+)
+
+export const deleteItem = createAsyncThunk(
+    'item/deleteItem',
+    async (id: string) => {
+        return id;
+        return axios.post('http://localhost:5000/inventory/deleteItem', { params: { id }})
+        .then((response: AxiosResponse<InventoryResponse>) => {
+            return response;
+        }).catch((error) => {
+            console.log("Error occurred when deleting item", error);
+            return error;
+        })
+    }
+)
+
 // Item Search by Category
 export const itemCategorySearch = createAsyncThunk(
     'item/itemCategorySearch',
@@ -487,6 +515,29 @@ export const inventorySlice = createSlice({
             state.items.push(action.payload);
         })
         builder.addCase(addItem.rejected, (state) => {
+            state.status = 'failed';
+        })
+        builder.addCase(updateItem.pending, (state) => {
+            state.status = 'loading';
+        })
+        builder.addCase(updateItem.fulfilled, (state, action: PayloadAction<InventoryItem>) => {
+            state.items = state.items.map((item) => {
+                if (item.id === action.payload.id) {
+                    return action.payload;
+                }
+                return item;
+            })
+        })
+        builder.addCase(updateItem.rejected, (state) => {
+            state.status = 'failed';
+        })
+        builder.addCase(deleteItem.pending, (state) => {
+            state.status = 'loading';
+        })
+        builder.addCase(deleteItem.fulfilled, (state, action: PayloadAction<string>) => {
+            state.items = state.items.filter((item) => item.id !== action.payload);
+        })
+        builder.addCase(deleteItem.rejected, (state) => {
             state.status = 'failed';
         })
         builder.addCase(itemCategorySearch.pending, (state) => {

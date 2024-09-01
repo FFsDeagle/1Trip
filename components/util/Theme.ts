@@ -200,7 +200,7 @@ export const styles = StyleSheet.create({
     },
     inputItem: {
       padding: 10,
-      borderRadius: 10,
+      borderRadius: 5,
       borderBottomColor: 'rgba(255,255,255,0.5)',
       borderBottomWidth: StyleSheet.hairlineWidth,
       width: '90%',

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { LinearGradient, TextSecondary } from "../../../components/Themed";
 import { Category } from "@/components/util/SearchWithContextMenu";
 import { InventoryItem } from "@/app/(tabs)/items/ItemSlice";
@@ -6,7 +6,7 @@ import { Keyboard, TextInput, TouchableOpacity, ScrollView, View } from "react-n
 import { styles } from "@/components/util/Theme";
 import { useAppSelector } from "@/app/store/hooks";
 import { ItemsStackParamList } from "@/constants/types";
-import { useNavigation } from "expo-router";
+import { useFocusEffect, useNavigation } from "expo-router";
 import { NavigationProp } from "@react-navigation/native";
 import BackButton from "@/components/util/BackButton";
 import { AntDesign } from "@expo/vector-icons";
@@ -38,6 +38,14 @@ export default function ProductSearch({ route }: RouteParams) {
         {name: 'Personal Care', isSelected: false },
         {name: 'Misc', isSelected: false }
     ]);
+
+    useFocusEffect(
+        useCallback(() => {
+            // Refetch data from store on focus
+            console.log('ProductSearch focused');
+            setSearchResults([...items]);
+        },[items])
+    )
 
     useEffect(() => {
         const keyboardShown = Keyboard.addListener('keyboardDidShow', () => {
@@ -158,7 +166,7 @@ export default function ProductSearch({ route }: RouteParams) {
             </View>
             <View>
                 {searchResults.length > 0 &&
-                        <ScrollView keyboardShouldPersistTaps='always' style={[{ maxHeight: 'auto', height: 'auto', width: '100%', borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }]}>
+                        <ScrollView keyboardShouldPersistTaps='always' style={[{ maxHeight: 'auto', height: '83%', width: '100%', borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }]}>
                             {
                                 searchResults.map(result => {
                                     return (

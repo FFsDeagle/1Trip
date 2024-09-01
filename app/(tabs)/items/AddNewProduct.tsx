@@ -3,9 +3,19 @@ import { TextInput, View, TouchableOpacity } from "react-native";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { styles } from "@/components/util/Theme";
 import { addItem, InventoryItem } from './ItemSlice';
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
+import BackButton from "@/components/util/BackButton";
+import AddOrEditProduct from "./AddOrEditProduct";
+
+type InputValidation = {
+    name: boolean;
+    description: boolean;
+    uom: boolean;
+    category: boolean;
+    defaultExpiry: boolean;
+}
 
 export default function AddNewProduct(){
     const dispatch = useAppDispatch();
@@ -16,67 +26,39 @@ export default function AddNewProduct(){
     const categoryRef = useRef<TextInput>(null);
     const defaultExpiryRef = useRef<TextInput>(null);
     const categories = useAppSelector(state => state.item.categories);
+    const [error, setError] = useState<InputValidation>({} as InputValidation);
+    const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
 
     const handleSubmit = async () => {
-        // Check properties of the product object
-        console.log(product);
+        setFormSubmitted(true);
         if (!product.name || !product.description || !product.uom || !product.category || !product.defaultExpiry) {
             return;
         }
         await dispatch(addItem(product));
+        setFormSubmitted(false);
+        setError({} as InputValidation);
         setProduct({} as InventoryItem);
     }
 
-    // id: string,
-    // name: string,
-    // description: string,
-    // category: string,
-    // uom: number,
-    // defaultExpiry: number,
+    useEffect(() => {
+        setError({
+            name: product.name ? true : false,
+            description: product.description ? true : false,
+            uom: product.uom ? true : false,
+            category: product.category ? true : false,
+            defaultExpiry: product.defaultExpiry ? true : false,
+        });
+    },[formSubmitted])
+
+    useEffect(() => {
+        setProduct({ ...product, category: categories[0].name });
+    }, [])
 
     return (
         <LinearGradient colors={[]} style={[styles.container, styles.justifiedStart]}>
             <TextSecondary style={[styles.getStartedText, { marginTop: 10 }]}> Add New Product </TextSecondary>
-            <View style={[styles.justified, { width: '100%' }]}>
-                <TextInput returnKeyType="next" onSubmitEditing={() => descriptionRef?.current?.focus()} value={product.name} onChange={e => setProduct({...product, name: e.nativeEvent.text})} style={[styles.inputItem, { backgroundColor: theme.primary, color: theme.textPrimary }]} placeholder="Product Name" />
-                <TextInput returnKeyType="next" ref={descriptionRef} onSubmitEditing={() => uomRef?.current?.focus()} value={product.description} onChange={e => setProduct({...product, description: e.nativeEvent.text})} style={[styles.inputItem, { backgroundColor: theme.primary, color: theme.textPrimary }]} placeholder="Product Description" />
-                <TextInput
-                    returnKeyType="next"
-                    ref={uomRef}
-                    onSubmitEditing={() => categoryRef?.current?.focus()}
-                    value={product.uom?.toString()} 
-                    onChange={(e) => {
-                        const value = e.nativeEvent.text;
-                        const numericValue = value ? parseFloat(value) : '';
-                        setProduct({ ...product, uom: Number(numericValue) });
-                    }}
-                    style={[styles.inputItem, { backgroundColor: theme.primary, color: theme.textPrimary }]} 
-                    placeholder="Product Quantity"
-                    keyboardType="numeric"
-                />
-                <Picker
-                    selectedValue={product.category}
-                    onValueChange={(itemValue, itemIndex) =>
-                        setProduct({ ...product, category: itemValue })
-                    }
-                    style={[styles.inputItem, { backgroundColor: theme.primary, color: theme.textPrimary }]}
-                >
-                    {categories.map((category) => (
-                        <Picker.Item key={category.id} label={category.name} value={category} />
-                    ))}
-                </Picker><TextInput ref={defaultExpiryRef} keyboardType="numeric" onSubmitEditing={handleSubmit} value={product.defaultExpiry?.toString()}                     
-                    onChange={(e) => {
-                        const value = e.nativeEvent.text;
-                        const numericValue = value ? parseFloat(value) : '';
-                        setProduct({ ...product, defaultExpiry: Number(numericValue) });
-                    }} style={[styles.inputItem, { backgroundColor: theme.primary, color: theme.textPrimary }]} placeholder="Default expiry date" />
-            </View>
-            <View style={styles.justifiedCenter}>
-                <TouchableOpacity onPress={handleSubmit} style={[styles.flexRow, styles.justified, { marginTop: 10, backgroundColor: theme.primary, width: 'auto', padding: 10, borderRadius: 10 }]}>
-                    <TextSecondary>Add Product </TextSecondary>
-                    <FontAwesome6 name="plus" size={24} color={theme.iconColor} /> 
-                </TouchableOpacity>
-            </View>
+            <AddOrEditProduct item={product} adding={true} />
+            <BackButton />
         </LinearGradient>
     )
 }

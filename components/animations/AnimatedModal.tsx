@@ -1,4 +1,4 @@
-import { Animated, Dimensions } from "react-native";
+import { Animated, Dimensions, View } from "react-native";
 import { PrimaryView, TextPrimary, TextSecondary, TouchableOpacity } from "../Themed";
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import { styles } from "../util/Theme";
@@ -8,9 +8,10 @@ type AnimatedModalProps = {
     message: string;
     setShowModal: Dispatch<SetStateAction<boolean>>;
     showModal: boolean;
+    setAction?: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function AnimatedModal({ message, setShowModal, showModal }: AnimatedModalProps){
+export default function AnimatedModal({ message, setShowModal, showModal, setAction }: AnimatedModalProps){
     const slideAnim = useRef(new Animated.Value(Dimensions.get('window').height)).current;
     const theme = useAppSelector(state => state.theme.colors);
 
@@ -33,6 +34,11 @@ export default function AnimatedModal({ message, setShowModal, showModal }: Anim
         });
     }
 
+    const hideModalWithAction = async () => {
+        setAction && setAction(true);
+        hideModalWithDelay();
+    }
+
     return (
         <Animated.View style={[styles.container, styles.justified, {
             position: 'absolute',
@@ -51,18 +57,44 @@ export default function AnimatedModal({ message, setShowModal, showModal }: Anim
                 <TextSecondary style={[styles.subtitle, { marginTop: 10, marginBottom: 10 }]}>
                     {message}
                 </TextSecondary>
-                <TouchableOpacity style={{
-                    borderRadius: 15,
-                    padding: 10,
-                    marginTop: 10,
-                    backgroundColor: theme.background3
-                }} onPress={hideModalWithDelay}>
-                    <TextPrimary>
-                        Okay
-                    </TextPrimary>
-                </TouchableOpacity>
+                {!setAction ? 
+                    <TouchableOpacity style={{
+                        borderRadius: 15,
+                        padding: 10,
+                        marginTop: 10,
+                        backgroundColor: theme.background3
+                    }} onPress={hideModalWithDelay}>
+                        <TextPrimary>
+                            Okay
+                        </TextPrimary>
+                    </TouchableOpacity>
+                    :
+                    <View style={[styles.flexRow]}>
+                        <TouchableOpacity style={{
+                            borderRadius: 15,
+                            padding: 10,
+                            marginTop: 10,
+                            marginRight: 5,
+                            backgroundColor: theme.background3
+                        }} onPress={hideModalWithAction}>
+                            <TextPrimary>
+                                Okay
+                            </TextPrimary>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{
+                            borderRadius: 15,
+                            padding: 10,
+                            marginTop: 10,
+                            marginRight: 5,
+                            backgroundColor: theme.background3
+                        }} onPress={hideModalWithDelay}>
+                            <TextPrimary>
+                                Cancel
+                            </TextPrimary>
+                        </TouchableOpacity>
+                    </View>
+                }
             </PrimaryView>
-            
         </Animated.View>
     )
 }
