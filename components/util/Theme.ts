@@ -41,6 +41,15 @@ export const styles = StyleSheet.create({
       zIndex: 100,
       elevation: 5,
     },
+    button: {
+      alignItems: 'center',
+      padding: 10,
+      borderRadius: 5,
+      margin: 5,
+    },
+    buttonText: {
+      fontWeight: 'bold',
+    },
     flexRow: {
       display: 'flex',
       flexDirection: 'row',

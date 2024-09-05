@@ -14,7 +14,7 @@ export default function FavItemsWidget(){
                 <TextSecondary style={[styles.header2, {color: theme.textPrimary}]}>
                     Favorites
                 </TextSecondary>
-                <TouchableOpacity style={[{ right: 15 }]}>
+                <TouchableOpacity style={[styles.justified, { right: 15 }]}>
                     <AntDesign name="setting" size={24} color={theme.textPrimary} />
                 </TouchableOpacity>
             </View>

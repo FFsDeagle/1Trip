@@ -18,37 +18,8 @@ type InputValidation = {
 }
 
 export default function AddNewProduct(){
-    const dispatch = useAppDispatch();
-    const theme = useAppSelector(state => state.theme.colors);
     const [product, setProduct] = useState<InventoryItem>({} as InventoryItem);
-    const descriptionRef = useRef<TextInput>(null);
-    const uomRef = useRef<TextInput>(null);
-    const categoryRef = useRef<TextInput>(null);
-    const defaultExpiryRef = useRef<TextInput>(null);
     const categories = useAppSelector(state => state.item.categories);
-    const [error, setError] = useState<InputValidation>({} as InputValidation);
-    const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
-
-    const handleSubmit = async () => {
-        setFormSubmitted(true);
-        if (!product.name || !product.description || !product.uom || !product.category || !product.defaultExpiry) {
-            return;
-        }
-        await dispatch(addItem(product));
-        setFormSubmitted(false);
-        setError({} as InputValidation);
-        setProduct({} as InventoryItem);
-    }
-
-    useEffect(() => {
-        setError({
-            name: product.name ? true : false,
-            description: product.description ? true : false,
-            uom: product.uom ? true : false,
-            category: product.category ? true : false,
-            defaultExpiry: product.defaultExpiry ? true : false,
-        });
-    },[formSubmitted])
 
     useEffect(() => {
         setProduct({ ...product, category: categories[0].name });

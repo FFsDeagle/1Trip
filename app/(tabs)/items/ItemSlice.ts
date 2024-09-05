@@ -462,7 +462,7 @@ export const addCategories = createAsyncThunk(
 
 export const deleteCategories = createAsyncThunk(
     'item/deleteCategories',
-    async (id: Categories) => {
+    async ({ id }: Categories) => {
         return id;
         return axios.post('http://localhost:5000/inventory/deleteCategories', { params: { id }})
         .then((response: AxiosResponse<InventoryResponse>) => {
@@ -613,7 +613,7 @@ export const inventorySlice = createSlice({
         })
         builder.addCase(deleteCategories.fulfilled, (state, action) => {
             state.status = 'success';
-            state.categories = state.categories.filter((category) => category.id !== action.payload.id);
+            state.categories = state.categories.filter((category) => category.id !== action.payload);
         })
         builder.addCase(deleteCategories.rejected, (state) => {
             state.status = 'failed';

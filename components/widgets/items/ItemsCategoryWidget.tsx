@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { AntDesign, Feather, Ionicons, MaterialCommunityIcons, FontAwesome6, MaterialIcons, Fontisto } from "@expo/vector-icons";
 import { styles } from "@/components/util/Theme";
-import { WidgetGridItemProps } from "@/constants/types";
-import { useRouter } from "expo-router";
+import { ItemsStackParamList, WidgetGridItemProps } from "@/constants/types";
+import { useNavigation, useRouter } from "expo-router";
 import { LinearGradient, TextSecondary } from "@/components/Themed";
 import { useAppSelector } from "@/app/store/hooks";
+import { NavigationProp } from "@react-navigation/native";
 
 export default function ItemsCategoryWidget() {
     const [gridItems, setGridItems] = useState<WidgetGridItemProps[]>([])
     const router = useRouter();
-    const theme = useAppSelector(state => state.theme);
+    const theme = useAppSelector(state => state.theme.colors);
+    const navigation = useNavigation<NavigationProp<ItemsStackParamList>>();
 
     // Static grid items for testing
     // Can add more dynamic types to the grid items such as a component to render
@@ -109,10 +111,13 @@ export default function ItemsCategoryWidget() {
           colors={[]}        
         >
           <View style={[styles.flexRow, styles.justifiedStart]}>
-            <View style={[styles.flexRow, styles.justifiedApart]}>
+            <View style={[styles.flexRow, styles.justifiedApart, styles.justifiedApart]}>
               <Text style={[styles.getStartedText, { textAlign: 'left' }]}>
                 Categories
               </Text>
+              <TouchableOpacity onPress={() => navigation.navigate("ViewCategories")} style={[styles.justified ,{ right: 15 }]}>
+                    <AntDesign name="setting" size={24} color={theme.textPrimary} />
+                </TouchableOpacity>
             </View>
           </View>
             {gridItems && 
@@ -139,9 +144,9 @@ export default function ItemsCategoryWidget() {
                                 <item.component
                                     name={item.icon as string}
                                     size={30}
-                                    color={theme.colors.iconColor}
+                                    color={theme.iconColor}
                                 />
-                                <Text style={[styles.description, {color: theme.colors.iconColor}]}>
+                                <Text style={[styles.description, {color: theme.iconColor}]}>
                                     {item.title}
                                 </Text>
                             </View>

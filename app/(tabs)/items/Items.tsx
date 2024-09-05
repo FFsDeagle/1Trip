@@ -12,6 +12,8 @@ import ProductSearch from './ProductSearch';
 import AddProduct from './AddProduct';
 import AddNewProduct from './AddNewProduct';
 import AddNewCategory from './AddNewCategory';
+import ViewCategories from './ViewCategories';
+import UpdateCategory from './UpdateCategory';
 
 export default function Items() {
   // Load categories
@@ -80,6 +82,23 @@ export default function Items() {
           animation: 'fade',
         }}
       />
+      <ItemsStack.Screen
+        component={ViewCategories}
+        name="ViewCategories"
+        options={{
+          headerShown: false,
+          animation: 'fade',
+        }}
+      />
+      <ItemsStack.Screen
+        name="UpdateCategories"
+        options={{
+          headerShown: false,
+          animation: 'fade',
+        }}
+        >
+        {(props: any) => <UpdateCategory {...props} />}
+      </ItemsStack.Screen>
     </ItemsStack.Navigator>
   );
 };

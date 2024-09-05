@@ -2,6 +2,7 @@ import { NavigationProp } from '@react-navigation/native';
 import { FontAwesome6 } from "@expo/vector-icons";
 import { ShoppingList } from '@/app/(tabs)/shopping/ShoppingSlice';
 import { InventoryItem } from '@/app/(tabs)/inventory/InventorySlice';
+import { Categories } from '@/app/(tabs)/items/ItemSlice';
 
 export type RootFontList = {
     Fontawesome6: typeof FontAwesome6
@@ -49,8 +50,11 @@ export type ItemsStackParamList = {
     AddProduct: undefined;
     ItemInfo: { searchValue: string };
     ProductSearch: ProductSearchProps;
+    ViewCategories: undefined;
+    UpdateCategories: CategoryProps;
 }
 
+export type CategoryProps = { category: Categories }
 export type ItemSearchProps = { placeholder: string, nav: keyof InventoryStackParamList }
 export type ProductSearchProps = { placeholder: string, nav: keyof ItemsStackParamList }
 
