@@ -90,20 +90,20 @@ export default function Login ({ navigation }: { navigation: any }){
 
     useEffect(() => {
         // Check if there is a cached token and verify if it is still valid
-        setIsLoading(true);
-        loginWithStoredData();
+        // setIsLoading(true);
+        // loginWithStoredData();
 
-        // If user signs in with Credentials then and the login is successful
-        // The dependancy will trigger and store the data while navigating to the next screen
-        if (loginState){
-            const timeout = setTimeout(() => {
-                storeTokenAndNavigate();
-            }, 2000);
-            return () => clearTimeout(timeout);
-        }
-        else {
-            setIsLoading(false);
-        }
+        // // If user signs in with Credentials then and the login is successful
+        // // The dependancy will trigger and store the data while navigating to the next screen
+        // if (loginState){
+        //     const timeout = setTimeout(() => {
+        //         storeTokenAndNavigate();
+        //     }, 2000);
+        //     return () => clearTimeout(timeout);
+        // }
+        // else {
+        //     setIsLoading(false);
+        // }
     }, [loginState]);
 
     const loginWithStoredData = async () => {
@@ -145,6 +145,10 @@ export default function Login ({ navigation }: { navigation: any }){
             console.log('Error:', e);
             return false;
         }
+    }
+
+    const handleSignUp = () => {
+        navigation.navigate('SignUp');
     }
 
     // const handleOAuthSignIn = async (type: string) => {
@@ -273,17 +277,13 @@ export default function Login ({ navigation }: { navigation: any }){
                         </TouchableOpacity>
                     </LinearGradientSecondary>
                     <TouchableOpacity
-                        onPress={() => {
-                            // navigate to other tab
-                        }}
+                        onPress={() => navigation.navigate('ForgotPassword')}
                         style={styles.justified}
                     >
                         <TextSecondary style={[styles.header3]}>Forgot Password?</TextSecondary>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={() => {
-                            // navigate to other tab
-                        }}
+                        onPress={handleSignUp}
                         style={styles.justified}
                     >
                         <TextSecondary style={[styles.header3, { paddingBottom: 0 }]}>Sign Up</TextSecondary>

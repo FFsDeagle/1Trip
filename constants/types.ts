@@ -58,6 +58,11 @@ export type CategoryProps = { category: Categories }
 export type ItemSearchProps = { placeholder: string, nav: keyof InventoryStackParamList }
 export type ProductSearchProps = { placeholder: string, nav: keyof ItemsStackParamList }
 
+export type LoginStackParamList = {
+    Login: undefined;
+    SignUp: undefined;
+}
+
 export type ShoppingStackParamList = {
     ShoppingMain: undefined;
     ShoppingItemInfo: { searchValue: string };

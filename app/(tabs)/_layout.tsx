@@ -11,6 +11,7 @@ import { defaultTheme, getTheme, ThemeProps } from '../../components/util/themeS
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { ActivityIndicator } from 'react-native';
 import Items from './items/Items';
+import LoginMain from './login/LoginMain';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -64,8 +65,8 @@ export default function TabLayout() {
           // headerShown: useClientOnlyValue(false, true),
         }}>
           <Tab.Screen 
-            name="Login" 
-            component={Login} 
+            name="LoginMain" 
+            component={LoginMain} 
             options={{
               tabBarIcon: ({ color }) => <TabBarIcon name="dashboard" color={theme.colors.iconColor2 ? theme.colors.iconColor2 : color } />,
               tabBarIconStyle: { marginBottom: 0 },
