@@ -10,7 +10,7 @@ export interface loginState {
     error: string | undefined,
     status: 'idle' | 'loading' | 'failed' | 'success'
     logoutResponse: LogoutResponse,
-    loginResponse: LoginResponse,
+    loginResponse: User,
 }
 
 // initialState on load
@@ -22,7 +22,7 @@ const initialState: loginState = {
     logoutResponse: {
         status: false, // Set to false by default
     } as LogoutResponse,
-    loginResponse: {} as LoginResponse,
+    loginResponse: {} as User,
 }
 
 // Props for User Login
@@ -38,7 +38,6 @@ export interface LoginResponse  {
     id: string,
     firstName: string,
     lastName: string,
-    email: string,
     username: string,
     authToken: string,
     tokenExpiry: string,
@@ -55,22 +54,21 @@ interface User {
     firstName: string,
     lastName: string,
     email: string,
-    username: string,
     authToken: string,
     tokenExpiry: string,
     statusCode: string
 }
 
-const testLoginResponse: LoginResponse = {
-    id: '1234',
-    username: 'Test',
-    firstName: 'Test',
-    lastName: 'Test',
-    email: 'test@gmail.com',
-    authToken: 'aXsidJh87sa08auWsoihd',
-    tokenExpiry: new Date(Date.now() + 3600000).toISOString(),
-    statusCode: '200',
-}
+// const testLoginResponse: LoginResponse = {
+//     id: '1234',
+//     username: 'Test',
+//     firstName: 'Test',
+//     lastName: 'Test',
+//     email: 'test@gmail.com',
+//     authToken: 'aXsidJh87sa08auWsoihd',
+//     tokenExpiry: new Date(Date.now() + 3600000).toISOString(),
+//     statusCode: '200',
+// }
 
 export const verifyAuthToken = createAsyncThunk(
     'login/verifyAuthToken',
@@ -78,7 +76,7 @@ export const verifyAuthToken = createAsyncThunk(
         // return testLoginResponse;
         return axios.post('http://localhost:5000/account/verifyAuthToken', { params: ({ authToken })})
         .then((response: AxiosResponse<LoginResponse>) => {
-            return response.data.authToken;
+            return response;
         }).catch(error => {
             return error;
         })
@@ -105,7 +103,7 @@ export const loginAsync = createAsyncThunk(
         // return testLoginResponse as LoginResponse;
         return axios.post('http://localhost:5000/account/login', { params: ({ email, password })})
         .then((response: AxiosResponse<User>) => {
-            return response.data;
+            return response;
         }).catch((error) => {
             console.log("Error occurred when attempting to sign in:", error);
             return error;
@@ -144,16 +142,6 @@ export const loginSlice = createSlice({
         .addCase(loginAsync.fulfilled, (state, action: PayloadAction<User>) => {
             state.loginResponse = action.payload;
             state.loginState = true;
-            // state.status = 'success';
-            // if (action.payload.statusCode === '200') {
-            //     state.loginResponse = action.payload;
-            //     state.loginState = true;
-            //     state.status = 'success';
-            // }
-            // else {
-            //     state.status = 'failed';
-            //     state.error = action.payload.statusCode;
-            // }
         })
         .addCase(logoutAsync.pending, (state) => {
             state.status = 'idle';
@@ -167,7 +155,7 @@ export const loginSlice = createSlice({
             // If status is true
             if(action.payload?.status){
                 // Reset state by creating an empty object of type LoginResponse
-                state.loginResponse = {} as LoginResponse;
+                state.loginResponse = {} as User;
             }
         })
         .addCase(createAccount.pending, (state) => {
@@ -186,8 +174,12 @@ export const loginSlice = createSlice({
         .addCase(verifyAuthToken.pending, (state) => {
             state.status = 'loading';
         })
-        .addCase(verifyAuthToken.fulfilled, (state, action: PayloadAction<string>) => {
-            state.loginResponse.authToken = action.payload;
+        .addCase(verifyAuthToken.fulfilled, (state, action: PayloadAction<User>) => {
+            state.loginResponse.id = action.payload.id;
+            state.loginResponse.authToken = action.payload.authToken;
+            state.loginResponse.email = action.payload.email;
+            state.loginResponse.firstName = action.payload.firstName;
+            state.loginResponse.lastName = action.payload.lastName;
             state.loginState = true;
             state.status = 'success';
         })

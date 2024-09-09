@@ -86,7 +86,7 @@ export default function Login ({ navigation }: { navigation: any }){
     useEffect(() => {
         // Check if there is a cached token and verify if it is still valid
         setIsLoading(true);
-        loginWithStoredData();
+        // loginWithStoredData();
 
         // If user signs in with Credentials then and the login is successful
         // The dependancy will trigger and store the data while navigating to the next screen
@@ -94,7 +94,10 @@ export default function Login ({ navigation }: { navigation: any }){
             const timeout = setTimeout(() => {
                 storeTokenAndNavigate();
             }, 2000);
-            return () => clearTimeout(timeout);
+            return () => {
+                clearTimeout(timeout);
+                setIsLoading(false);
+            };
         }
         else {
             setIsLoading(false);
@@ -107,11 +110,13 @@ export default function Login ({ navigation }: { navigation: any }){
 
     const storeTokenAndNavigate = async () => {
         // Store data and navigate to the next screen
-        await storeData(loginResponse.authToken.toString());
+        await storeData(loginResponse.authToken);
+        console.log("AuthToken", loginResponse.authToken);
         navigation.navigate('Shopping List');
     }
 
     const storeData = async (value: string) => {
+        console.log('Storing data:', value);
         try {
             if (storageKey){
                 await AsyncStorage.setItem(storageKey, value);
