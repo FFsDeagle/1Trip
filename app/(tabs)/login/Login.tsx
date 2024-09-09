@@ -1,19 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { TouchableOpacity, ActivityIndicator, Keyboard, View, GestureResponderEvent, TextInput, StyleSheet } from 'react-native';
+import { TouchableOpacity, Keyboard, View, GestureResponderEvent, TextInput, StyleSheet } from 'react-native';
 import { styles } from "@/components/util/Theme";
 import { LinearGradientSecondary, SecondaryView, TextPrimary, TextSecondary } from "@/components/Themed";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { loginAsync, verifyAuthToken } from "./loginSlice";
+import { loginAsync, LoginProps, verifyAuthToken } from "./loginSlice";
 import LoadingIndicator from "@/components/animations/LoadingIndicator";
 import * as AuthSession from 'expo-auth-session';
 import { useAuthRequest } from 'expo-auth-session';
-
-interface LoginProps {
-    username: string;
-    password: string;
-}
 
 export default function Login ({ navigation }: { navigation: any }){
 //     // To add as env variables once acquired
@@ -50,7 +45,7 @@ export default function Login ({ navigation }: { navigation: any }){
     const [isLoading, setIsLoading] = useState(false);
     const theme = useAppSelector(state => state.theme.colors);
     const { loginState, loginResponse } = useAppSelector(state => state.login);
-    const [login, setLogin] = useState<LoginProps>({ username: '', password: '' });
+    const [login, setLogin] = useState<LoginProps>({ email: '', password: '' });
     const inputRef = useRef<TextInput>(null);
     const textRef = useRef<TextInput>(null);
     const dispatch = useAppDispatch();
@@ -75,13 +70,13 @@ export default function Login ({ navigation }: { navigation: any }){
 
     const handleSigninWithCredentials = async () => {
         setIsLoading(true);
-        if (login.username === '' || login.password === '') {
+        if (login.email === '' || login.password === '') {
             console.log('Username or password is empty');
             setIsLoading(false);
             return;
         }
         try {
-            await dispatch(loginAsync({ userName: login.username, password: login.password }))
+            await dispatch(loginAsync({ email: login.email, password: login.password }))
         } catch (error) {
             console.log('Error during login:', error);
             setIsLoading(false);
@@ -90,20 +85,20 @@ export default function Login ({ navigation }: { navigation: any }){
 
     useEffect(() => {
         // Check if there is a cached token and verify if it is still valid
-        // setIsLoading(true);
-        // loginWithStoredData();
+        setIsLoading(true);
+        loginWithStoredData();
 
-        // // If user signs in with Credentials then and the login is successful
-        // // The dependancy will trigger and store the data while navigating to the next screen
-        // if (loginState){
-        //     const timeout = setTimeout(() => {
-        //         storeTokenAndNavigate();
-        //     }, 2000);
-        //     return () => clearTimeout(timeout);
-        // }
-        // else {
-        //     setIsLoading(false);
-        // }
+        // If user signs in with Credentials then and the login is successful
+        // The dependancy will trigger and store the data while navigating to the next screen
+        if (loginState){
+            const timeout = setTimeout(() => {
+                storeTokenAndNavigate();
+            }, 2000);
+            return () => clearTimeout(timeout);
+        }
+        else {
+            setIsLoading(false);
+        }
     }, [loginState]);
 
     const loginWithStoredData = async () => {
@@ -112,7 +107,7 @@ export default function Login ({ navigation }: { navigation: any }){
 
     const storeTokenAndNavigate = async () => {
         // Store data and navigate to the next screen
-        await storeData(loginResponse.authToken);
+        await storeData(loginResponse.authToken.toString());
         navigation.navigate('Shopping List');
     }
 
@@ -221,14 +216,14 @@ export default function Login ({ navigation }: { navigation: any }){
                         width: '100%',
                     }}
                     ref={textRef}
-                    value={login.username}
+                    value={login.email}
                     onSubmitEditing={() => inputRef.current?.focus()}
                     returnKeyType="next"
                     selectionColor={theme.textSecondary}
                     autoCapitalize="none"
                     autoCorrect={false}
                     textContentType="username"
-                    onChange={e => setLogin({...login, username: e.nativeEvent.text })}
+                    onChange={e => setLogin({...login, email: e.nativeEvent.text })}
                     placeholder="Username"
                 />
             </SecondaryView>

@@ -27,13 +27,18 @@ const initialState: loginState = {
 
 // Props for User Login
 export interface LoginProps {
-    userName: string,
+    firstName?: string,
+    lastName?: string,
+    email: string,
     password: string,
 }
 
 // User Account Data
 export interface LoginResponse  {
     id: string,
+    firstName: string,
+    lastName: string,
+    email: string,
     username: string,
     authToken: string,
     tokenExpiry: string,
@@ -45,9 +50,23 @@ export interface LogoutResponse {
     status: boolean,
 }
 
+interface User {
+    id: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    username: string,
+    authToken: string,
+    tokenExpiry: string,
+    statusCode: string
+}
+
 const testLoginResponse: LoginResponse = {
     id: '1234',
     username: 'Test',
+    firstName: 'Test',
+    lastName: 'Test',
+    email: 'test@gmail.com',
     authToken: 'aXsidJh87sa08auWsoihd',
     tokenExpiry: new Date(Date.now() + 3600000).toISOString(),
     statusCode: '200',
@@ -56,10 +75,10 @@ const testLoginResponse: LoginResponse = {
 export const verifyAuthToken = createAsyncThunk(
     'login/verifyAuthToken',
     async (authToken: string) => {
-        return testLoginResponse;
+        // return testLoginResponse;
         return axios.post('http://localhost:5000/account/verifyAuthToken', { params: ({ authToken })})
         .then((response: AxiosResponse<LoginResponse>) => {
-            return response;
+            return response.data.authToken;
         }).catch(error => {
             return error;
         })
@@ -68,8 +87,8 @@ export const verifyAuthToken = createAsyncThunk(
 
 export const createAccount = createAsyncThunk(
     'login/createAccount',
-    async ({ userName, password }: LoginProps) => {
-        return axios.post('http://localhost:5000/account/createAccount', { params: ({ userName, password })})
+    async ({ firstName, lastName, email, password }: LoginProps) => {
+        return axios.post('http://localhost:5000/account/createAccount', { params: ({ firstName, lastName, email, password })})
         .then((response: AxiosResponse<LoginResponse>) => {
             return response;
         }).catch((error) => {
@@ -82,11 +101,11 @@ export const createAccount = createAsyncThunk(
 // Function for logging in
 export const loginAsync = createAsyncThunk(
     'login/loginAsync',
-    async ({ userName, password }: LoginProps) => {
-        return testLoginResponse as LoginResponse;
-        return axios.post('http://localhost:5000/account/login', { params: ({ userName, password })})
-        .then((response: AxiosResponse<LoginResponse>) => {
-            return response;
+    async ({ email, password }: LoginProps) => {
+        // return testLoginResponse as LoginResponse;
+        return axios.post('http://localhost:5000/account/login', { params: ({ email, password })})
+        .then((response: AxiosResponse<User>) => {
+            return response.data;
         }).catch((error) => {
             console.log("Error occurred when attempting to sign in:", error);
             return error;
@@ -122,8 +141,7 @@ export const loginSlice = createSlice({
         .addCase(loginAsync.rejected, (state) => {
             state.status = "failed"
         })
-        .addCase(loginAsync.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
-            console.log('Login Response from SLICE:', action.payload);
+        .addCase(loginAsync.fulfilled, (state, action: PayloadAction<User>) => {
             state.loginResponse = action.payload;
             state.loginState = true;
             // state.status = 'success';
@@ -162,25 +180,16 @@ export const loginSlice = createSlice({
         .addCase(createAccount.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
             state.status = 'success';
             if (action.payload) {
-                state.loginResponse = action.payload;
+                state.loginResponse.authToken = action.payload.authToken;
             }
         })
         .addCase(verifyAuthToken.pending, (state) => {
             state.status = 'loading';
         })
-        .addCase(verifyAuthToken.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
-            const tokenExpiryDate = new Date(action.payload.tokenExpiry);
-            console.log('Token expiry date:', tokenExpiryDate, 'Current date:', new Date());
-            if (tokenExpiryDate >= new Date()) {
-                state.loginResponse = action.payload;
-                state.loginState = true;
-                // 
-                state.status = 'success';
-            }
-            else {
-                state.status = 'failed';
-                state.error = 'Token has expired';
-            }
+        .addCase(verifyAuthToken.fulfilled, (state, action: PayloadAction<string>) => {
+            state.loginResponse.authToken = action.payload;
+            state.loginState = true;
+            state.status = 'success';
         })
         .addCase(verifyAuthToken.rejected, (state, action) => {
             state.status = 'failed';
