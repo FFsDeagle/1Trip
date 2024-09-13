@@ -1,7 +1,7 @@
 import { TouchableOpacity, View } from "react-native";
 import { styles } from "@/components/util/Theme";
 import { useLocalSearchParams, useNavigation } from "expo-router";
-import { InventoryStackParamList } from "@/constants/Types";
+import { InventoryStackParamList } from "@/constants/types";
 import { NavigationProp } from "@react-navigation/native";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { useEffect } from "react";

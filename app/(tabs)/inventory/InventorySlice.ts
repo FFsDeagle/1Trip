@@ -31,75 +31,32 @@ export interface InventoryResponse {
 
 // Add item to inventory list in database
 export const addItem = createAsyncThunk(
-    'invenotry/addItem',
+    'inventory/addInventory',
     async ({ category, description, name }: InventoryItem) => {
-        return axios.post('http://localhost:5000/inventory/addItem', { params: ({ category, description, name })})
-        .then((response: AxiosResponse<InventoryResponse>) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when adding item", error);
-            return error;
-        })
-    }
-)
-
-// Item Search by Category
-export const itemCategorySearch = createAsyncThunk(
-    'invenotry/itemCategorySearch',
-    async (searchValue : string) => {
-        return axios.post('http://localhost:5000/inventory/itemCategorySearch', { params: ({ searchValue })})
-        .then((response: AxiosResponse<InventoryItem[]>) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when searching for item", error);
-            return error;
-        })
-    }
-)
-
-// Item Search by Name/Category
-export const itemSearch = createAsyncThunk(
-    'invenotry/itemSearch',
-    async (searchValue : string) => {
-        return axios.post('http://localhost:5000/inventory/itemSearch', { params: ({ searchValue })})
-        .then((response: AxiosResponse<InventoryItem[]>) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when searching for item", error);
-            return error;
-        })
+        const response = await axios.post('http://192.168.1.116:5000/inventory/addItem', { category, description, name })
+        return response.data;
     }
 )
 
 export const AddListToInventory = createAsyncThunk(
-    'invenotry/addListToInventory',
+    'inventory/addListToInventory',
     async (list: InventoryItem[]) => {
-        return list; // This is a placeholder for the actual axios call
-        return axios.post('http://localhost:5000/inventory/addListToInventory', { params: ({ list })})
-        .then((response: AxiosResponse<InventoryResponse>) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when adding list to inventory", error);
-            return error;
-        })
+        //return list; // This is a placeholder for the actual axios call
+        const response = await axios.post('http://192.168.1.116:5000/inventory/addListToInventory', { list })
+        return response.data;
     }
 )
 
 export const GetInventoryItems = createAsyncThunk(
-    'invenotry/getInventoryItems',
+    'inventory/getInventory',
     async () => {
-        return axios.get('http://localhost:5000/inventory/getInventoryItems')
-        .then((response: AxiosResponse<InventoryItem[]>) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when getting inventory items", error);
-            return error;
-        })
+        const response = await axios.get('http://192.168.1.116:5000/inventory/getInventoryItems')
+        return response.data;
     }
 )
 
 export const inventorySlice = createSlice({
-    name: 'invenotry',
+    name: 'inventory',
     initialState: initialState,
     reducers: {
         GetInventoryItemsByCategory: (state, action: PayloadAction<string>) => {
@@ -122,24 +79,6 @@ export const inventorySlice = createSlice({
             state.inventoryItems.push(action.payload);
         })
         builder.addCase(addItem.rejected, (state) => {
-            state.status = 'failed';
-        })
-        builder.addCase(itemCategorySearch.pending, (state) => {
-            state.status = 'loading';
-        })
-        builder.addCase(itemCategorySearch.fulfilled, (state, action) => {
-            state.inventoryItems = action.payload;
-        })
-        builder.addCase(itemCategorySearch.rejected, (state) => {
-            state.status = 'failed';
-        })
-        builder.addCase(itemSearch.pending, (state) => {
-            state.status = 'loading';
-        })
-        builder.addCase(itemSearch.fulfilled, (state, action) => {
-            state.inventoryItems = action.payload;
-        })
-        builder.addCase(itemSearch.rejected, (state) => {
             state.status = 'failed';
         })
         builder.addCase(AddListToInventory.pending, (state) => {

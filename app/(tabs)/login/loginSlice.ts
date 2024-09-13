@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/app/store/store";
-import { signInWithCredentials, logout } from "./loginAPI";
 import axios, { AxiosResponse } from "axios";
 
 // Login state structure
@@ -30,7 +29,7 @@ export interface LoginProps {
     firstName?: string,
     lastName?: string,
     email: string,
-    password: string,
+    password?: string,
 }
 
 // User Account Data
@@ -54,9 +53,7 @@ interface User {
     firstName: string,
     lastName: string,
     email: string,
-    authToken: string,
-    tokenExpiry: string,
-    statusCode: string
+    token: string,
 }
 
 // const testLoginResponse: LoginResponse = {
@@ -70,29 +67,30 @@ interface User {
 //     statusCode: '200',
 // }
 
+export const forgotPassword = createAsyncThunk(
+    'login/forgotPassword',
+    async ({ email }: LoginProps) => {
+        console.log("Attempting to send password reset email to:", email);
+        const response = await axios.post('http://192.168.1.116:5000/recover/forgotPassword', { email })
+        return response.data;
+    }
+)
+
 export const verifyAuthToken = createAsyncThunk(
     'login/verifyAuthToken',
     async (authToken: string) => {
         // return testLoginResponse;
-        return axios.post('http://localhost:5000/account/verifyAuthToken', { params: ({ authToken })})
-        .then((response: AxiosResponse<LoginResponse>) => {
-            return response;
-        }).catch(error => {
-            return error;
-        })
+        const response = await axios.post('http://192.168.1.116:5000/account/verifyAuthToken', { authToken })
+        return response.data;
     }
 )
 
 export const createAccount = createAsyncThunk(
     'login/createAccount',
     async ({ firstName, lastName, email, password }: LoginProps) => {
-        return axios.post('http://localhost:5000/account/createAccount', { params: ({ firstName, lastName, email, password })})
-        .then((response: AxiosResponse<LoginResponse>) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when attempting to create account:", error);
-            return error;
-        })
+        console.log("Attempting to create account with email:", email);
+        const response = await axios.post('http://192.168.1.116:5000/account/signUp', { firstName, lastName, email, password })
+        return response.data;
     }
 )
 
@@ -101,13 +99,9 @@ export const loginAsync = createAsyncThunk(
     'login/loginAsync',
     async ({ email, password }: LoginProps) => {
         // return testLoginResponse as LoginResponse;
-        return axios.post('http://localhost:5000/account/login', { params: ({ email, password })})
-        .then((response: AxiosResponse<User>) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when attempting to sign in:", error);
-            return error;
-        })
+        console.log("Attempting to sign in with email:", email);
+        const response = await axios.post('http://192.168.1.116:5000/account/login', { email, password })
+        return response.data;
     }
 )
 
@@ -116,12 +110,8 @@ export const logoutAsync = createAsyncThunk(
     'login/logoutAsync',
     // No need to define a interface here as we are only passing 1 argument of type string
     async (id: string) => {
-        return axios.post('http://localhost:5000/account/logout', { params: ({ id })})
-        .then((response: AxiosResponse<LogoutResponse>) => {
-            return response;
-        }).catch(error => {
-            return error;
-        })
+        const response = await axios.post('http://192.168.1.116:5000/account/logout', { id })
+        return response.data;
     }
 )
 
@@ -168,7 +158,7 @@ export const loginSlice = createSlice({
         .addCase(createAccount.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
             state.status = 'success';
             if (action.payload) {
-                state.loginResponse.authToken = action.payload.authToken;
+                state.loginResponse.token = action.payload.authToken;
             }
         })
         .addCase(verifyAuthToken.pending, (state) => {
@@ -176,7 +166,7 @@ export const loginSlice = createSlice({
         })
         .addCase(verifyAuthToken.fulfilled, (state, action: PayloadAction<User>) => {
             state.loginResponse.id = action.payload.id;
-            state.loginResponse.authToken = action.payload.authToken;
+            state.loginResponse.token = action.payload.token;
             state.loginResponse.email = action.payload.email;
             state.loginResponse.firstName = action.payload.firstName;
             state.loginResponse.lastName = action.payload.lastName;
@@ -190,6 +180,4 @@ export const loginSlice = createSlice({
     }
 })
 
-// Export parts of your state for easy access throughout your app
-// For example this export will give you the current state of the user
 export default loginSlice.reducer;

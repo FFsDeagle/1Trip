@@ -1,11 +1,13 @@
-import { useAppSelector } from "@/app/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { SecondaryView, TextSecondary, TouchableOpacity } from "@/components/Themed";
 import { styles } from "@/components/util/Theme";
-import { ShoppingStackParamList } from "@/constants/Types";
+import { LoginStackParamList, ShoppingStackParamList } from "@/constants/types";
 import { AntDesign } from "@expo/vector-icons";
 import { NavigationProp } from "@react-navigation/native";
 import { useNavigation } from "expo-router";
 import { FlatList, View } from "react-native";
+import { logoutAsync } from "../login/loginSlice";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SettingsIcon = () => {
     const theme = useAppSelector(state => state.theme);
@@ -29,7 +31,12 @@ const SettingsIcon = () => {
 
 function Settings(){
     const navigation = useNavigation<NavigationProp<ShoppingStackParamList, 'ShoppingMain'>>();
-    const handleSelection = (selection: string) => {
+    const navigationLogin = useNavigation<NavigationProp<LoginStackParamList, 'Login'>>();
+    const { id, token } = useAppSelector(state => state.login.loginResponse);
+    const storageKey = process.env.EXPO_PUBLIC_STORAGE_KEY;
+    const dispatch = useAppDispatch();
+
+    const handleSelection = async (selection: string) => {
         console.log('Selection: ', selection);
         switch(selection){
             case 'About':
@@ -42,7 +49,12 @@ function Settings(){
                 //navigation.navigate('Notifications');
                 break;
             case 'Log out':
-                //navigation.navigate('Log out');
+                // Clear token from local storage and logout
+                if (storageKey) {
+                    await AsyncStorage.setItem(storageKey, token);
+                }
+                await dispatch(logoutAsync(id));
+                navigationLogin.navigate('Login');
                 break;
             default:
                 break;

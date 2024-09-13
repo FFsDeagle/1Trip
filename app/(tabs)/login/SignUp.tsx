@@ -10,15 +10,18 @@ export default function SignUp(){
     const theme = useAppSelector(state => state.theme.colors);
     const dispatch = useAppDispatch();
     const [login, setLogin] = useState<LoginProps>({
-        userName: '',
+        email: '',
         password: '',
+        firstName: 'test',
+        lastName: 'test',
     });
     
     const handleSignUp = async () => {
-        if (login.userName === '' || login.password === '') {
+        console.log("Attempting to create account with email:", login.email);
+        if (login.email === '' || login.password === '') {
             return;
         }
-        dispatch(createAccount(login));
+        await dispatch(createAccount(login));
     }
 
     return (
@@ -47,7 +50,7 @@ export default function SignUp(){
                             selectionColor={theme.textSecondary}
                             autoCapitalize="none"
                             autoCorrect={false}
-                            onChange={e => setLogin({...login, password: e.nativeEvent.text})}
+                            onChange={e => setLogin({...login, email: e.nativeEvent.text})}
                             placeholder="Username"
                         />
                     </SecondaryView>

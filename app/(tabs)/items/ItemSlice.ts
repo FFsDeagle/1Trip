@@ -321,33 +321,6 @@ const testState: InventoryItem[] = [
     },
 ];
 
-export const getFavouriteList = createAsyncThunk(
-    'item/getFavouriteList',
-    async () => {
-        return testFavList;
-        return axios.get('http://localhost:5000/inventory/getFavouriteList')
-        .then((response: AxiosResponse<FavouriteList[]>) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when getting favourite list", error);
-            return error;
-        })
-    }
-)
-
-export const addFavouriteList = createAsyncThunk(
-    'item/addFavouriteList',
-    async ({ name, items }: FavouriteList) => {
-        return axios.post('http://localhost:5000/inventory/addFavouriteList', { params: ({ name, items })})
-        .then((response: AxiosResponse<InventoryResponse>) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when adding favourite list", error);
-            return error;
-        })
-    }
-)
-
 export interface InventoryItem {
     id: string,
     name: string,
@@ -361,144 +334,93 @@ export interface InventoryResponse {
     status: boolean,
 }
 
+export const getProducts = createAsyncThunk(
+    'item/getProducts',
+    async (id: string) => {
+        const response = await axios.post('http://localhost:5000/inventory/getProducts', { id })
+        return response.data;
+    }
+)
+
+export const getFavouriteList = createAsyncThunk(
+    'item/getFavouriteList',
+    async (id: string) => {
+        // return testFavList;
+        const response = await axios.post('http://localhost:5000/inventory/getFavouriteList', { id })
+        return response.data;
+    }
+)
+
+export const addFavouriteList = createAsyncThunk(
+    'item/addFavouriteList',
+    async ({ name, items }: FavouriteList) => {
+        const response = await axios.post('http://localhost:5000/inventory/addFavouriteList', { name, items })
+        return response.data;
+    }
+)
+
 // Add item to inventory list in database
 export const addItem = createAsyncThunk(
     'item/addItem',
     async (product: InventoryItem) => {
-        return product;
-        return axios.post('http://localhost:5000/inventory/addItem', { params: ({ product })})
-        .then((response: AxiosResponse<InventoryResponse>) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when adding item", error);
-            return error;
-        })
+        const response = await axios.post('http://localhost:5000/inventory/addItem', { product })
+        return response.data;
     }
 )
 
 export const updateItem = createAsyncThunk(
     'item/updateItem',
     async (product: InventoryItem) => {
-        return product;
-        return axios.post('http://localhost:5000/inventory/updateItem', { params: ({ product })})
-        .then((response: AxiosResponse<InventoryResponse>) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when updating item", error);
-            return error;
-        })
+        const response = await axios.post('http://localhost:5000/inventory/updateItem', { product })
+        return response.data;
     }
 )
 
 export const deleteItem = createAsyncThunk(
     'item/deleteItem',
     async (id: string) => {
-        return id;
-        return axios.post('http://localhost:5000/inventory/deleteItem', { params: { id }})
-        .then((response: AxiosResponse<InventoryResponse>) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when deleting item", error);
-            return error;
-        })
-    }
-)
-
-// Item Search by Category
-export const itemCategorySearch = createAsyncThunk(
-    'item/itemCategorySearch',
-    async (searchValue : string) => {
-        return axios.post('http://localhost:5000/inventory/itemCategorySearch', { params: ({ searchValue })})
-        .then((response: AxiosResponse<InventoryItem[]>) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when searching for item", error);
-            return error;
-        })
-    }
-)
-
-// Item Search by Name/Category
-export const itemSearch = createAsyncThunk(
-    'item/itemSearch',
-    async (searchValue : string) => {
-        return axios.post('http://localhost:5000/inventory/itemSearch', { params: ({ searchValue })})
-        .then((response: AxiosResponse<InventoryItem[]>) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when searching for item", error);
-            return error;
-        })
+        const response = await axios.post('http://localhost:5000/inventory/deleteItem', { id })
+        return response.data;
     }
 )
 
 export const getCategories = createAsyncThunk(
     'item/getCategories',
-    async () => {
-        return testCategories;
-        return axios.get('http://localhost:5000/inventory/getCategories')
-        .then((response: AxiosResponse<Categories[]>) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when getting categories", error);
-            return error;
-        })
+    async (id: string) => {
+        const response = await axios.post('http://localhost:5000/inventory/getCategories', { id });
+        return response.data;
     }
 )
 
 export const addCategories = createAsyncThunk(
     'item/addCategories',
     async (category: Categories) => {
-        return category;
-        return axios.post('http://localhost:5000/inventory/addCategories', { params: ({ category })})
-        .then((response: AxiosResponse<InventoryResponse>) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when adding category", error);
-            return error;
-        })
+        const response = await axios.post('http://localhost:5000/inventory/addCategories', { category })
+        return response.data;
     }
 )
 
 export const deleteCategories = createAsyncThunk(
     'item/deleteCategories',
     async ({ id }: Categories) => {
-        return id;
-        return axios.post('http://localhost:5000/inventory/deleteCategories', { params: { id }})
-        .then((response: AxiosResponse<InventoryResponse>) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when deleting category", error);
-            return error;
-        })
+        const response = await axios.post('http://localhost:5000/inventory/deleteCategories', { id })
+        return response.data;
     }
 )
 
 export const updateCategories = createAsyncThunk(
     'item/updateCategories',
     async (category: Categories) => {
-        return category;
-        return axios.post('http://localhost:5000/inventory/updateCategories', { params: ({ category })})
-        .then((response: AxiosResponse<InventoryResponse>) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when updating category", error);
-            return error;
-        })
+        const response = await axios.post('http://localhost:5000/inventory/updateCategories', { category })
+        return response.data;
     }
 )
 
 export const getItemList = createAsyncThunk(
     'item/getItemList',
-    async () => {
-        return testState;
-        return axios.get('http://localhost:5000/inventory/getItemList')
-        .then((response: AxiosResponse<InventoryItem[]>) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when getting item list", error);
-            return error;
-        })
+    async (id: string) => {
+        const response = await axios.post('http://localhost:5000/inventory/getItemList', { id })
+        return response.data;
     }
 )
 
@@ -538,24 +460,6 @@ export const inventorySlice = createSlice({
             state.items = state.items.filter((item) => item.id !== action.payload);
         })
         builder.addCase(deleteItem.rejected, (state) => {
-            state.status = 'failed';
-        })
-        builder.addCase(itemCategorySearch.pending, (state) => {
-            state.status = 'loading';
-        })
-        builder.addCase(itemCategorySearch.fulfilled, (state, action) => {
-            state.items = action.payload;
-        })
-        builder.addCase(itemCategorySearch.rejected, (state) => {
-            state.status = 'failed';
-        })
-        builder.addCase(itemSearch.pending, (state) => {
-            state.status = 'loading';
-        })
-        builder.addCase(itemSearch.fulfilled, (state, action) => {
-            state.items = action.payload;
-        })
-        builder.addCase(itemSearch.rejected, (state) => {
             state.status = 'failed';
         })
         builder.addCase(getItemList.pending, (state) => {

@@ -3,22 +3,23 @@ import { LinearGradient, SecondaryView, TextPrimary, TextSecondary, TouchableOpa
 import { styles } from "@/components/util/Theme";
 import { useState } from "react";
 import { TextInput, View, StyleSheet } from "react-native";
-import { LoginProps } from "./loginSlice";
+import { forgotPassword, LoginProps } from "./loginSlice";
 import BackButton from "@/components/util/BackButton";
 
 export default function ForgotPassword() {
     const theme = useAppSelector(state => state.theme.colors);
     const dispatch = useAppDispatch();
     const [login, setLogin] = useState<LoginProps>({
-        userName: '',
+        email: '',
         password: '',
     });
     
     const handleForgotPassword = async () => {
-        if (login.userName === '') {
+        console.log("Attempting to reset password with email:", login.email);
+        if (login.email === '') {
             return;
         }
-        //dispatch(forgotPassword(login));
+        await dispatch(forgotPassword(login));
     }
 
     return (
@@ -47,8 +48,8 @@ export default function ForgotPassword() {
                             selectionColor={theme.textSecondary}
                             autoCapitalize="none"
                             autoCorrect={false}
-                            onChange={e => setLogin({...login, password: e.nativeEvent.text})}
-                            placeholder="Username"
+                            onChange={e => setLogin({...login, email: e.nativeEvent.text})}
+                            placeholder="Email"
                         />
                     </SecondaryView>
                 </View>

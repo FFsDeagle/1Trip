@@ -44,7 +44,7 @@ export default function Login ({ navigation }: { navigation: any }){
     // const [tiktokRequest, tiktokResponse, promptTiktokAsync] = useAuthRequest(tiktokAuthRequestConfig, tiktokOAuthDiscovery);
     const [isLoading, setIsLoading] = useState(false);
     const theme = useAppSelector(state => state.theme.colors);
-    const { loginState, loginResponse } = useAppSelector(state => state.login);
+    const { loginState, loginResponse, status } = useAppSelector(state => state.login);
     const [login, setLogin] = useState<LoginProps>({ email: '', password: '' });
     const inputRef = useRef<TextInput>(null);
     const textRef = useRef<TextInput>(null);
@@ -69,49 +69,58 @@ export default function Login ({ navigation }: { navigation: any }){
     }, []);
 
     const handleSigninWithCredentials = async () => {
-        setIsLoading(true);
         if (login.email === '' || login.password === '') {
             console.log('Username or password is empty');
-            setIsLoading(false);
             return;
         }
         try {
             await dispatch(loginAsync({ email: login.email, password: login.password }))
         } catch (error) {
             console.log('Error during login:', error);
-            setIsLoading(false);
         }
     };
 
     useEffect(() => {
-        // Check if there is a cached token and verify if it is still valid
-        setIsLoading(true);
-        // loginWithStoredData();
-
-        // If user signs in with Credentials then and the login is successful
-        // The dependancy will trigger and store the data while navigating to the next screen
-        if (loginState){
+        if (status === 'idle') {
+            return;
+        }
+        setIsLoading(true); // Begin loading when status is 'loading'
+    
+        // Handle different statuses properly
+        if (status === 'loading') {
+            console.log('Login state:', status);
+    
+            // Simulate a timeout before storing token or moving forward
             const timeout = setTimeout(() => {
                 storeTokenAndNavigate();
             }, 2000);
+    
             return () => {
-                clearTimeout(timeout);
-                setIsLoading(false);
+                clearTimeout(timeout); // Clear the timeout when effect is cleaned up
             };
+        } else if (status === 'success') {
+            console.log('Login succeeded');
+            setIsLoading(false); // Stop loading when login succeeds
+            // Optionally, navigate to the next screen
+        } else if (status === 'failed') {
+            console.log('Login failed'); // Handle failed login
+            setIsLoading(false); // Stop loading in case of failure
         }
-        else {
-            setIsLoading(false);
-        }
-    }, [loginState]);
+    }, [status]); //
+    
 
     const loginWithStoredData = async () => {
         await getDataAndVerify();
     }
 
     const storeTokenAndNavigate = async () => {
+        if (status === 'failed') {
+            console.log('Login failed');
+            setIsLoading(false);
+        }
         // Store data and navigate to the next screen
-        await storeData(loginResponse.authToken);
-        console.log("AuthToken", loginResponse.authToken);
+        await storeData(loginResponse.token);
+        console.log("token", loginResponse.token);
         navigation.navigate('Shopping List');
     }
 
@@ -139,11 +148,9 @@ export default function Login ({ navigation }: { navigation: any }){
                 // value previously stored
                 await dispatch(verifyAuthToken(value));
             }
-            return false;
         } catch(e) {
             // error reading value
             console.log('Error:', e);
-            return false;
         }
     }
 
