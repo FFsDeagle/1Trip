@@ -9,7 +9,7 @@ export interface loginState {
     error: string | undefined,
     status: 'idle' | 'loading' | 'failed' | 'success'
     logoutResponse: LogoutResponse,
-    loginResponse: User,
+    loginResponse: LoginResponse,
 }
 
 // initialState on load
@@ -21,7 +21,7 @@ const initialState: loginState = {
     logoutResponse: {
         status: false, // Set to false by default
     } as LogoutResponse,
-    loginResponse: {} as User,
+    loginResponse: {} as LoginResponse,
 }
 
 // Props for User Login
@@ -129,7 +129,7 @@ export const loginSlice = createSlice({
         .addCase(loginAsync.rejected, (state) => {
             state.status = "failed"
         })
-        .addCase(loginAsync.fulfilled, (state, action: PayloadAction<User>) => {
+        .addCase(loginAsync.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
             state.loginResponse = action.payload;
             state.loginState = true;
         })
@@ -145,7 +145,7 @@ export const loginSlice = createSlice({
             // If status is true
             if(action.payload?.status){
                 // Reset state by creating an empty object of type LoginResponse
-                state.loginResponse = {} as User;
+                state.loginResponse = {} as LoginResponse;
             }
         })
         .addCase(createAccount.pending, (state) => {
@@ -158,18 +158,14 @@ export const loginSlice = createSlice({
         .addCase(createAccount.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
             state.status = 'success';
             if (action.payload) {
-                state.loginResponse.token = action.payload.authToken;
+                state.loginResponse.authToken = action.payload.authToken;
             }
         })
         .addCase(verifyAuthToken.pending, (state) => {
             state.status = 'loading';
         })
-        .addCase(verifyAuthToken.fulfilled, (state, action: PayloadAction<User>) => {
-            state.loginResponse.id = action.payload.id;
-            state.loginResponse.token = action.payload.token;
-            state.loginResponse.email = action.payload.email;
-            state.loginResponse.firstName = action.payload.firstName;
-            state.loginResponse.lastName = action.payload.lastName;
+        .addCase(verifyAuthToken.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
+            state.loginResponse = action.payload;
             state.loginState = true;
             state.status = 'success';
         })
