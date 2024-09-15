@@ -337,7 +337,7 @@ export interface InventoryResponse {
 export const getProducts = createAsyncThunk(
     'item/getProducts',
     async (id: string) => {
-        const response = await axios.post('http://localhost:5000/products/getProducts', { id })
+        const response = await axios.get('http://localhost:5000/products/getProducts', { params: { id } })
         return response.data;
     }
 )
@@ -346,7 +346,7 @@ export const getFavouriteList = createAsyncThunk(
     'item/getFavouriteList',
     async (id: string) => {
         // return testFavList;
-        const response = await axios.post('http://localhost:5000/products/getFavouriteList', { id })
+        const response = await axios.get('http://localhost:5000/products/getFavouriteList', { params: { id } })
         return response.data;
     }
 )
@@ -378,8 +378,8 @@ export const updateItem = createAsyncThunk(
 
 export const deleteItem = createAsyncThunk(
     'item/deleteItem',
-    async (id: string) => {
-        const response = await axios.post('http://localhost:5000/products/deleteItem', { id })
+    async ({ id, userId}: { id: string, userId: string }) => {
+        const response = await axios.delete('http://localhost:5000/products/deleteItem', { params: { userId, id } })
         return response.data;
     }
 )
@@ -388,15 +388,15 @@ export const getCategories = createAsyncThunk(
     'item/getCategories',
     async (id: string) => {
         console.log('test getCategories', id);
-        const response = await axios.post('http://192.168.1.116:5000/products/getCategories', { id });
+        const response = await axios.get('http://192.168.1.116:5000/products/getCategories', { params: { id } });
         return response.data;
     }
 )
 
 export const addCategories = createAsyncThunk(
     'item/addCategories',
-    async (category: Categories) => {
-        const response = await axios.post('http://localhost:5000/products/addCategories', { category })
+    async ({id, category}: { id: string, category: Categories}) => {
+        const response = await axios.post('http://localhost:5000/products/addCategory', { category })
         return response.data;
     }
 )
@@ -411,8 +411,8 @@ export const deleteCategories = createAsyncThunk(
 
 export const updateCategories = createAsyncThunk(
     'item/updateCategories',
-    async (category: Categories) => {
-        const response = await axios.post('http://localhost:5000/products/updateCategories', { category })
+    async ({ id, category }: { id: string, category: Categories}) => {
+        const response = await axios.put('http://localhost:5000/products/updateCategories', { id, category })
         return response.data;
     }
 )
@@ -420,7 +420,7 @@ export const updateCategories = createAsyncThunk(
 export const getItemList = createAsyncThunk(
     'item/getItemList',
     async (id: string) => {
-        const response = await axios.post('http://192.168.1.116:5000/products/getProducts', { id })
+        const response = await axios.get('http://192.168.1.116:5000/products/getProducts', { params: { id } })
         return response.data;
     }
 )

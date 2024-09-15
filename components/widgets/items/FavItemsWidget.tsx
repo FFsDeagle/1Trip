@@ -25,7 +25,7 @@ export default function FavItemsWidget(){
                     </View>
                     <TextSecondary style={[styles.listText]}>Category</TextSecondary>
             </TouchableOpacity>
-            {products.slice(0, 3).map((product) => {
+            {products.length > 0 && products.slice(0, 3).map((product) => {
                 return(
                     <TouchableOpacity style={[styles.listItem, styles.flexRow, styles.justifiedApart]} key={product.id}>
                         <View style={[styles.flexRow, { width: 'auto' }]}>
