@@ -33,7 +33,7 @@ export interface InventoryResponse {
 export const addItem = createAsyncThunk(
     'inventory/addInventory',
     async ({ category, description, name }: InventoryItem) => {
-        const response = await axios.post('http://192.168.1.116:5000/inventory/addItem', { category, description, name })
+        const response = await axios.post('http://192.168.1.116:5000/inventory/addInventory', { category, description, name })
         return response.data;
     }
 )
