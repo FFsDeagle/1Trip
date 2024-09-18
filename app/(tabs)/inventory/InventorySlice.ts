@@ -32,28 +32,44 @@ export interface InventoryResponse {
 // Add item to inventory list in database
 export const addItem = createAsyncThunk(
     'inventory/addInventory',
-    async ({ category, description, name }: InventoryItem) => {
-        const response = await axios.post('http://192.168.1.116:5000/inventory/addInventory', { category, description, name })
+    async ({ category, description, name }: InventoryItem, { getState }) => {
+        const state = getState() as { auth: { token: string } };
+        const token = state.auth.token;
+        const response = await axios.post(
+            'http://192.168.1.116:5000/inventory/addInventory',
+            { category, description, name },
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
         return response.data;
     }
-)
+);
 
 export const AddListToInventory = createAsyncThunk(
     'inventory/addListToInventory',
-    async (list: InventoryItem[]) => {
-        //return list; // This is a placeholder for the actual axios call
-        const response = await axios.post('http://192.168.1.116:5000/inventory/addListToInventory', { list })
+    async (list: InventoryItem[], { getState }) => {
+        const state = getState() as { auth: { token: string } };
+        const token = state.auth.token;
+        const response = await axios.post(
+            'http://192.168.1.116:5000/inventory/addListToInventory',
+            { list },
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
         return response.data;
     }
-)
+);
 
 export const GetInventoryItems = createAsyncThunk(
     'inventory/getInventory',
-    async () => {
-        const response = await axios.get('http://192.168.1.116:5000/inventory/getInventoryItems')
+    async (_, { getState }) => {
+        const state = getState() as { auth: { token: string } };
+        const token = state.auth.token;
+        const response = await axios.get(
+            'http://192.168.1.116:5000/inventory/getInventoryItems',
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
         return response.data;
     }
-)
+);
 
 export const inventorySlice = createSlice({
     name: 'inventory',

@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
 import { useAppDispatch } from "@/app/store/hooks";
 import { AddListToInventory, InventoryItem } from "../inventory/InventorySlice";
+import { RootState } from "@/app/store/store";
 
 export interface ShoppingListProps {
     status: 'idle' | 'loading' | 'failed' | 'success',
@@ -40,9 +41,13 @@ const emptyLists: ShoppingListTypes = {
 
 export const DeleteList = createAsyncThunk(
     'shoppingList/deleteList',
-    async (list: ShoppingList) => {
-        return list; // This is a placeholder for the actual axios call
-        return axios.post('http://localhost:5000/shopping/deleteList', list)
+    async ({ id, list }: { id: string, list: ShoppingList}, { getState }) => {
+        const token = getState() as RootState;
+        return axios.post('http://localhost:5000/shopping/deleteList', { id, list }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
         .then((response: AxiosResponse) => {
             return response;
         }).catch((error) => {
@@ -54,9 +59,13 @@ export const DeleteList = createAsyncThunk(
 
 export const DeleteIncompleteList = createAsyncThunk(
     'shoppingList/deleteIncompleteList',
-    async (list: ShoppingList) => {
-        return list; // This is a placeholder for the actual axios call
-        return axios.post('http://localhost:5000/shopping/deleteList', list)
+    async ({ id, list }: { id: string, list: ShoppingList}, { getState }) => {
+        const token = getState() as RootState;
+        return axios.post('http://localhost:5000/shopping/deleteList', { id, list }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
         .then((response: AxiosResponse) => {
             return response;
         }).catch((error) => {
@@ -68,9 +77,13 @@ export const DeleteIncompleteList = createAsyncThunk(
 
 export const SaveIncompleteList = createAsyncThunk(
     'shoppingList/saveIncompleteList',
-    async (list: ShoppingList) => {
-        return list; // This is a placeholder for the actual axios call
-        return axios.post('http://localhost:5000/shopping/saveIncompleteList', list)
+    async ({ id, list }: { id: string, list: ShoppingList}, { getState }) => {
+        const token = getState() as RootState;
+        return axios.post('http://localhost:5000/shopping/saveIncompleteList', { id, list }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
         .then((response: AxiosResponse) => {
             return response;
         }).catch((error) => {
@@ -82,9 +95,14 @@ export const SaveIncompleteList = createAsyncThunk(
 
 export const GetLists = createAsyncThunk(
     'shoppingList/getLists',
-    async () => {
-        return emptyLists as unknown as AxiosResponse<ShoppingListTypes>; // This is a placeholder for the actual axios call
-        return axios.get('http://localhost:5000/shopping/getLists')
+    async (id: string, { getState }) => {
+        const token = getState() as RootState;
+        return axios.get('http://localhost:5000/shopping/getLists', {
+            params: { id },
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
         .then((response: AxiosResponse<ShoppingListTypes>) => {
             return response;
         }).catch((error) => {
@@ -96,9 +114,13 @@ export const GetLists = createAsyncThunk(
 
 export const UpdateShoppingList = createAsyncThunk(
     'shoppingList/updateList',
-    async (list: ShoppingList) => {
-        return list; // This is a placeholder for the actual axios call
-        return axios.post('http://localhost:5000/shopping/updateList', list)
+    async ({ id, list }: { id: string, list: ShoppingList}, { getState }) => {
+        const token = getState() as RootState;
+        return axios.post('http://localhost:5000/shopping/updateList', { id, list }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
         .then((response: AxiosResponse) => {
             return response;
         }).catch((error) => {
@@ -110,9 +132,13 @@ export const UpdateShoppingList = createAsyncThunk(
 
 export const SaveShoppingList = createAsyncThunk(
     'shoppingList/saveList',
-    async (list: ShoppingList) => {
-        return list; // This is a placeholder for the actual axios call
-        return axios.post('http://localhost:5000/shopping/saveList', list)
+    async ({ id, list }: { id: string, list: ShoppingList}, { getState }) => {
+        const token = getState() as RootState;
+        return axios.post('http://localhost:5000/shopping/saveList', { id, list }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
         .then((response: AxiosResponse) => {
             return response;
         }).catch((error) => {
@@ -124,9 +150,13 @@ export const SaveShoppingList = createAsyncThunk(
 
 export const SaveToHistory = createAsyncThunk(
     'shoppingList/saveToHistory',
-    async (list: ShoppingList) => {
-        return list;
-        return axios.post('http://localhost:5000/shopping/saveToHistory', list)
+    async ({ id, list }: { id: string, list: ShoppingList}, { getState }) => {
+        const token = getState() as RootState;
+        return axios.post('http://localhost:5000/shopping/saveToHistory', { id, list }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
         .then((response: AxiosResponse) => {
             return response;
         }).catch((error) => {

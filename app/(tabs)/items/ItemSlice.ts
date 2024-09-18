@@ -1,3 +1,5 @@
+import { useAppSelector } from "@/app/store/hooks";
+import { RootState } from "@/app/store/store";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
 
@@ -28,89 +30,6 @@ export interface FavouriteList {
     items: InventoryItem[],
 }
 
-const testFavList: FavouriteList[] = [
-    {
-        id: '1',
-        name: 'Dairy',
-        items: [
-            {
-                id: '1',
-                name: 'Milk',
-                description: '1 gallon of whole milk',
-                category: 'Dairy',
-                defaultExpiry: 7, // 7 days
-                uom: 1, // 1 gallon
-            },
-            {
-                id: '2',
-                name: 'Cheddar Cheese',
-                description: 'Block of aged cheddar cheese',
-                category: 'Dairy',
-                defaultExpiry: 30, // 30 days
-                uom: 1, // 1 block
-            }
-        ],
-    },
-    {
-        id: '2',
-        name: 'Poultry',
-        items: [
-            {
-                id: '3',
-                name: 'Chicken Breast',
-                description: 'Boneless, skinless chicken breast',
-                category: 'Poultry',
-                defaultExpiry: 3, // 3 days
-                uom: 2, // 2 breasts
-            },
-            {
-                id: '4',
-                name: 'Eggs',
-                description: 'Carton of a dozen large eggs',
-                category: 'Poultry',
-                defaultExpiry: 21, // 21 days
-                uom: 12, // 12 eggs
-            }
-        ],
-    },
-    {
-        id: '3',
-        name: 'Produce',
-        items: [
-            {
-                id: '5',
-                name: 'Lettuce',
-                description: 'Fresh romaine lettuce',
-                category: 'Produce',
-                defaultExpiry: 5, // 5 days
-                uom: 1, // 1 head
-            },
-            {
-                id: '6',
-                name: 'Apples',
-                description: 'Bag of organic Fuji apples',
-                category: 'Produce',
-                defaultExpiry: 30, // 30 days
-                uom: 6, // 6 apples
-            }
-        ],
-    },
-    {
-        id: '4',
-        name: 'Frozen',
-        items: [
-            {
-                id: '7',
-                name: 'Frozen Peas',
-                description: 'Bag of frozen green peas',
-                category: 'Frozen',
-                defaultExpiry: 365, // 365 days (1 year)
-                uom: 1, // 1 bag
-            },
-        ],
-    },
-]
-
 export interface InventoryItem {
     id: string,
     name: string,
@@ -126,91 +45,145 @@ export interface InventoryResponse {
 
 export const getProducts = createAsyncThunk(
     'item/getProducts',
-    async (id: string) => {
-        const response = await axios.get('http://localhost:5000/products/getProducts', { params: { id } })
+    async (id: string, { getState }) => {
+        const state = getState() as RootState;
+        const { token } = state.login.loginResponse;
+        console.log('token 321', token);
+        const response = await axios.get('http://192.168.1.116:5000/products/getProducts', { 
+            params: { id },
+            headers: { Authorization: `Bearer ${token}`} 
+        })
         return response.data;
     }
 )
 
 export const getFavouriteList = createAsyncThunk(
     'item/getFavouriteList',
-    async (id: string) => {
-        // return testFavList;
-        const response = await axios.get('http://localhost:5000/products/getFavouriteList', { params: { id } })
+    async (id: string, { getState }) => {
+        const state = getState() as RootState;
+        const { token } = state.login.loginResponse;
+        const response = await axios.get('http://localhost:5000/products/getFavouriteList', { 
+            params: { id }, 
+            headers: { Authorization: `Bearer ${token}` }
+        })
         return response.data;
     }
 )
 
 export const addFavouriteList = createAsyncThunk(
     'item/addFavouriteList',
-    async ({ name, items }: FavouriteList) => {
-        const response = await axios.post('http://localhost:5000/products/addFavouriteList', { name, items })
+    async ({ name, items }: FavouriteList, { getState }) => {
+        const state = getState() as RootState;
+        const { token } = state.login.loginResponse;
+        const response = await axios.post('http://localhost:5000/products/addFavouriteList', { 
+            name, 
+            items,
+        }, { headers: { Authorization: `Bearer ${token}` }})
         return response.data;
     }
 )
 
-// Add item to inventory list in database
 export const addItem = createAsyncThunk(
     'item/addItem',
-    async (product: InventoryItem) => {
-        const response = await axios.post('http://localhost:5000/products/addItem', { product })
+    async (product: InventoryItem, { getState }) => {
+        const state = getState() as RootState;
+        const { token } = state.login.loginResponse;
+        const response = await axios.post('http://localhost:5000/products/addItem', 
+            { product },
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
         return response.data;
     }
 )
 
 export const updateItem = createAsyncThunk(
     'item/updateItem',
-    async (product: InventoryItem) => {
-        const response = await axios.post('http://localhost:5000/products/updateItem', { product })
+    async (product: InventoryItem, { getState }) => {
+        const state = getState() as RootState;
+        const { token } = state.login.loginResponse;
+        const response = await axios.post('http://localhost:5000/products/updateItem', 
+            { product },
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
         return response.data;
     }
 )
 
 export const deleteItem = createAsyncThunk(
     'item/deleteItem',
-    async ({ id, userId}: { id: string, userId: string }) => {
-        const response = await axios.delete('http://localhost:5000/products/deleteItem', { params: { userId, id } })
+    async ({ id, userId }: { id: string, userId: string }, { getState }) => {
+        const state = getState() as RootState;
+        const { token } = state.login.loginResponse;
+        const response = await axios.delete('http://localhost:5000/products/deleteItem', { 
+            params: { userId, id },
+            headers: { Authorization: `Bearer ${token}` }
+        });
         return response.data;
     }
 )
 
 export const getCategories = createAsyncThunk(
     'item/getCategories',
-    async (id: string) => {
-        console.log('test getCategories', id);
-        const response = await axios.get('http://192.168.1.116:5000/products/getCategories', { params: { id } });
+    async (id: string, { getState }) => {
+        const state = getState() as RootState;
+        const { token } = state.login.loginResponse;
+        const response = await axios.get('http://192.168.1.116:5000/products/getCategories', { 
+            params: { id },
+            headers: { Authorization: `Bearer ${token}`}
+        });
         return response.data;
     }
 )
 
 export const addCategories = createAsyncThunk(
     'item/addCategories',
-    async ({id, category}: { id: string, category: Categories}) => {
-        const response = await axios.post('http://localhost:5000/products/addCategory', { category })
+    async ({ id, category }: { id: string, category: Categories }, { getState }) => {
+        const state = getState() as RootState;
+        const { token } = state.login.loginResponse;
+        const response = await axios.post('http://localhost:5000/products/addCategory', 
+            { category },
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
         return response.data;
     }
 )
 
 export const deleteCategories = createAsyncThunk(
     'item/deleteCategories',
-    async ({ id }: Categories) => {
-        const response = await axios.post('http://localhost:5000/products/deleteCategories', { id })
+    async ({ id }: Categories, { getState }) => {
+        const state = getState() as RootState;
+        const { token } = state.login.loginResponse;
+        const response = await axios.post('http://localhost:5000/products/deleteCategories', 
+            { id },
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
         return response.data;
     }
 )
 
 export const updateCategories = createAsyncThunk(
     'item/updateCategories',
-    async ({ id, category }: { id: string, category: Categories}) => {
-        const response = await axios.put('http://localhost:5000/products/updateCategories', { id, category })
+    async ({ id, category }: { id: string, category: Categories }, { getState }) => {
+        const state = getState() as RootState;
+        const { token } = state.login.loginResponse;
+        const response = await axios.put('http://localhost:5000/products/updateCategories', 
+            { id, category },
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
         return response.data;
     }
 )
 
 export const getItemList = createAsyncThunk(
     'item/getItemList',
-    async (id: string) => {
-        const response = await axios.get('http://192.168.1.116:5000/products/getProducts', { params: { id } })
+    async (id: string, { getState }) => {
+        const state = getState() as RootState;
+        const { token } = state.login.loginResponse;
+        console.log("token 321", token);
+        const response = await axios.get('http://192.168.1.116:5000/products/getProducts', { 
+            params: { id },
+            headers: { Authorization: `Bearer ${token}`}
+         })
         return response.data;
     }
 )

@@ -38,7 +38,7 @@ export interface LoginResponse  {
     firstName: string,
     lastName: string,
     username: string,
-    authToken: string,
+    token: string,
     tokenExpiry: string,
     statusCode: string
 }
@@ -158,7 +158,7 @@ export const loginSlice = createSlice({
         .addCase(createAccount.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
             state.status = 'success';
             if (action.payload) {
-                state.loginResponse.authToken = action.payload.authToken;
+                state.loginResponse.token = action.payload.token;
             }
         })
         .addCase(verifyAuthToken.pending, (state) => {
