@@ -165,7 +165,7 @@ export default function SearchWithContextMenu ({ popUpShown, displayElement, onT
                     })
                 }
             </ScrollView>
-            {searchResults.length > 0 && 
+            {searchResults && searchResults.length > 0 && 
                 <ScrollView keyboardShouldPersistTaps='always' style={[{ backgroundColor: theme.background2 ,height: 'auto', maxHeight: Dimensions.get('window').height / 3, width: '90%', overflow: 'hidden', borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }]}>
                     {
                         searchResults.map(result => {

@@ -50,7 +50,8 @@ export default function ShoppingListWidget() {
     const [displayMessage, setDisplayMessage] = useState<boolean>(false);
 
     useEffect(() => {
-        const hasItems = cards.some(card => card.items.length > 0);
+        if (!cards || cards.length === 0) return;
+        const hasItems = cards.some(card => card && card.items && card.items.length > 0);
         if (!hasItems) {
             setDisplayMessage(true);
         } else {
@@ -65,8 +66,8 @@ export default function ShoppingListWidget() {
     return (
         <View style={[styles.justifiedCenter, {paddingBottom: 10}]}>
             {displayMessage && <View style={[styles.justifiedCenter, { marginTop: 25 }]}><TextSecondary>Create a new shopping list to get started</TextSecondary></View>}
-            {cards.map((card, key) => {
-                if (card.items.length === 0) return;
+            {cards && cards.map((card, key) => {
+                if (!card.items || card.items.length === 0) return;
                 return (
                     <View
                         key={key}
@@ -93,7 +94,7 @@ export default function ShoppingListWidget() {
                         </View>
                         <ScrollView style={{backgroundColor: 'rgba(0,0,0,0.06)'}} horizontal={true}>
                             {
-                                shoppingLists.lists[card.listType as keyof ShoppingListTypes].map((list, key) => {
+                                shoppingLists && shoppingLists.lists[card.listType as keyof ShoppingListTypes].map((list, key) => {
                                     return (
                                         <TouchableOpacity 
                                             key={key} 

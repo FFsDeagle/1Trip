@@ -157,7 +157,7 @@ export default function InventorySearch({ route }: RouteParams) {
                 </ScrollView>
             </View>
             <View>
-                {searchResults.length > 0 &&
+                {searchResults && searchResults.length > 0 &&
                         <ScrollView keyboardShouldPersistTaps='always' style={[{ height: 'auto', width: '100%', borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }]}>
                             {
                                 searchResults.map(result => {

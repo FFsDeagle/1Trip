@@ -13,7 +13,6 @@ export default function Items() {
   // Load categories
   const ItemsStack = createNativeStackNavigator();
   const theme = useAppSelector(state => state.theme);
-  const shoppingLists = useAppSelector(state => state.shoppingLists.lists);
   const { SettingsIcon, Settings } = Config;
 
   return (

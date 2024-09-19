@@ -20,7 +20,7 @@ export default function RenderCategoryItems({ shoppingList, setShoppingList, set
     return (
         <View>
             {
-                selectedCategoryItems.length > 0 ? selectedCategoryItems.map((item, key) => {
+                selectedCategoryItems && selectedCategoryItems.length > 0 ? selectedCategoryItems.map((item, key) => {
                     return (
                         <TouchableOpacity
                             onPress={() => {

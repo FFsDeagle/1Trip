@@ -39,7 +39,7 @@ export default function AnimatedModalWithInput({ setName, name, setListSaved, me
     }
 
     const saveList = () => {
-        if (name.length > 2){
+        if (name && name.length > 2){
             setListSaved(true)
         } else {
             setError('Please enter a name for your list');

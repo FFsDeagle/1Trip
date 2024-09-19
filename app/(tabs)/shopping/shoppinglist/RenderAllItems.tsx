@@ -15,7 +15,7 @@ export function RenderAllItems({ items, shoppingList, setShoppingList, }: Render
     return (
         <View>
             {
-                items.length > 0 && items.map((item, key) => {
+                items && items.length > 0 && items.map((item, key) => {
                     return (
                         <TouchableOpacity
                             onPress={() => {

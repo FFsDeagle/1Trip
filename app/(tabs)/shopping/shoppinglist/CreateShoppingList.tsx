@@ -63,9 +63,10 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
     const [searchResultsItem, setSearchResultsItem] = useState<InventoryItem>({} as InventoryItem);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const favoriteLists = useAppSelector(state => state.item.favouriteLists);
+    const { id } = useAppSelector(state => state.login.loginResponse);
 
     useEffect(() => {
-        dispatch(getFavouriteList());
+        dispatch(getFavouriteList(id));
     },[])
 
     // useEffect(() => {
@@ -88,6 +89,10 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
     }, [])
 
     useEffect(() => {
+        addOrDeleteList();
+    }, [listSaved])
+
+    const addOrDeleteList = async () => {
         if (listSaved){
             const listToSave: ShoppingList = {
                 name: name,
@@ -95,20 +100,20 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
             }
             if (isEditing){
                 // If list is empty delete it
-                if (shoppingList.length === 0){
-                    dispatch(DeleteList(listToSave));
+                if (shoppingList && shoppingList.length === 0){
+                    await dispatch(DeleteList({id, list: listToSave}));
                     navigation.navigate('ShoppingMain');
                 }else {
                     // Update the list
-                    dispatch(UpdateShoppingList(listToSave));
+                    await dispatch(UpdateShoppingList({id, list: listToSave}));
                     navigation.navigate('ShoppingMain');
                 }
             } else {
-                dispatch(SaveShoppingList(listToSave));
+                await dispatch(SaveShoppingList({id, list: listToSave}));
                 navigation.navigate('ShoppingMain');
             }
         }
-    }, [listSaved])
+    }
 
     // For added search items
     useEffect(() => {
@@ -141,9 +146,9 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
     },[])
 
     const initializeDraggables = async () => {
-        if (items.length > 0) return;
+        if (items && items.length > 0) return;
         setLoading(true);
-        await dispatch(getItemList()).then(() => {
+        await dispatch(getItemList(id)).then(() => {
             setLoading(false);
         });
     }
@@ -221,7 +226,7 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
             setListSaved(true);
             return;
         }
-        if (shoppingList.length === 0){
+        if (shoppingList && shoppingList.length === 0){
             setShowModal(true);
         } else {
             setShowNameModal(true);
@@ -255,7 +260,7 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
                 <Animated.ScrollView style={{ height: centreContainerHeight }}>
                     <Animated.View ref={topPaneRef} style={{height: centreContainerHeight}}>
                         {
-                            shoppingList.length === 0 ?
+                            shoppingList && shoppingList.length === 0 ?
                             <TextSecondary style={[styles.title, { textAlign: 'center', height: initialHeight, marginTop: 10 }]}>
                                 Drag items to create your shopping list
                             </TextSecondary>

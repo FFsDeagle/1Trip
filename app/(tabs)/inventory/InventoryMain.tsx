@@ -50,7 +50,7 @@ export default function InventoryMain() {
       <ScrollView style={styles.container}>
           <InventoryCategoryWidget />
           <TextSecondary style={[styles.header2, {color: theme.colors.background}]}>Stock Qty by Category <MaterialIcons name="category" size={24} color={theme.colors.iconColor} /></TextSecondary>
-          {category.length > 0 ? category?.map((item, index) => {
+          {category && category.length > 0 ? category?.map((item, index) => {
             return (
             <View style={[styles.flexRow, styles.listItem]} key={index}>
               <TextSecondary style={styles.listText}>

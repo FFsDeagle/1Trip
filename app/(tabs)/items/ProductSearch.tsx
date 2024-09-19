@@ -165,7 +165,7 @@ export default function ProductSearch({ route }: RouteParams) {
                 </ScrollView>
             </View>
             <View>
-                {searchResults.length > 0 &&
+                {searchResults && searchResults.length > 0 &&
                         <ScrollView keyboardShouldPersistTaps='always' style={[{ maxHeight: 'auto', height: '83%', width: '100%', borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }]}>
                             {
                                 searchResults.map(result => {

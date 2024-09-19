@@ -22,6 +22,7 @@ export default function StartShopping({ route }: ViewShoppingListProps){
     const dispatch = useAppDispatch();
     const [shoppingList, setShoppingList] = useState<InventoryItem[]>(list);
     const [checkedList, setCheckedList] = useState<InventoryItem[]>([]);
+    const { id } = useAppSelector(state => state.login.loginResponse);
 
     const handleSubmit = () => {
         // Get unchecked items and save into incompleteLists
@@ -29,8 +30,8 @@ export default function StartShopping({ route }: ViewShoppingListProps){
             name: name,
             items: shoppingList.filter(item => checkedList.map(checkedItem => item.id !== checkedItem.id))
         }
-        if (remainingItems.items.length > 0){
-            dispatch(SaveIncompleteList(remainingItems as ShoppingList))
+        if (remainingItems && remainingItems.items.length > 0){
+            dispatch(SaveIncompleteList({id, list: remainingItems}));
         }
         dispatch(AddListToInventory(checkedList as InventoryItem[]));
         const mutatedList: ShoppingList = {
@@ -38,9 +39,9 @@ export default function StartShopping({ route }: ViewShoppingListProps){
             name: name,
         }
         if (listType === "incompleteLists"){
-            dispatch(DeleteIncompleteList(mutatedList))
+            dispatch(DeleteIncompleteList({ id, list: mutatedList }));
         }
-        dispatch(SaveToHistory(mutatedList as ShoppingList))
+        dispatch(SaveToHistory({id, list: mutatedList}));
         navigation.navigate('ShoppingMain');
     }
 

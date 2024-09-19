@@ -15,7 +15,7 @@ export default function ItemMain() {
   // Check if products have already been fetched to prevent unnessesary API calls
   useEffect(() => {
     console.log('ItemMain useEffect', id);
-    if (items.length === 0) {
+    if (items && items.length === 0) {
       getItems();
     }
   }, [dispatch])

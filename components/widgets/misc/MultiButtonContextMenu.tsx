@@ -69,7 +69,7 @@ export default function MultiButtonContextMenu(props: MultiButtonContextMenuProp
     // Animation to expand
     useEffect(() => {
         Animated.timing(expandAnim, {
-            toValue: showItems ? buttonList.length * 50 : 50,
+            toValue: showItems ? buttonList && buttonList.length * 50 : 50,
             duration: 100,
             useNativeDriver: false,
         }).start();

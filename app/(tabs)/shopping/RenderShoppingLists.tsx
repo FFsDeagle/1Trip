@@ -17,6 +17,7 @@ interface RenderShoppingListsProps {
 export default function RenderShoppingLists({ title, listType }: RenderShoppingListsProps){
     const shoppingLists = useAppSelector(state => state.shoppingLists.lists && state.shoppingLists.lists[listType]);
     const navigation = useNavigation<NavigationProp<ShoppingStackParamList>>();
+    const { id } = useAppSelector(state => state.login.loginResponse);
     const [list, setList] = useState<ShoppingList[]>(shoppingLists);
     const theme = useAppSelector(state => state.theme.colors);
     const dispatch = useAppDispatch();
@@ -30,7 +31,7 @@ export default function RenderShoppingLists({ title, listType }: RenderShoppingL
     }, [])
 
     const handleDelete = (selectedList: ShoppingList) => {
-        dispatch(DeleteList(selectedList));
+        dispatch(DeleteList({id, list: selectedList}));
         setList([...list.filter(item => item.id !== selectedList.id)])
     }
 

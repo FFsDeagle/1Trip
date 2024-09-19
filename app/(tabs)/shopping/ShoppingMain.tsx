@@ -11,12 +11,13 @@ import { Dimensions, View } from "react-native";
 
 export default function ShoppingMain() {
   const { generatedLists, history, savedLists } = useAppSelector(state => state.shoppingLists.lists);
+  const { id } = useAppSelector(state => state.login.loginResponse);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     // Fetch shopping lists from server
     if (savedLists && savedLists.length === 0){
-      dispatch(GetLists());
+      dispatch(GetLists(id));
     }
   }, []);
 
