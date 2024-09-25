@@ -43,17 +43,12 @@ export const DeleteList = createAsyncThunk(
     'shoppingList/deleteList',
     async ({ id, list }: { id: string, list: ShoppingList}, { getState }) => {
         const token = getState() as RootState;
-        return axios.post('http://192.168.1.116:5000/shopping/deleteList', { id, list }, {
+        const response = await axios.post('http://192.168.1.116:5000/shopping/deleteList', { id, list }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
-        .then((response: AxiosResponse) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when deleting list", error);
-            return error;
-        })
+        return response.data;
     }
 )
 
@@ -61,17 +56,12 @@ export const DeleteIncompleteList = createAsyncThunk(
     'shoppingList/deleteIncompleteList',
     async ({ id, list }: { id: string, list: ShoppingList}, { getState }) => {
         const token = getState() as RootState;
-        return axios.post('http://192.168.1.116:5000/shopping/deleteList', { id, list }, {
+        const response = await axios.post('http://192.168.1.116:5000/shopping/deleteList', { id, list }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
-        .then((response: AxiosResponse) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when deleting list", error);
-            return error;
-        })
+        return response.data;
     }
 )
 
@@ -79,17 +69,12 @@ export const SaveIncompleteList = createAsyncThunk(
     'shoppingList/saveIncompleteList',
     async ({ id, list }: { id: string, list: ShoppingList}, { getState }) => {
         const token = getState() as RootState;
-        return axios.post('http://192.168.1.116:5000/shopping/saveIncompleteList', { id, list }, {
+        const response = await axios.post('http://192.168.1.116:5000/shopping/saveIncompleteList', { id, list }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
-        .then((response: AxiosResponse) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when saving incomplete list", error);
-            return error;
-        })
+        return response.data;
     }
 )
 
@@ -97,18 +82,13 @@ export const GetLists = createAsyncThunk(
     'shoppingList/getLists',
     async (id: string, { getState }) => {
         const token = getState() as RootState;
-        return axios.get('http://192.168.1.116:5000/shopping/getLists', {
+        const response = await axios.get('http://192.168.1.116:5000/shopping/getLists', {
             params: { id },
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
-        .then((response: AxiosResponse<ShoppingListTypes>) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when getting lists", error);
-            return error;
-        })
+        return response.data;
     }
 )
 
@@ -116,17 +96,12 @@ export const UpdateShoppingList = createAsyncThunk(
     'shoppingList/updateList',
     async ({ id, list }: { id: string, list: ShoppingList}, { getState }) => {
         const token = getState() as RootState;
-        return axios.post('http://192.168.1.116:5000/shopping/updateList', { id, list }, {
+        const response = await axios.post('http://192.168.1.116:5000/shopping/updateList', { id, list }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
-        .then((response: AxiosResponse) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when updating list", error);
-            return error;
-        })
+        return response.data;
     }
 )
 
@@ -138,17 +113,12 @@ export const SaveShoppingList = createAsyncThunk(
         console.log(id);
         console.log(list);
         console.log(token);
-        return axios.post('http://192.168.1.116:5000/shopping/saveList', { id, list }, {
+        const response = await axios.post('http://192.168.1.116:5000/shopping/saveList', { id, list }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
-        .then((response: AxiosResponse) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when saving list", error);
-            return error;
-        })
+        return response.data;
     }
 )
 
@@ -156,17 +126,12 @@ export const SaveToHistory = createAsyncThunk(
     'shoppingList/saveToHistory',
     async ({ id, list }: { id: string, list: ShoppingList}, { getState }) => {
         const token = getState() as RootState;
-        return axios.post('http://192.168.1.116:5000/shopping/saveToHistory', { id, list }, {
+        const response = await axios.post('http://192.168.1.116:5000/shopping/saveToHistory', { id, list }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
-        .then((response: AxiosResponse) => {
-            return response;
-        }).catch((error) => {
-            console.log("Error occurred when saving list", error);
-            return error;
-        })
+        return response.data;
     }
 )
 

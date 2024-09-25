@@ -109,6 +109,7 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
                     navigation.navigate('ShoppingMain');
                 }
             } else {
+                console.log('Saving list', listToSave);
                 await dispatch(SaveShoppingList({id, list: listToSave}));
                 navigation.navigate('ShoppingMain');
             }

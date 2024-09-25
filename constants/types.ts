@@ -66,7 +66,7 @@ export type LoginStackParamList = {
 export type ShoppingStackParamList = {
     ShoppingMain: undefined;
     ShoppingItemInfo: { searchValue: string };
-    CreateShoppingList: { name: string, list: ShoppingList, listType: string };
+    CreateShoppingList: undefined; //{ name: string, list: ShoppingList, listType: string };
     ViewShoppingList: { name: string, list: ShoppingList, listType: string };
     ViewShoppingListType: { list: ViewShoppingListTypeProps };
     StartShopping: { name: string, list: InventoryItem[], listType: string };
