@@ -31,7 +31,7 @@ export interface FavouriteList {
 }
 
 export interface InventoryItem {
-    id: string,
+    _id: string,
     name: string,
     description: string,
     category: string,
@@ -208,7 +208,7 @@ export const inventorySlice = createSlice({
         })
         builder.addCase(updateItem.fulfilled, (state, action: PayloadAction<InventoryItem>) => {
             state.items = state.items.map((item) => {
-                if (item.id === action.payload.id) {
+                if (item._id === action.payload._id) {
                     return action.payload;
                 }
                 return item;
@@ -221,7 +221,7 @@ export const inventorySlice = createSlice({
             state.status = 'loading';
         })
         builder.addCase(deleteItem.fulfilled, (state, action: PayloadAction<string>) => {
-            state.items = state.items.filter((item) => item.id !== action.payload);
+            state.items = state.items.filter((item) => item._id !== action.payload);
         })
         builder.addCase(deleteItem.rejected, (state) => {
             state.status = 'failed';
@@ -229,8 +229,9 @@ export const inventorySlice = createSlice({
         builder.addCase(getItemList.pending, (state) => {
             state.status = 'loading';
         })
-        builder.addCase(getItemList.fulfilled, (state, action) => {
+        builder.addCase(getItemList.fulfilled, (state, action: PayloadAction<InventoryItem[]>) => {
             state.status = 'success';
+            action.payload.map(item => console.log('Testing', item._id));
             state.items = action.payload;
         })
         builder.addCase(getItemList.rejected, (state) => {

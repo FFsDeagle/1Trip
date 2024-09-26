@@ -16,7 +16,7 @@ export const initialState: InventoryState = {
 }
 
 export interface InventoryItem {
-    id: string,
+    _id: string,
     name: string,
     description: string,
     category: string,
@@ -103,7 +103,7 @@ export const inventorySlice = createSlice({
         builder.addCase(AddListToInventory.fulfilled, (state, action: PayloadAction<InventoryItem[]>) => {
             // As the payload is an array, we need to use the spread operator to correctly add them into the state
             action.payload.forEach((element: InventoryItem) => {
-                const foundItem = state.inventoryItems.find((item) => item.id === element.id);
+                const foundItem = state.inventoryItems.find((item) => item._id === element._id);
                 if (foundItem) {
                     foundItem.quantity += element.quantity;
                 }else{

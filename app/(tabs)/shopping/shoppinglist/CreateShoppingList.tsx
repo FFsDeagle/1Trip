@@ -101,16 +101,16 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
             if (isEditing){
                 // If list is empty delete it
                 if (shoppingList && shoppingList.length === 0){
-                    await dispatch(DeleteList({id, list: listToSave}));
+                    await dispatch(DeleteList({ id, list: listToSave}));
                     navigation.navigate('ShoppingMain');
                 }else {
                     // Update the list
-                    await dispatch(UpdateShoppingList({id, list: listToSave}));
+                    await dispatch(UpdateShoppingList({ id, list: listToSave}));
                     navigation.navigate('ShoppingMain');
                 }
             } else {
                 console.log('Saving list', listToSave);
-                await dispatch(SaveShoppingList({id, list: listToSave}));
+                await dispatch(SaveShoppingList({ id, list: listToSave}));
                 navigation.navigate('ShoppingMain');
             }
         }
@@ -120,7 +120,7 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
     useEffect(() => {
         if (searchResultsItem && Object.keys(searchResultsItem).length === 0) return;
         const itemToAdd: ShoppingListItem = {
-            id: searchResultsItem.id,
+            _id: searchResultsItem._id,
             name: searchResultsItem.name,
             category: searchResultsItem.category,
             description: searchResultsItem.description,
@@ -129,10 +129,10 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
             isPastExpiry: false
         }
         setSearchResultsItem({} as InventoryItem);
-        const itemAlreadyExists = shoppingList.find(item => item.id === itemToAdd.id);
+        const itemAlreadyExists = shoppingList.find(item => item._id === itemToAdd._id);
         if (itemAlreadyExists !== undefined) {
             setShoppingList(shoppingList.map(item => {
-                if (item.id === itemToAdd.id) {
+                if (item._id === itemToAdd._id) {
                     item.quantity += itemToAdd.quantity;
                 }
                 return item;
@@ -175,7 +175,7 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
             const selectedFavList = favoriteLists.find(list => list.id === id)?.items.map(item => { return item; });
             if (selectedFavList === undefined) return [...prevShoppingList];
             const updatedShoppingList = prevShoppingList.map(item => {
-                const foundItem = selectedFavList.find(c => c.id === item.id);
+                const foundItem = selectedFavList.find(c => c._id === item._id);
                 if (foundItem) {
                     console.log('Updating list', foundItem);
                     return {
@@ -190,9 +190,9 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
 
             // Add new items that are favorites and not already in the list
 
-            const itemsToAdd = selectedFavList.filter(item => !prevShoppingList.find(c => c.id === item.id)).map(item => {
+            const itemsToAdd = selectedFavList.filter(item => !prevShoppingList.find(c => c._id === item._id)).map(item => {
                 return {
-                    id: item.id,
+                    _id: item._id,
                     name: item.name,
                     category: item.category,
                     description: item.description,
