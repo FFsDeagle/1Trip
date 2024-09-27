@@ -20,34 +20,36 @@ export default function StartShopping({ route }: ViewShoppingListProps){
     const items = useAppSelector(state => state.inventory.inventoryItems);
     const navigation = useNavigation<NavigationProp<ShoppingStackParamList>>();
     const dispatch = useAppDispatch();
-    const [shoppingList, setShoppingList] = useState<InventoryItem[]>(list);
+    const [shoppingList, setShoppingList] = useState<ShoppingList>(list);
     const [checkedList, setCheckedList] = useState<InventoryItem[]>([]);
     const { id } = useAppSelector(state => state.login.loginResponse);
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         // Get unchecked items and save into incompleteLists
         const remainingItems: ShoppingList = {
+            _id: list._id,
             name: name,
-            items: shoppingList.filter(item => checkedList.map(checkedItem => item.id !== checkedItem.id))
+            items: shoppingList.items.filter(item => checkedList.map(checkedItem => item._id !== checkedItem._id))
         }
         if (remainingItems && remainingItems.items.length > 0){
-            dispatch(SaveIncompleteList({id, list: remainingItems}));
+            await dispatch(SaveIncompleteList({id, list: remainingItems}));
         }
-        dispatch(AddListToInventory(checkedList as InventoryItem[]));
+        await dispatch(AddListToInventory(checkedList as InventoryItem[]));
         const mutatedList: ShoppingList = {
+            _id: list._id,
             items: checkedList as InventoryItem[],
             name: name,
         }
         if (listType === "incompleteLists"){
-            dispatch(DeleteIncompleteList({ id, list: mutatedList }));
+            await dispatch(DeleteIncompleteList({ id, list: mutatedList }));
         }
-        dispatch(SaveToHistory({id, list: mutatedList}));
+        await dispatch(SaveToHistory({id, list: mutatedList}));
         navigation.navigate('ShoppingMain');
     }
 
     const decrementItem = (id: string | number) => {
-        setShoppingList(shoppingList.map((item) => {
-            if (item.id === id) {
+        const updatedItems = shoppingList.items.map((item) => {
+            if (item._id === id) {
                 // filter item if quantity is 0
                 if (item.quantity === 1) {
                     return null;
@@ -55,33 +57,44 @@ export default function StartShopping({ route }: ViewShoppingListProps){
                 item.quantity -= 1;
             }
             return item;
-        }).filter(Boolean) as InventoryItem[]);
+        }).filter((item): item is InventoryItem => item !== null);
+    
+        setShoppingList({ ...shoppingList, items: updatedItems });
     }
 
     const incrementItem = (id: string | number) => {
-        setShoppingList([...shoppingList.map((x) => {
-            if (x.id === id) {
-                x.quantity += 1;
-            }
-            return x;
-        })])
+        setShoppingList({
+            ...shoppingList,
+            items: shoppingList.items.map((x) => {
+                if (x._id === id) {
+                    x.quantity += 1;
+                }
+                return x;
+            })
+        })
     }
 
     const checkItem = (id: string | number) => {
         // Check item and move to a different list
-        setCheckedList([...checkedList, ...shoppingList.filter(item => item.id === id)]);
-        setShoppingList([...shoppingList.filter(item => item.id !== id)]);
+        setCheckedList([...checkedList, ...shoppingList.items.filter(item => item._id === id)]);
+        setShoppingList({
+            ...shoppingList,
+            items: shoppingList.items.filter((item: InventoryItem) => item._id !== id)
+        });
     }
 
     const uncheckItem = (id: string | number) => {
-        const item = checkedList.filter(item => item.id === id);
-        setCheckedList([...checkedList.filter(item => item.id !== id)]);
-        setShoppingList([...shoppingList, ...item]);
+        const item = checkedList.filter(item => item._id === id);
+        setCheckedList([...checkedList.filter(item => item._id !== id)]);
+        setShoppingList({
+            ...shoppingList,
+            items: [...shoppingList.items, ...item]
+        });
     }
 
     const renderItem = (item: InventoryItem[], isChecked: boolean) => {
         return item.map(item => (
-            <View key={item.id} style={[styles.flexRow, { padding: 5, backgroundColor: 'transparent' }]}>
+            <View key={item._id} style={[styles.flexRow, { padding: 5, backgroundColor: 'transparent' }]}>
                 <View style={[styles.flexRow, { backgroundColor: isChecked ? 'lightgreen' : theme.background3, marginLeft: 5, borderRadius: 15, width: 'auto', padding: 5, elevation: 1 }]}>
                     <View style={[styles.flexRow, styles.justifiedApart, { width: '65%'}]}>
                         <TextPrimary style={[styles.listText, { fontSize: 14, fontWeight: 'bold', letterSpacing: 1 }]}>{item.name}</TextPrimary>
@@ -89,13 +102,13 @@ export default function StartShopping({ route }: ViewShoppingListProps){
                     </View>
                     <View style={[styles.flexRow, styles.justfiedEnd, { width: '35%' }]}>
                         <TextPrimary style={[styles.listText, { marginRight: 10 }]}>{item.quantity}</TextPrimary>
-                        {!isChecked && <TouchableOpacity onPress={() => decrementItem(item.id)} style={[styles.justified, { marginRight: 10 }]}>
+                        {!isChecked && <TouchableOpacity onPress={() => decrementItem(item._id)} style={[styles.justified, { marginRight: 10 }]}>
                             <FontAwesome name="minus" size={20} color={theme.textPrimary} />
                         </TouchableOpacity>}
-                        {!isChecked && <TouchableOpacity onPress={() => incrementItem(item.id)} style={[styles.justified, { marginRight: 20 }]}>
+                        {!isChecked && <TouchableOpacity onPress={() => incrementItem(item._id)} style={[styles.justified, { marginRight: 20 }]}>
                             <FontAwesome name="plus" size={20} color={theme.textPrimary} />
                         </TouchableOpacity>}
-                        <TouchableOpacity onPress={() => isChecked ? uncheckItem(item.id) : checkItem(item.id) } style={[styles.justified, { marginRight: 20 }]}>
+                        <TouchableOpacity onPress={() => isChecked ? uncheckItem(item._id) : checkItem(item._id) } style={[styles.justified, { marginRight: 20 }]}>
                             <FontAwesome name={isChecked ? 'times-circle' : "check-square"} size={20} color={theme.textPrimary} />
                         </TouchableOpacity>
                     </View>
@@ -107,8 +120,8 @@ export default function StartShopping({ route }: ViewShoppingListProps){
     return (
         <SecondaryView>
             <ScrollView style={styles.container}>
-                {shoppingList.length > 0 && renderItem(shoppingList, false)}
-                {checkedList.length > 0 && renderItem(checkedList, true)}
+                {shoppingList.items && shoppingList.items.length > 0 && renderItem(shoppingList.items, false)}
+                {checkedList && checkedList.length > 0 && renderItem(checkedList, true)}
             </ScrollView>
             <MultiButtonContextMenu 
                 // Add buttons to the context menu

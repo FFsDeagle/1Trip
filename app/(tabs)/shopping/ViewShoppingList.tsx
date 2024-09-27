@@ -26,7 +26,7 @@ export default function ViewShoppingList({ route }: ViewShoppingListProps) {
   const [displayEditButton, setDisplayEditButton] = useState<boolean>(false);
   const [buttonList, setButtonList] = useState<ReactElement[]>([
     <TouchableOpacity 
-      onPress={() => navigation.navigate('StartShopping', { name: list.name as string, list: list.items as InventoryItem[], listType })}
+      onPress={() => navigation.navigate('StartShopping', { name: list.name as string, list: list as ShoppingList, listType })}
     >
       <FontAwesome5 name="shopping-cart" size={24} color={theme.iconColor} />
     </TouchableOpacity>
@@ -54,7 +54,7 @@ export default function ViewShoppingList({ route }: ViewShoppingListProps) {
     if (listType === 'savedList' || listType === 'historyList'){
       setButtonList([...buttonList, 
         <TouchableOpacity 
-          onPress={() => navigation.navigate('CreateShoppingList', { name: list.name as string, list: list as ShoppingList, listType })}
+          onPress={() => navigation.navigate('CreateShoppingList')} // { name: list.name as string, list: list as ShoppingList, listType }
         >
           <FontAwesome5 name="shopping-cart" size={24} color={theme.iconColor} />
         </TouchableOpacity>
@@ -83,7 +83,7 @@ export default function ViewShoppingList({ route }: ViewShoppingListProps) {
     setShoppingList((prevList) =>
       prevList
         .map((item) => {
-          if (item.id === id) {
+          if (item._id === id) {
             if (item.quantity > 1) {
               return { ...item, quantity: item.quantity - 1 }; // Create a new object with updated quantity
             } else {
@@ -99,7 +99,7 @@ export default function ViewShoppingList({ route }: ViewShoppingListProps) {
   const incrementItem = (id: string | number) => {
     setShoppingList((prevList) =>
       prevList.map((item) => {
-        if (item.id === id) {
+        if (item._id === id) {
           return { ...item, quantity: item.quantity + 1 }; // Create a new object with updated quantity
         }
         return item;
@@ -130,12 +130,12 @@ export default function ViewShoppingList({ route }: ViewShoppingListProps) {
         // Add buttons to the context menu
         buttons={[
           <TouchableOpacity 
-            onPress={() => navigation.navigate('StartShopping', { name: list.name as string, list: list.items as InventoryItem[], listType })}
+            onPress={() => navigation.navigate('StartShopping', { name: list.name as string, list, listType })}
           >
             <FontAwesome5 name="shopping-cart" size={24} color={theme.iconColor} />
           </TouchableOpacity>,
           <TouchableOpacity
-            onPress={() => navigation.navigate('CreateShoppingList', { name: list.name as string, list, listType })}
+            onPress={() => navigation.navigate('CreateShoppingList')} // { name: list.name as string, list, listType })
           >
             <FontAwesome5 name="edit" size={24} color={theme.iconColor} />
           </TouchableOpacity>          

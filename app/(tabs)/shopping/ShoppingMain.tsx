@@ -17,9 +17,13 @@ export default function ShoppingMain() {
   useEffect(() => {
     // Fetch shopping lists from server
     if (savedLists && savedLists.length === 0){
-      dispatch(GetLists(id));
+      GetShoppingLists();
     }
   }, []);
+
+  const GetShoppingLists = async () => {
+    await dispatch(GetLists(id));
+  }
 
   return (
     <LinearGradient colors={[]} style={[styles.container]}>

@@ -69,7 +69,7 @@ export type ShoppingStackParamList = {
     CreateShoppingList: undefined; //{ name: string, list: ShoppingList, listType: string };
     ViewShoppingList: { name: string, list: ShoppingList, listType: string };
     ViewShoppingListType: { list: ViewShoppingListTypeProps };
-    StartShopping: { name: string, list: InventoryItem[], listType: string };
+    StartShopping: { name: string, list: ShoppingList, listType: string };
     ViewHistoryList: { name: string, list: ShoppingList, listType: string };
     Settings: undefined;
 }

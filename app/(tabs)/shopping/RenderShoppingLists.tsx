@@ -31,8 +31,8 @@ export default function RenderShoppingLists({ title, listType }: RenderShoppingL
     }, [])
 
     const handleDelete = (selectedList: ShoppingList) => {
-        dispatch(DeleteList({id, list: selectedList}));
-        setList([...list.filter(item => item.id !== selectedList.id)])
+        dispatch(DeleteList({ id, list: selectedList }));
+        setList([...list.filter(item => item._id !== selectedList._id)])
     }
 
     return (
