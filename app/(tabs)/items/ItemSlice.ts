@@ -62,7 +62,7 @@ export const getFavouriteList = createAsyncThunk(
     async (id: string, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.get('http://localhost:5000/products/getFavouriteList', { 
+        const response = await axios.get('http://192.168.1.116:5000/products/getFavouriteList', { 
             params: { id }, 
             headers: { Authorization: `Bearer ${token}` }
         })
@@ -75,7 +75,7 @@ export const addFavouriteList = createAsyncThunk(
     async ({ name, items }: FavouriteList, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.post('http://localhost:5000/products/addFavouriteList', { 
+        const response = await axios.post('http://192.168.1.116:5000/products/addFavouriteList', { 
             name, 
             items,
         }, { headers: { Authorization: `Bearer ${token}` }})
@@ -85,24 +85,24 @@ export const addFavouriteList = createAsyncThunk(
 
 export const addItem = createAsyncThunk(
     'item/addItem',
-    async (product: InventoryItem, { getState }) => {
+    async ({ id, product } : { id: string, product: InventoryItem }, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.post('http://localhost:5000/products/addItem', 
-            { product },
+        const response = await axios.post('http://192.168.1.116:5000/products/addProduct', 
+            { id, product },
             { headers: { Authorization: `Bearer ${token}` } }
         );
         return response.data;
     }
 )
 
-export const updateItem = createAsyncThunk(
-    'item/updateItem',
-    async (product: InventoryItem, { getState }) => {
+export const updateProduct = createAsyncThunk(
+    'item/updateProduct',
+    async ({ id, product }: { id: string, product: InventoryItem }, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.post('http://localhost:5000/products/updateItem', 
-            { product },
+        const response = await axios.put('http://192.168.1.116:5000/products/updateProduct', 
+            { id, product },
             { headers: { Authorization: `Bearer ${token}` } }
         );
         return response.data;
@@ -111,12 +111,12 @@ export const updateItem = createAsyncThunk(
 
 export const deleteItem = createAsyncThunk(
     'item/deleteItem',
-    async ({ id, userId }: { id: string, userId: string }, { getState }) => {
+    async ({ userId, id }: { id: string, userId: string }, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.delete('http://localhost:5000/products/deleteItem', { 
-            params: { userId, id },
-            headers: { Authorization: `Bearer ${token}` }
+        const response = await axios.delete('http://192.168.1.116:5000/products/deleteProduct', {
+            headers: { Authorization: `Bearer ${token}` },
+            data: { userId, id }
         });
         return response.data;
     }
@@ -140,7 +140,7 @@ export const addCategories = createAsyncThunk(
     async ({ id, category }: { id: string, category: Categories }, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.post('http://localhost:5000/products/addCategory', 
+        const response = await axios.post('http://192.168.1.116:5000/products/addCategory', 
             { category },
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -153,7 +153,7 @@ export const deleteCategories = createAsyncThunk(
     async ({ id }: Categories, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.post('http://localhost:5000/products/deleteCategories', 
+        const response = await axios.post('http://192.168.1.116:5000/products/deleteCategories', 
             { id },
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -166,7 +166,7 @@ export const updateCategories = createAsyncThunk(
     async ({ id, category }: { id: string, category: Categories }, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.put('http://localhost:5000/products/updateCategories', 
+        const response = await axios.put('http://192.168.1.116:5000/products/updateCategories', 
             { id, category },
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -198,23 +198,25 @@ export const inventorySlice = createSlice({
             state.status = 'loading';
         })
         builder.addCase(addItem.fulfilled, (state, action: PayloadAction<InventoryItem>) => {
+            console.log('addItem slice', action.payload);
             state.items.push(action.payload);
         })
         builder.addCase(addItem.rejected, (state) => {
             state.status = 'failed';
         })
-        builder.addCase(updateItem.pending, (state) => {
+        builder.addCase(updateProduct.pending, (state) => {
             state.status = 'loading';
         })
-        builder.addCase(updateItem.fulfilled, (state, action: PayloadAction<InventoryItem>) => {
+        builder.addCase(updateProduct.fulfilled, (state, action: PayloadAction<InventoryItem>) => {
             state.items = state.items.map((item) => {
                 if (item._id === action.payload._id) {
                     return action.payload;
                 }
+                console.log('updateProduct slice', item._id, action.payload._id);
                 return item;
             })
         })
-        builder.addCase(updateItem.rejected, (state) => {
+        builder.addCase(updateProduct.rejected, (state) => {
             state.status = 'failed';
         })
         builder.addCase(deleteItem.pending, (state) => {
@@ -222,6 +224,7 @@ export const inventorySlice = createSlice({
         })
         builder.addCase(deleteItem.fulfilled, (state, action: PayloadAction<string>) => {
             state.items = state.items.filter((item) => item._id !== action.payload);
+            console.log('deleteItem slice', action.payload);
         })
         builder.addCase(deleteItem.rejected, (state) => {
             state.status = 'failed';

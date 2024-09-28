@@ -79,40 +79,12 @@ export default function ViewShoppingList({ route }: ViewShoppingListProps) {
     setShoppingList(categorizedList);
   }, []);
 
-  const decrementItem = (id: string | number) => {
-    setShoppingList((prevList) =>
-      prevList
-        .map((item) => {
-          if (item._id === id) {
-            if (item.quantity > 1) {
-              return { ...item, quantity: item.quantity - 1 }; // Create a new object with updated quantity
-            } else {
-              return null; // Return null if quantity is 1 (we'll filter it out)
-            }
-          }
-          return item;
-        })
-        .filter(Boolean) as InventoryItem[] // Filter out null values
-    );
-  };
-  
-  const incrementItem = (id: string | number) => {
-    setShoppingList((prevList) =>
-      prevList.map((item) => {
-        if (item._id === id) {
-          return { ...item, quantity: item.quantity + 1 }; // Create a new object with updated quantity
-        }
-        return item;
-      })
-    );
-  };
-
   return (
     <SecondaryView style={[styles.container, styles.flexColumn, styles.justifiedStart]}>
       <ScrollView>
-        {shoppingList.map((item, key) => {
+        {shoppingList.map((item) => {
           return (
-            <View key={key} style={[styles.flexRow, { padding: 5, backgroundColor: 'transparent' }]}>
+            <View key={item._id} style={[styles.flexRow, { padding: 5, backgroundColor: 'transparent' }]}>
                 <View style={[styles.flexRow, { backgroundColor: 'rgba(0,0,0,0.1)', borderRadius: 5, width: 'auto', padding: 5 }]}>
                     <View style={[styles.flexRow, styles.justifiedApart, { width: '65%'}]}>
                         <TextPrimary style={[styles.listText, { fontSize: 14, fontWeight: 'bold', letterSpacing: 1 }]}>{item.name}</TextPrimary>

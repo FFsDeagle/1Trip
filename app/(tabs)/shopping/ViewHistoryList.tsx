@@ -21,7 +21,7 @@ export default function ViewHistoryList({ route }: ViewShoppingListProps) {
             <LinearGradientSecondary style={[styles.container, styles.justifiedStart, { alignItems: 'center', paddingTop: 10 }]} colors={[]}>
                     {list.items.map(item => {
                         return (
-                            <SecondaryView key={item.id} style={[styles.flexRow, styles.justifiedApart, styles.listItem, 
+                            <SecondaryView key={item._id} style={[styles.flexRow, styles.justifiedApart, styles.listItem, 
                             { width: '90%', borderRadius: 15, margin: 5}]}>
                                 <View style={[styles.flexRow, styles.justifiedApart, {width: '80%'}]}>
                                     <TextPrimary>

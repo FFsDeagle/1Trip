@@ -1,6 +1,6 @@
 import { styles } from "@/components/util/Theme";
 import { TextInput, TouchableOpacity, View } from "react-native";
-import { addItem, InventoryItem, updateItem } from "./ItemSlice";
+import { addItem, InventoryItem, updateProduct } from "./ItemSlice";
 import { SetStateAction, useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -36,6 +36,7 @@ export default function AddOrEditProduct({ item, adding } : AddOrEditProductProp
     const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const navigation = useNavigation<NavigationProp<ItemsStackParamList>>();
+    const { id } = useAppSelector(state => state.login.loginResponse);
 
     const handleSubmit = async () => {
         setFormSubmitted(true);
@@ -43,10 +44,10 @@ export default function AddOrEditProduct({ item, adding } : AddOrEditProductProp
             return;
         }
         if (adding) {
-            await dispatch(addItem(product));
+            await dispatch(addItem({ id, product }));
         } else {
             // Update product
-            await dispatch(updateItem(product));
+            await dispatch(updateProduct({id, product}));
         }
         setFormSubmitted(false);
         setError({} as InputValidation);

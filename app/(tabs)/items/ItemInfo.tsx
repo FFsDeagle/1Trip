@@ -31,11 +31,12 @@ export default function ItemInfo() {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [isDelete, setIsDelete] = useState<boolean>(false);
     const [isEdit, setIsEdit] = useState<boolean>(false);
+    const { id } = useAppSelector(state => state.login.loginResponse);
     
     useEffect(() => {
       if (isDelete) {
         (async () => {
-          if (item?.id) await dispatch(deleteItem(item?.id));
+          if (item?._id) await dispatch(deleteItem({ userId: id, id: item._id }));
           navigation.navigate('ProductSearch', { nav: 'ItemInfo', placeholder: "Search for your Products.." });
         })();
       }

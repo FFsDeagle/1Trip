@@ -2,7 +2,7 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import { styles } from "@/components/util/Theme";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { RootStackParamList } from "@/constants/Types";
+import { RootStackParamList } from "@/constants/types";
 import { SecondaryView } from "@/components/Themed";
 
 // Props for size and color

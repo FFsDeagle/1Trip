@@ -84,7 +84,7 @@ export default function RenderShoppingLists({ title, listType }: RenderShoppingL
                                     <ScrollView horizontal={true}>
                                         {item.items.map(x => {
                                             return (
-                                                <View style={[styles.flexColumn, { padding: 10, paddingLeft: 15, paddingRight: 15 }]}>
+                                                <View key={x._id} style={[styles.flexColumn, { padding: 10, paddingLeft: 15, paddingRight: 15 }]}>
                                                     <View>
                                                         <TextSecondary>
                                                             {x.name}

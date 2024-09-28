@@ -2,7 +2,7 @@ import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { styles } from "@/components/util/Theme";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { RootStackParamList } from "@/constants/Types";
+import { RootStackParamList } from "@/constants/types";
 
 // Props for size and color
 export default function DashboardModal() {

@@ -172,7 +172,7 @@ export default function SearchWithContextMenu ({ popUpShown, displayElement, onT
                             return (
                                 <TouchableOpacity 
                                     onPress={() => handlePress(result)}
-                                    key={result.id} style={[styles.flexRow, styles.listItem, styles.justifiedApart]}
+                                    key={result._id} style={[styles.flexRow, styles.listItem, styles.justifiedApart]}
                                 >
                                     <TextSecondary>
                                         {result.name}

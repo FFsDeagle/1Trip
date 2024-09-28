@@ -14,7 +14,7 @@ import { AntDesign } from "@expo/vector-icons";
 type RouteParams = { route: { params: { placeholder: string } }};
 
 export default function ProductSearch({ route }: RouteParams) {
-    const items = useAppSelector(styles => styles.item.items);
+    const items = useAppSelector(state => state.item.items);
     const { placeholder } = route.params;
     const navigation = useNavigation<NavigationProp<ItemsStackParamList>>();
     const theme = useAppSelector(state => state.theme.colors);
@@ -77,13 +77,13 @@ export default function ProductSearch({ route }: RouteParams) {
         if (displayCategory.name === '' && value === '') {
             setSearchResults([...items]);
         } else {
-            const filteredResults = items.filter(item => item.name.toLowerCase().includes(value.toLowerCase()));
+            const filteredResults = items.filter(item => item.name && item.name.toLowerCase().includes(value.toLowerCase()));
             setSearchResults([...filteredResults]);
         }
     }
 
     const searchCategoryResults = () => {
-        const filteredResults = items.filter(item => item.category.toLowerCase() === displayCategory.name.toLowerCase() && item.name.toLowerCase().includes(value.toLowerCase()));
+        const filteredResults = items.filter(item => item.category && item.category.toLowerCase() === displayCategory.name.toLowerCase() && item.name.toLowerCase().includes(value.toLowerCase()));
         setSearchResults([...filteredResults]);
     }
 
@@ -104,7 +104,7 @@ export default function ProductSearch({ route }: RouteParams) {
 
     const displayCategorizedResults = (selectedCategory: Category) => {
         setDisplayCategory(selectedCategory);
-        const filteredResults = items.filter(item => item.category.toLowerCase() === selectedCategory.name.toLowerCase());
+        const filteredResults = items.filter(item => item.category && item.category.toLowerCase() === selectedCategory.name.toLowerCase());
         setSearchResults([...filteredResults]);
     }
 
@@ -172,7 +172,7 @@ export default function ProductSearch({ route }: RouteParams) {
                                     return (
                                         <TouchableOpacity 
                                             onPress={() => handlePress(result)}
-                                            key={result.id} style={[styles.flexRow, styles.listItem, styles.justifiedApart]}
+                                            key={result._id} style={[styles.flexRow, styles.listItem, styles.justifiedApart]}
                                         >
                                             <TextSecondary>
                                                 {result.name}
