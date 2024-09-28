@@ -16,26 +16,22 @@ export default function UpdateCategory({ route }: { route: any }) {
     const navigation = useNavigation<NavigationProp<ItemsStackParamList>>();
     const [categoryData, setCategoryData] = useState<Categories>({} as Categories);
     const theme = useAppSelector(state => state.theme.colors);
+    const { id } = useAppSelector(state => state.login.loginResponse);
 
     useEffect(() => {
         setCategoryData(category);
-    }, [category])
-
-    useEffect(() => {
-        console.log(categoryData);
-    }, [categoryData])
-    
+    }, [category])    
 
     const handleUpdate = async () => {
         // Update category
         if (categoryData.name === '') return;
-        await dispatch(updateCategories(categoryData));
+        await dispatch(updateCategories({ id, category: categoryData }));
         navigation.goBack();
     }
 
     const handleDelete = async () => {
         // Delete category
-        await dispatch(deleteCategories(categoryData));
+        await dispatch(deleteCategories({ id, category }));
         navigation.goBack();
     }
 
@@ -48,7 +44,6 @@ export default function UpdateCategory({ route }: { route: any }) {
                         placeholder="Category Name"
                         value={categoryData.name}
                         onChangeText={text => setCategoryData({ ...categoryData, name: text })}
-                        onChange={(e) => { console.log(e.nativeEvent.text) }}
                         style={[{ width: '100%', color: theme.textPrimary }]}
                     />
                 </View>

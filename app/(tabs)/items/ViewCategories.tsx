@@ -14,7 +14,7 @@ export default function ViewCategories() {
     const navigation = useNavigation<NavigationProp<ItemsStackParamList>>();
 
     const handleNavigation = (category: Categories) => {
-        navigation.navigate("UpdateCategories", { category: { name: category.name, id: category.id} });
+        navigation.navigate("UpdateCategories", { category });
     }
 
   return (

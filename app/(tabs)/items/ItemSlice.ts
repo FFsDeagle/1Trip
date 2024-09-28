@@ -20,7 +20,7 @@ export const initialState: InventoryState = {
 }
 
 export interface Categories {
-    id?: number,
+    _id: number,
     name: string,
 }
 
@@ -137,11 +137,11 @@ export const getCategories = createAsyncThunk(
 
 export const addCategories = createAsyncThunk(
     'item/addCategories',
-    async ({ id, category }: { id: string, category: Categories }, { getState }) => {
+    async ({ id, category }: { id: string, category: string }, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.post('http://192.168.1.116:5000/products/addCategory', 
-            { category },
+        const response = await axios.post('http://192.168.1.116:5000/products/addCategories', 
+            { id, category },
             { headers: { Authorization: `Bearer ${token}` } }
         );
         return response.data;
@@ -150,13 +150,15 @@ export const addCategories = createAsyncThunk(
 
 export const deleteCategories = createAsyncThunk(
     'item/deleteCategories',
-    async ({ id }: Categories, { getState }) => {
+    async ({ id, category }: {id: string, category: Categories }, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.post('http://192.168.1.116:5000/products/deleteCategories', 
-            { id },
-            { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const categoryId = category._id;
+        console.log('deleteCategories', id, categoryId);
+        const response = await axios.delete('http://192.168.1.116:5000/products/deleteCategories', {
+            headers: { Authorization: `Bearer ${token}` },
+            data: { id, categoryId }
+        });
         return response.data;
     }
 )
@@ -273,7 +275,7 @@ export const inventorySlice = createSlice({
         builder.addCase(addCategories.pending, (state) => {
             state.status = 'loading';
         })
-        builder.addCase(addCategories.fulfilled, (state, action) => {
+        builder.addCase(addCategories.fulfilled, (state, action: PayloadAction<Categories>) => {
             state.status = 'success';
             state.categories.push(action.payload);
         })
@@ -285,7 +287,7 @@ export const inventorySlice = createSlice({
         })
         builder.addCase(deleteCategories.fulfilled, (state, action) => {
             state.status = 'success';
-            state.categories = state.categories.filter((category) => category.id !== action.payload);
+            state.categories = state.categories.filter((category) => category._id !== action.payload);
         })
         builder.addCase(deleteCategories.rejected, (state) => {
             state.status = 'failed';
@@ -293,14 +295,11 @@ export const inventorySlice = createSlice({
         builder.addCase(updateCategories.pending, (state) => {
             state.status = 'loading';
         })
-        builder.addCase(updateCategories.fulfilled, (state, action) => {
+        builder.addCase(updateCategories.fulfilled, (state, action: PayloadAction<Categories>) => {
             state.status = 'success';
-            state.categories = state.categories.map((category) => {
-                if (category.id === action.payload.id) {
-                    return action.payload;
-                }
-                return category;
-            })
+            state.categories = state.categories.map((category) =>
+                category._id === action.payload._id ? action.payload : category
+            );
         })
         builder.addCase(updateCategories.rejected, (state) => {
             state.status = 'failed';

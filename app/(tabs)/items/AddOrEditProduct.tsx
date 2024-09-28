@@ -131,7 +131,7 @@ export default function AddOrEditProduct({ item, adding } : AddOrEditProductProp
                     style={[{ backgroundColor: theme.primary, color: theme.textPrimary, width: '70%' }]}
                 >
                     {categories.map((category) => (
-                        <Picker.Item key={category.id} label={category.name} value={category.name} />
+                        <Picker.Item key={category._id} label={category.name} value={category.name} />
                     ))}
                 </Picker>
                 {formSubmitted ? (error.category ? <FontAwesome6 name="check" style={{right: 10}} size={24} color="green" /> : <FontAwesome6 name="circle-exclamation" size={24} color="red" />) : null}

@@ -20,6 +20,7 @@ export default function AddNewCategory(){
     const [modal, showModal] = useState<boolean>(false);
     const [error, setError] = useState<boolean>(false);
     const navigation = useNavigation<NavigationProp<ItemsStackParamList>>();
+    const { id } = useAppSelector(state => state.login.loginResponse);
 
     const handleSubmit = async () => {
         if (category === '') {
@@ -32,7 +33,7 @@ export default function AddNewCategory(){
             showModal(true);
             return;
         }
-        await dispatch(addCategories({ name: category } as Categories));
+        await dispatch(addCategories({ id, category }));
         navigation.goBack();
     }
 
