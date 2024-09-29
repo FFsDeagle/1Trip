@@ -26,23 +26,13 @@ export default function SearchWithContextMenu ({ popUpShown, displayElement, onT
     const [value, onChangeText] = useState<string>('');
     const [displayCategory, setDisplayCategory] = useState<Category>({ isSelected: false, name: '' });
     const [keyboardShown, setKeyboardShown] = useState<boolean>(false);
-    const [category, setCategory] = useState<Category[]>([
-        {name: 'Fruit', isSelected: false },
-        {name: 'Vegetable', isSelected: false },
-        {name: 'Meat', isSelected: false },
-        {name: 'Dairy', isSelected: false },
-        {name: 'Bakery', isSelected: false },
-        {name: 'Frozen', isSelected: false },
-        {name: 'Canned', isSelected: false },
-        {name: 'Spices', isSelected: false },
-        {name: 'Sauces', isSelected: false },
-        {name: 'Drinks', isSelected: false },
-        {name: 'Snacks', isSelected: false },
-        {name: 'Household', isSelected: false },
-        {name: 'Personal Care', isSelected: false },
-        {name: 'Misc', isSelected: false }
-    ]);
+    const { categories } = useAppSelector(state => state.item)
     const theme = useAppSelector(state => state.theme.colors);
+    const [category, setCategory] = useState<Category[]>([]);
+
+    useEffect(() => {
+        setCategory(categories.map(category => ({ name: category.name, isSelected: false })));
+    },[])
 
     useEffect(() => {
         const keyboardShown = Keyboard.addListener('keyboardDidShow', () => {

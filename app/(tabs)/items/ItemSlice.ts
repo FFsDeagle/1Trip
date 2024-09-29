@@ -2,6 +2,7 @@ import { useAppSelector } from "@/app/store/hooks";
 import { RootState } from "@/app/store/store";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
+import { updateShoppingListCategory } from "../shopping/ShoppingSlice";
 
 
 // Interfaces here are slice related and can be used outside of the slice where required
@@ -20,7 +21,7 @@ export const initialState: InventoryState = {
 }
 
 export interface Categories {
-    _id: number,
+    _id: string,
     name: string,
 }
 
@@ -154,10 +155,10 @@ export const deleteCategories = createAsyncThunk(
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
         const categoryId = category._id;
-        console.log('deleteCategories', id, categoryId);
+        console.log('deleteCategories', id, category);
         const response = await axios.delete('http://192.168.1.116:5000/products/deleteCategories', {
             headers: { Authorization: `Bearer ${token}` },
-            data: { id, categoryId }
+            data: { id, category }
         });
         return response.data;
     }
@@ -287,7 +288,13 @@ export const inventorySlice = createSlice({
         })
         builder.addCase(deleteCategories.fulfilled, (state, action) => {
             state.status = 'success';
-            state.categories = state.categories.filter((category) => category._id !== action.payload);
+            const { deletedCategoryId, updatedCategory } = action.payload as { deletedCategoryId: string, updatedCategory: Categories[] };
+            console.log('deleteCategories test', deletedCategoryId, updatedCategory);
+            state.categories = state.categories.filter((category) => category._id !== deletedCategoryId);
+            state.categories = [...state.categories, ...updatedCategory];
+            // update shopping list state from shoppinglistslice
+            updateShoppingListCategory({ deletedCategoryId, newCategory: 'Unassigned' });
+
         })
         builder.addCase(deleteCategories.rejected, (state) => {
             state.status = 'failed';

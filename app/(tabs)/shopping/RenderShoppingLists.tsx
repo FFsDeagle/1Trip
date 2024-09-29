@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { LinearGradientSecondary, ScrollView, SecondaryView, TextPrimary, TextSecondary } from "@/components/Themed";
 import { TouchableOpacity } from 'react-native';
-import { DeleteList, ShoppingList, ShoppingListTypes } from './ShoppingSlice';
+import { DeleteIncompleteList, DeleteList, ShoppingList, ShoppingListTypes } from './ShoppingSlice';
 import { Dimensions, FlatList, View } from "react-native";
 import { styles } from "@/components/util/Theme";
 import { ShoppingStackParamList } from "@/constants/types";
@@ -30,8 +30,13 @@ export default function RenderShoppingLists({ title, listType }: RenderShoppingL
         }
     }, [])
 
-    const handleDelete = (selectedList: ShoppingList) => {
-        dispatch(DeleteList({ id, list: selectedList }));
+    const handleDelete = async (selectedList: ShoppingList) => {
+        if (listType === 'incompleteLists') {
+            await dispatch(DeleteIncompleteList({ id, list: selectedList }));
+        }
+        else {
+            await dispatch(DeleteList({ id, list: selectedList }));
+        }
         setList([...list.filter(item => item._id !== selectedList._id)])
     }
 

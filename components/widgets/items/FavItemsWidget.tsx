@@ -27,7 +27,7 @@ export default function FavItemsWidget(){
             </TouchableOpacity>
             {products && products.length > 0 && products.slice(0, 3).map((product) => {
                 return(
-                    <TouchableOpacity style={[styles.listItem, styles.flexRow, styles.justifiedApart]} key={product.id}>
+                    <TouchableOpacity style={[styles.listItem, styles.flexRow, styles.justifiedApart]} key={product._id}>
                         <View style={[styles.flexRow, { width: 'auto' }]}>
                             <TextSecondary style={styles.listText}>{product.name}</TextSecondary>
                             <TextSecondary style={[styles.listText, { marginLeft: 8 }]}>{product.description}</TextSecondary>

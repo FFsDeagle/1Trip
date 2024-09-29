@@ -21,33 +21,39 @@ export default function ShoppingListWidget() {
     const navigation = useNavigation<NavigationProp<ShoppingStackParamList>>();
     const theme = useAppSelector(state => state.theme.colors);
     const shoppingLists = useAppSelector(state => state.shoppingLists);
-    const cards: selectionType[] = [
-        {
-            listType: 'savedLists',
-            title: 'Saved Lists',
-            icon: <FontAwesome5 color={theme.iconColor} size={24} name="save" />,
-            items: shoppingLists.lists.savedLists as ShoppingList[],
-        },
-        {
-            listType: 'incompleteLists',
-            title: 'Incomplete Lists',
-            icon: <MaterialIcons color={theme.iconColor} size={24} name="incomplete-circle" />,
-            items: shoppingLists.lists.incompleteLists as ShoppingList[],
-        },
-        {
-            listType: 'generatedLists',
-            title: 'Generated Lists',
-            icon: <MaterialIcons color={theme.iconColor} size={24} name="auto-awesome-motion" />,
-            items: shoppingLists.lists.generatedLists as ShoppingList[],
-        },
-        {
-            listType: 'history',
-            title: 'History',
-            icon: <FontAwesome5 color={theme.iconColor} size={24} name="history" />,
-            items: shoppingLists.lists.history as ShoppingList[],
-        },
-    ]
+    const [cards, setCards] = useState<selectionType[]>([]);
     const [displayMessage, setDisplayMessage] = useState<boolean>(false);
+
+    useEffect(() => {
+        setCards(
+            [
+                {
+                    listType: 'savedLists',
+                    title: 'Saved Lists',
+                    icon: <FontAwesome5 color={theme.iconColor} size={24} name="save" />,
+                    items: shoppingLists.lists.savedLists as ShoppingList[],
+                },
+                {
+                    listType: 'incompleteLists',
+                    title: 'Incomplete Lists',
+                    icon: <MaterialIcons color={theme.iconColor} size={24} name="error-outline" />,
+                    items: shoppingLists.lists.incompleteLists as ShoppingList[],
+                },
+                {
+                    listType: 'generatedLists',
+                    title: 'Generated Lists',
+                    icon: <MaterialIcons color={theme.iconColor} size={24} name="auto-awesome-motion" />,
+                    items: shoppingLists.lists.generatedLists as ShoppingList[],
+                },
+                {
+                    listType: 'history',
+                    title: 'History',
+                    icon: <FontAwesome5 color={theme.iconColor} size={24} name="history" />,
+                    items: shoppingLists.lists.history as ShoppingList[],
+                },
+            ]
+        )
+    },[shoppingLists])
 
     useEffect(() => {
         if (!cards || cards.length === 0) return;
