@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from "axios";
 import { useAppDispatch } from "@/app/store/hooks";
 import { AddListToInventory, InventoryItem } from "../inventory/InventorySlice";
 import { RootState } from "@/app/store/store";
+import { Categories } from "../items/ItemSlice";
 
 export interface ShoppingListProps {
     status: 'idle' | 'loading' | 'failed' | 'success',
@@ -148,13 +149,14 @@ export const ShoppingListSlice = createSlice({
     name: 'shoppingList',
     initialState: initialState,
     reducers: {
-        updateShoppingListCategory(state, action: PayloadAction<{ deletedCategoryId: string, newCategory: string }>) {
-            const { deletedCategoryId, newCategory } = action.payload;
+        updateShoppingListCategory(state, action: PayloadAction<{ deletedCategory: Categories, newCategory: string }>) {
+            const { deletedCategory, newCategory } = action.payload;
+            console.log('updateShoppingListCategory action:', deletedCategory, newCategory);
             // Update the shopping list items that belong to the deleted category
             state.lists.savedLists = state.lists.savedLists.map(list => ({
                 ...list,
                 items: list.items.map(item => 
-                    item.category === deletedCategoryId
+                    item.category === deletedCategory.name
                         ? { ...item, category: newCategory }
                         : item
                 )
@@ -162,7 +164,7 @@ export const ShoppingListSlice = createSlice({
             state.lists.incompleteLists = state.lists.incompleteLists.map(list => ({
                 ...list,
                 items: list.items.map(item => 
-                    item.category === deletedCategoryId
+                    item.category === deletedCategory.name
                         ? { ...item, category: newCategory }
                         : item
                 )

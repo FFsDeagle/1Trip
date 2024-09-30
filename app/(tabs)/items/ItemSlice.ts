@@ -3,6 +3,7 @@ import { RootState } from "@/app/store/store";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
 import { updateShoppingListCategory } from "../shopping/ShoppingSlice";
+import { useAppDispatch } from "@/app/store/hooks";
 
 
 // Interfaces here are slice related and can be used outside of the slice where required
@@ -151,7 +152,7 @@ export const addCategories = createAsyncThunk(
 
 export const deleteCategories = createAsyncThunk(
     'item/deleteCategories',
-    async ({ id, category }: {id: string, category: Categories }, { getState }) => {
+    async ({ id, category }: {id: string, category: Categories }, { getState, dispatch }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
         const categoryId = category._id;
@@ -160,6 +161,8 @@ export const deleteCategories = createAsyncThunk(
             headers: { Authorization: `Bearer ${token}` },
             data: { id, category }
         });
+        const { deletedCategory } = response.data as { deletedCategory: Categories };
+        dispatch(updateShoppingListCategory({ deletedCategory, newCategory: 'Unassigned' }));
         return response.data;
     }
 )
@@ -288,13 +291,10 @@ export const inventorySlice = createSlice({
         })
         builder.addCase(deleteCategories.fulfilled, (state, action) => {
             state.status = 'success';
-            const { deletedCategoryId, updatedCategory } = action.payload as { deletedCategoryId: string, updatedCategory: Categories[] };
-            console.log('deleteCategories test', deletedCategoryId, updatedCategory);
-            state.categories = state.categories.filter((category) => category._id !== deletedCategoryId);
+            const { deletedCategory, updatedCategory } = action.payload as { deletedCategory: Categories, updatedCategory: Categories[] };
+            console.log('deleteCategories test', deletedCategory._id, updatedCategory);
+            state.categories = state.categories.filter((category) => category._id !== deletedCategory._id);
             state.categories = [...state.categories, ...updatedCategory];
-            // update shopping list state from shoppinglistslice
-            updateShoppingListCategory({ deletedCategoryId, newCategory: 'Unassigned' });
-
         })
         builder.addCase(deleteCategories.rejected, (state) => {
             state.status = 'failed';
