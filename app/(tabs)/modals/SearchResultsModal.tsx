@@ -15,6 +15,7 @@ export default function SearchResultsModal() {
     const dispatch = useAppDispatch();
     const { title } = params;
     const itemsList = useAppSelector(state => state.inventory.displayedCategory)
+    const { id } = useAppSelector(state => state.login.loginResponse);
 
     useEffect(() => {
         dispatch(GetInventoryItemsByCategory(title as string));

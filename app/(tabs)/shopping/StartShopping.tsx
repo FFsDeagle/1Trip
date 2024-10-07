@@ -34,7 +34,7 @@ export default function StartShopping({ route }: ViewShoppingListProps){
         if (remainingItems && remainingItems.items.length > 0){
             await dispatch(SaveIncompleteList({id, list: remainingItems}));
         }
-        await dispatch(AddListToInventory(checkedList as InventoryItem[]));
+        await dispatch(AddListToInventory({ id, list: checkedList }));
         const mutatedList: ShoppingList = {
             _id: list._id,
             items: checkedList as InventoryItem[],

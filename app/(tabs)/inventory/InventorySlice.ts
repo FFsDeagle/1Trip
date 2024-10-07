@@ -1,3 +1,4 @@
+import { RootState } from "@/app/store/store";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
 
@@ -33,8 +34,8 @@ export interface InventoryResponse {
 export const addItem = createAsyncThunk(
     'inventory/addInventory',
     async ({ category, description, name }: InventoryItem, { getState }) => {
-        const state = getState() as { auth: { token: string } };
-        const token = state.auth.token;
+        const state = getState() as RootState;
+        const { token } = state.login.loginResponse;
         const response = await axios.post(
             'http://192.168.1.116:5000/inventory/addInventory',
             { category, description, name },
@@ -46,12 +47,12 @@ export const addItem = createAsyncThunk(
 
 export const AddListToInventory = createAsyncThunk(
     'inventory/addListToInventory',
-    async (list: InventoryItem[], { getState }) => {
-        const state = getState() as { auth: { token: string } };
-        const token = state.auth.token;
+    async ({ id, list } : { id: string, list: InventoryItem[] }, { getState }) => {
+        const state = getState() as RootState;
+        const { token } = state.login.loginResponse;
         const response = await axios.post(
             'http://192.168.1.116:5000/inventory/addListToInventory',
-            { list },
+            { id, list },
             { headers: { Authorization: `Bearer ${token}` } }
         );
         return response.data;
@@ -60,12 +61,16 @@ export const AddListToInventory = createAsyncThunk(
 
 export const GetInventoryItems = createAsyncThunk(
     'inventory/getInventory',
-    async (_, { getState }) => {
-        const state = getState() as { auth: { token: string } };
-        const token = state.auth.token;
+    async (id: string, { getState }) => {
+        console.log('GetInventoryItems id:', id);
+        const state = getState() as RootState;
+        const { token } = state.login.loginResponse;
         const response = await axios.get(
             'http://192.168.1.116:5000/inventory/getInventoryItems',
-            { headers: { Authorization: `Bearer ${token}` } }
+            { 
+                params: { id },
+                headers: { Authorization: `Bearer ${token}` } 
+            }
         );
         return response.data;
     }
@@ -97,10 +102,21 @@ export const inventorySlice = createSlice({
         builder.addCase(addItem.rejected, (state) => {
             state.status = 'failed';
         })
+        builder.addCase(GetInventoryItems.pending, (state) => {
+            state.status = 'loading';
+        })
+        builder.addCase(GetInventoryItems.fulfilled, (state, action: PayloadAction<InventoryItem[]>) => {
+            state.inventoryItems = action.payload;
+            state.status = 'success';
+        })
+        builder.addCase(GetInventoryItems.rejected, (state) => {
+            state.status = 'failed';
+        })
         builder.addCase(AddListToInventory.pending, (state) => {
             state.status = 'loading';
         })
         builder.addCase(AddListToInventory.fulfilled, (state, action: PayloadAction<InventoryItem[]>) => {
+            console.log('AddListToInventory action payload', action.payload);
             // As the payload is an array, we need to use the spread operator to correctly add them into the state
             action.payload.forEach((element: InventoryItem) => {
                 const foundItem = state.inventoryItems.find((item) => item._id === element._id);
