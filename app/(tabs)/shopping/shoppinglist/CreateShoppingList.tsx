@@ -273,7 +273,7 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
                     </Animated.View>
                 </Animated.ScrollView>
                 {/* Bottom Pane with Draggable Items */}
-                {!showNameModal && !keyboardShown && <Animated.View style={[menu === '' ? styles.justified : styles.justifiedStart, { width: '100%', height: heightAnim, backgroundColor: theme.primary }]}>
+                {/* {!showNameModal && !keyboardShown && <Animated.View style={[menu === '' ? styles.justified : styles.justifiedStart, { width: '100%', height: heightAnim, backgroundColor: theme.primary }]}>
                     <View style={[styles.flexRow, styles.justifiedCenter, { width: '100%', height: menu === '' ? 'auto' : '100%' }]}>
                         {
                         favoriteLists && favoriteLists.map((item) => (
@@ -289,7 +289,7 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
                         ))
                         }
                     </View>
-                </Animated.View>}
+                </Animated.View>} */}
             </View>
             <MultiButtonContextMenu 
                 buttons={[

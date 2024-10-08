@@ -9,102 +9,9 @@ import { useAppSelector } from "@/app/store/hooks";
 import { NavigationProp } from "@react-navigation/native";
 
 export default function ItemsCategoryWidget() {
-    const [gridItems, setGridItems] = useState<WidgetGridItemProps[]>([])
-    const router = useRouter();
     const theme = useAppSelector(state => state.theme.colors);
+    const { categories } = useAppSelector(state => state.item);
     const navigation = useNavigation<NavigationProp<ItemsStackParamList>>();
-
-    // Static grid items for testing
-    // Can add more dynamic types to the grid items such as a component to render
-    // These can be stored on the server and fetched dynamically
-    // For certain events different menu items will appear
-    const staticGridItems = [
-        {
-          title: "Dairy",
-          icon: "cow",
-          component: FontAwesome6,
-          size: 1,
-        },
-        {
-          title: "Meat",
-          icon: "food-steak",
-          component: MaterialCommunityIcons,
-          size: 1,
-        },
-        {
-          title: "Produce",
-          icon: "leaf",
-          component: FontAwesome6,
-          size: 1,
-        },
-        {
-          title: "Frozen",
-          icon: "snowflake",
-          component: FontAwesome6,
-          size: 1,
-        },
-        {
-          title: "Beverages",
-          icon: "coffeescript",
-          component: Fontisto,
-          size: 1,
-        },
-        {
-          title: "Canned",
-          icon: "jar",
-          component: FontAwesome6,
-          size: 1,
-        },
-        {
-          title: "Bakery",
-          icon: "bread-slice",
-          component: FontAwesome6,
-          size: 1,
-        },
-        {
-          title: "Pantry",
-          icon: "library-shelves",
-          component: MaterialCommunityIcons,
-          size: 1,
-        },
-        {
-          title: "Snacks",
-          icon: "cookie",
-          component: FontAwesome6,
-          size: 1,
-        },
-        {
-          title: "Household",
-          icon: "emoji-food-beverage",
-          component: MaterialIcons,
-          size: 1,
-        },
-        {
-          title: "Personal Care",
-          icon: "soap",
-          component: FontAwesome6,
-          size: 1,
-        },
-        {
-          title: "Miscellaneous",
-          icon: "other-houses",
-          component: MaterialIcons,
-          size: 1,
-        }
-      ]
-
-    useEffect(() => {
-        // For now, we will just display static grid items
-        setGridItems(staticGridItems)
-    }, [])
-
-    const handleSelection = (item: WidgetGridItemProps) => {
-    //   router.push({
-    //     pathname: "/modal",
-    //     params: { modal: 'SearchResultsModal', title: `${item.title}`, navigationParam: 'InventoryItemInfo' }, 
-    //   });
-    }
-
     return (
         <LinearGradient 
           style={styles.gridContainer} 
@@ -112,48 +19,28 @@ export default function ItemsCategoryWidget() {
         >
           <View style={[styles.flexRow, styles.justifiedStart]}>
             <View style={[styles.flexRow, styles.justifiedApart, styles.justifiedApart]}>
-              <Text style={[styles.getStartedText, { textAlign: 'left' }]}>
-                Categories
-              </Text>
+                <TextSecondary style={[styles.header2, {color: theme.textPrimary}]}>
+                    Categories
+                </TextSecondary>
               <TouchableOpacity onPress={() => navigation.navigate("ViewCategories")} style={[styles.justified ,{ right: 15 }]}>
                     <AntDesign name="setting" size={24} color={theme.textPrimary} />
                 </TouchableOpacity>
             </View>
           </View>
-            {gridItems && 
-                <FlatList
-                  scrollEnabled={false}
-                    data={gridItems}
-                    numColumns={4} 
-                    contentContainerStyle={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                    renderItem={({ index, item }) => (
-                        <TouchableOpacity
-                            style={{
-                                width: 75,
-                                margin: 5,
-                            }}
-                            key={index}
-                            onPress={() => handleSelection(item)}
-                        >
-                            <View
-                                style={styles.gridItem}
-                            >
-                                <item.component
-                                    name={item.icon as string}
-                                    size={30}
-                                    color={theme.iconColor}
-                                />
-                                <Text style={[styles.description, {color: theme.iconColor}]}>
-                                    {item.title}
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                    )}
-                />
-            }
+          {/* Display a list of Categories? */}
+          {categories.length > 0 && categories.slice(0, 5).map(category => (
+            <TouchableOpacity 
+              onPress={() => navigation.navigate('UpdateCategories', { category })}
+              key={category._id} style={[
+              styles.listItem, 
+              styles.flexRow, 
+              styles.justifiedApart
+            ]}>
+              <TextSecondary style={styles.subtitle}>
+                {category.name}
+              </TextSecondary>
+            </TouchableOpacity>
+          ))}
         </LinearGradient>
     )
 }
