@@ -25,7 +25,7 @@ export default function PlusFeaturesWidget(){
             {/* Background image for the plus features, Drawn out or AI Generated */}
             <View style={[styles.cardContainer, styles.justifiedCenter, { backgroundColor: theme.background3 }]}>
                 <View style={[styles.justifiedApart, styles.flexRow]}>
-                    <View style={[styles.flexColumn, styles.justifiedCenter, { width: '50%', left: 20 }]}>
+                    <View style={[styles.flexColumn, styles.justifiedCenter, { width: '60%', left: 20 }]}>
                         <TextPrimary style={[styles.heading, { width: '100%', padding: 0 }]}>
                             Meal Suggestions
                         </TextPrimary>
@@ -33,22 +33,26 @@ export default function PlusFeaturesWidget(){
                             Search through a list of meal suggestions that are added to your shopping lists
                         </TextSecondary>
                     </View>
-                    <TouchableOpacity style={[styles.button , styles.justifiedCenter, styles.flexRow, { right: 20, width: 'auto', alignSelf: 'center', backgroundColor: theme.primary }]}>
-                        <TextPrimary style={{ textAlign: 'center' }}>
-                            Subscribe Now
-                        </TextPrimary><AntDesign name="right" size={24} color={theme.textPrimary} />
-                    </TouchableOpacity>
+                    <View style={[styles.justifiedCenter, { width: '30%' }]}>
+                        <TouchableOpacity style={[styles.button , styles.justifiedCenter, styles.flexRow, { right: 20, width: 'auto', alignSelf: 'center', backgroundColor: theme.primary }]}>
+                            <TextPrimary style={styles.buttonText}>
+                                More Info
+                            </TextPrimary>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
             <View style={styles.separator} />
             <View style={[styles.cardContainer, styles.justifiedCenter, { backgroundColor: theme.background3, marginBottom: 30 }]}>
                 <View style={[styles.justifiedApart, styles.flexRow]}>
-                    <TouchableOpacity style={[styles.button , styles.justifiedCenter, styles.flexRow, { left: 20, width: 'auto', alignSelf: 'center', backgroundColor: theme.primary }]}>
-                        <TextPrimary style={{ textAlign: 'center' }}>
-                            Subscribe Now
-                        </TextPrimary><AntDesign name="right" size={24} color={theme.textPrimary} />
-                    </TouchableOpacity>
-                    <View style={[styles.flexColumn, styles.justifiedCenter, { width: '50%', right: 20 }]}>
+                    <View style={[styles.justifiedCenter, { width: '30%' }]}>
+                        <TouchableOpacity style={[styles.button , styles.justifiedCenter, styles.flexRow, { width: 'auto', alignSelf: 'center', backgroundColor: theme.primary }]}>
+                            <TextPrimary style={styles.buttonText}>
+                                More info
+                            </TextPrimary>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={[styles.flexColumn, styles.justifiedCenter, { width: '60%', right: 20 }]}>
                         <TextPrimary style={[styles.heading, { width: '100%', padding: 0 }]}>
                             Daily Meal Planner
                         </TextPrimary>

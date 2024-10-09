@@ -9,6 +9,7 @@ import ShoppingListWidget from "@/components/widgets/shopping/ShoppingListWidet"
 import AddShoppingListButton from "./AddShoppingListButton";
 import { Dimensions, View } from "react-native";
 import { GetInventoryItems } from "../inventory/InventorySlice";
+import { getCategories } from "../items/ItemSlice";
 
 export default function ShoppingMain() {
   const { generatedLists, history, savedLists } = useAppSelector(state => state.shoppingLists.lists);
@@ -25,6 +26,7 @@ export default function ShoppingMain() {
   const GetShoppingLists = async () => {
     await dispatch(GetLists(id));
     await dispatch(GetInventoryItems(id));
+    await dispatch(getCategories(id));
   }
 
   return (
