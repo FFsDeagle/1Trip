@@ -19,11 +19,11 @@ export const initialState: InventoryState = {
 export interface InventoryItem {
     _id: string,
     name: string,
-    description: string,
+    // description: string,
     category: string,
     quantity: number,
-    lastAddedDate: string,
-    isPastExpiry: boolean,
+    // lastAddedDate: string,
+    // isPastExpiry: boolean,
 }
 
 export interface InventoryResponse {
@@ -33,12 +33,19 @@ export interface InventoryResponse {
 // Add item to inventory list in database
 export const addItem = createAsyncThunk(
     'inventory/addInventory',
-    async ({ category, description, name }: InventoryItem, { getState }) => {
+    async ({ 
+            category, 
+            // description, 
+            name }: InventoryItem, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
         const response = await axios.post(
             'http://192.168.1.116:5000/inventory/addInventory',
-            { category, description, name },
+            { 
+                category, 
+                // description, 
+                name 
+            },
             { headers: { Authorization: `Bearer ${token}` } }
         );
         return response.data;
@@ -121,8 +128,8 @@ export const inventorySlice = createSlice({
             action.payload.forEach((element: InventoryItem) => {
                 const foundItem = state.inventoryItems.find((item) => item._id === element._id);
                 if (foundItem) {
-                    foundItem.quantity += element.quantity;
-                }else{
+                    // foundItem.quantity += element.quantity;
+                } else {
                     state.inventoryItems.push(element);
                 }
             });

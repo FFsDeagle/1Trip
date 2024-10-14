@@ -57,13 +57,10 @@ export default function ShoppingListWidget() {
 
     useEffect(() => {
         if (!cards || cards.length === 0) return;
-        const hasItems = cards.some(card => card && card.items && card.items.length > 0);
-        if (!hasItems) {
-            setDisplayMessage(true);
-        } else {
-            setDisplayMessage(false);
-        }
-    },[shoppingLists])
+        const hasItems = cards.some(card => card.listType == 'savedLists' && card.items && card.items.length > 0);
+        setDisplayMessage(!hasItems);
+
+    },[cards])
 
     const handlePress = (listType: ViewShoppingListTypeProps) => {
         navigation.navigate('ViewShoppingListType', { list: listType });
@@ -100,29 +97,32 @@ export default function ShoppingListWidget() {
                         </View>
                         <ScrollView style={{backgroundColor: 'rgba(0,0,0,0.06)'}} horizontal={true}>
                             {
-                                shoppingLists && shoppingLists.lists[card.listType as keyof ShoppingListTypes].map((list, key) => {
-                                    return (
-                                        <TouchableOpacity 
-                                            key={key} 
-                                            onPress={() => navigation.navigate('ViewShoppingList', { name: list.name, list, listType: card.listType })}
-                                            style={[
-                                                styles.container,
-                                                styles.justifiedCenter,
-                                                {
-                                                    margin: 5,
-                                                    width: 90,
-                                                    height: '90%',
-                                                    borderRadius: 5,
-                                                    backgroundColor: 'rgba(0,0,0,0.05)',
-                                                }
-                                            ]}
-                                        >
-                                            <Text>
-                                                {list.name}
-                                            </Text>
-                                        </TouchableOpacity>
-                                    )
-                                })
+                                shoppingLists && shoppingLists.lists[card.listType as keyof ShoppingListTypes]
+                                    .slice(-5)
+                                    .reverse()
+                                    .map((list, key) => {
+                                        return (
+                                            <TouchableOpacity 
+                                                key={key} 
+                                                onPress={() => navigation.navigate('ViewShoppingList', { name: list.name, list, listType: card.listType })}
+                                                style={[
+                                                    styles.container,
+                                                    styles.justifiedCenter,
+                                                    {
+                                                        margin: 5,
+                                                        width: 90,
+                                                        height: '90%',
+                                                        borderRadius: 5,
+                                                        backgroundColor: 'rgba(0,0,0,0.05)',
+                                                    }
+                                                ]}
+                                            >
+                                                <Text>
+                                                    {list.name}
+                                                </Text>
+                                            </TouchableOpacity>
+                                        )
+                                    })
                             }
                         </ScrollView>
                     </View>

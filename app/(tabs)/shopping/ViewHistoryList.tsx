@@ -1,6 +1,5 @@
-import { LinearGradient, LinearGradientSecondary, ScrollView, SecondaryView, TextPrimary } from "@/components/Themed";
-import { ShoppingList, ShoppingListTypes } from "./ShoppingSlice";
-import { useState } from "react";
+import { LinearGradientSecondary, ScrollView, SecondaryView, TextPrimary } from "@/components/Themed";
+import { ShoppingList } from "./ShoppingSlice";
 import { RouteProp } from "@react-navigation/native";
 import { View } from "react-native";
 import { styles } from "@/components/util/Theme";

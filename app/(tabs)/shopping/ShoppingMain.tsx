@@ -1,23 +1,20 @@
 import { styles } from "@/components/util/Theme";
-import { LinearGradient, LinearGradientSecondary, SecondaryView } from "@/components/Themed";
+import { LinearGradient } from "@/components/Themed";
 import { ScrollView } from 'react-native';
-import RenderShoppingLists from "./RenderShoppingLists";
-import { GetLists, ShoppingListTypes } from "./ShoppingSlice";
+import { GetLists } from "./ShoppingSlice";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import ShoppingListWidget from "@/components/widgets/shopping/ShoppingListWidet";
 import AddShoppingListButton from "./AddShoppingListButton";
-import { Dimensions, View } from "react-native";
-import { GetInventoryItems } from "../inventory/InventorySlice";
 import { getCategories } from "../items/ItemSlice";
 
 export default function ShoppingMain() {
-  const { generatedLists, history, savedLists } = useAppSelector(state => state.shoppingLists.lists);
+  const { savedLists } = useAppSelector(state => state.shoppingLists.lists);
   const { id } = useAppSelector(state => state.login.loginResponse);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // Fetch shopping lists from server
+    // Fetch all shopping lists from server
     if (savedLists && savedLists.length === 0){
       GetShoppingLists();
     }
@@ -25,7 +22,8 @@ export default function ShoppingMain() {
 
   const GetShoppingLists = async () => {
     await dispatch(GetLists(id));
-    await dispatch(GetInventoryItems(id));
+    // Disabled until future implementation
+    // await dispatch(GetInventoryItems(id));
     await dispatch(getCategories(id));
   }
 

@@ -6,7 +6,7 @@ import { NavigationProp } from "@react-navigation/native";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { useEffect } from "react";
 import { GetInventoryItemsByCategory } from "../inventory/InventorySlice";
-import { SecondaryView, TextPrimary, TextSecondary } from "@/components/Themed";
+import { SecondaryView, TextPrimary } from "@/components/Themed";
 import { truncateText } from "@/components/util/truncateText";
 
 export default function SearchResultsModal() {
@@ -62,7 +62,6 @@ export default function SearchResultsModal() {
                     >
                         <View style={styles.flexRow}>
                             <TextPrimary style={styles.title}>{item.name}</TextPrimary>
-                            <TextPrimary style={[styles.title, {marginLeft: 20}]}>{truncateText(item.description, 25)}</TextPrimary>
                         </View>
                         <TextPrimary style={styles.title}>{item.quantity}</TextPrimary>
                     </TouchableOpacity>

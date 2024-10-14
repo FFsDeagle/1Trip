@@ -94,14 +94,14 @@ export default function TabLayout() {
               },
             }}
           />
-          <Tab.Screen 
+          {/* <Tab.Screen 
             name="Inventory"
             component={Inventory} 
             options={{
               headerShown: false,
               tabBarIcon: ({ color }) => <TabBarIcon name="archive" color={theme.colors.iconColor2 ? theme.colors.iconColor2 : color } />,
             }}
-          />
+          /> */}
           <Tab.Screen 
             name="Products"
             component={Items} 

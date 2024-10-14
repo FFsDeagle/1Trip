@@ -70,7 +70,8 @@ export default function StartShopping({ route }: ViewShoppingListProps){
             chunkedCategories.some(chunk => 
                 chunk.items.some(chunkItem => chunkItem.item._id === item._id && chunkItem.isChecked)
             ));
-        await dispatch(AddListToInventory({ id, list: checkedItems }));
+        // Disabled until further notice
+        // await dispatch(AddListToInventory({ id, list: checkedItems }));
         const mutatedList: ShoppingList = {
             _id: list._id,
             items: checkedItems,
@@ -84,30 +85,43 @@ export default function StartShopping({ route }: ViewShoppingListProps){
     }
 
     const decrementItem = (id: string | number) => {
-        const updatedItems = shoppingList.items.map((item) => {
-            if (item._id === id) {
-                // filter item if quantity is 0
-                if (item.quantity === 1) {
-                    return null;
-                }
-                item.quantity -= 1;
-            }
-            return item;
-        }).filter((item): item is InventoryItem => item !== null);
-    
-        setShoppingList({ ...shoppingList, items: updatedItems });
+        setChunkedCategories(chunkedCategories.map(category => {
+            return {
+                ...category,
+                items: category.items.map(chunk => {
+                    if (chunk.item._id === id) {
+                        // if (chunk.item.quantity === 1) {
+                        //     return null;
+                        // }
+                        if (chunk.item.quantity === 1) {
+                            return chunk;
+                        }
+                        return {
+                            ...chunk,
+                            item: { ...chunk.item, quantity: chunk.item.quantity - 1 }
+                        };
+                    }
+                    return chunk;
+                }).filter((chunk): chunk is SelectionProps => chunk !== null)
+            };
+        }));
     }
 
     const incrementItem = (id: string | number) => {
-        setShoppingList({
-            ...shoppingList,
-            items: shoppingList.items.map((x) => {
-                if (x._id === id) {
-                    x.quantity += 1;
-                }
-                return x;
-            })
-        })
+        setChunkedCategories(chunkedCategories.map(category => {
+            return {
+                ...category,
+                items: category.items.map(chunk => {
+                    if (chunk.item._id === id) {
+                        return {
+                            ...chunk,
+                            item: { ...chunk.item, quantity: chunk.item.quantity + 1 }
+                        };
+                    }
+                    return chunk;
+                })
+            };
+        }));
     }
 
     const renderItem = (chunk: CategoryChunk, isChecked: boolean) => {

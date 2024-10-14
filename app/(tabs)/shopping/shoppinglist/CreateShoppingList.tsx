@@ -123,10 +123,10 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
             _id: searchResultsItem._id,
             name: searchResultsItem.name,
             category: searchResultsItem.category,
-            description: searchResultsItem.description,
+            // description: searchResultsItem.description,
             quantity: searchResultsItem.uom,
-            lastAddedDate: new Date(Date.now()).toISOString(),
-            isPastExpiry: false
+            // lastAddedDate: new Date(Date.now()).toISOString(),
+            // isPastExpiry: false
         }
         setSearchResultsItem({} as InventoryItem);
         const itemAlreadyExists = shoppingList.find(item => item._id === itemToAdd._id);
@@ -181,8 +181,8 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
                     return {
                         ...item,
                         quantity: item.quantity + (foundItem.uom ?? 0),
-                        lastAddedDate: new Date(Date.now()).toISOString(),
-                        isPastExpiry: false
+                        // lastAddedDate: new Date(Date.now()).toISOString(),
+                        // isPastExpiry: false
                     };
                 }
                 return item;
@@ -195,10 +195,10 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
                     _id: item._id,
                     name: item.name,
                     category: item.category,
-                    description: item.description,
+                    // description: item.description,
                     quantity: item.uom,
-                    lastAddedDate: new Date(Date.now()).toISOString(),
-                    isPastExpiry: false
+                    // lastAddedDate: new Date(Date.now()).toISOString(),
+                    // isPastExpiry: false
                 };
             });
             return [...updatedShoppingList, ...itemsToAdd];
@@ -273,6 +273,7 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
                     </Animated.View>
                 </Animated.ScrollView>
                 {/* Bottom Pane with Draggable Items */}
+                {/* Disabled for now until further notice */}
                 {/* {!showNameModal && !keyboardShown && <Animated.View style={[menu === '' ? styles.justified : styles.justifiedStart, { width: '100%', height: heightAnim, backgroundColor: theme.primary }]}>
                     <View style={[styles.flexRow, styles.justifiedCenter, { width: '100%', height: menu === '' ? 'auto' : '100%' }]}>
                         {

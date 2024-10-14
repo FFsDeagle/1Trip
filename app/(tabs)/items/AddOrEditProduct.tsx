@@ -1,7 +1,7 @@
 import { styles } from "@/components/util/Theme";
 import { TextInput, TouchableOpacity, View } from "react-native";
 import { addItem, InventoryItem, updateProduct } from "./ItemSlice";
-import { SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
@@ -13,10 +13,10 @@ import { ItemsStackParamList } from "@/constants/types";
 
 type InputValidation = {
     name: boolean;
-    description: boolean;
+    // description: boolean;
     uom: boolean;
     category: boolean;
-    defaultExpiry: boolean;
+    // defaultExpiry: boolean;
 }
 
 interface AddOrEditProductProps {
@@ -30,7 +30,6 @@ export default function AddOrEditProduct({ item, adding } : AddOrEditProductProp
     const descriptionRef = useRef<TextInput>(null);
     const uomRef = useRef<TextInput>(null);
     const categoryRef = useRef<TextInput>(null);
-    const defaultExpiryRef = useRef<TextInput>(null);
     const categories = useAppSelector(state => state.item.categories);
     const [error, setError] = useState<InputValidation>({} as InputValidation);
     const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
@@ -62,10 +61,10 @@ export default function AddOrEditProduct({ item, adding } : AddOrEditProductProp
     useEffect(() => {
         setError({
             name: product.name ? true : false,
-            description: product.description ? true : false,
+            // description: product.description ? true : false,
             uom: product.uom ? true : false,
             category: product.category ? true : false,
-            defaultExpiry: product.defaultExpiry ? true : false,
+            // defaultExpiry: product.defaultExpiry ? true : false,
         });
     },[formSubmitted])
 
@@ -92,7 +91,7 @@ export default function AddOrEditProduct({ item, adding } : AddOrEditProductProp
                 />
                 {formSubmitted ? (error.name ? <FontAwesome6 name="check" style={{right: 10}} size={24} color="green" /> : <FontAwesome6 name="circle-exclamation" size={24} color="red" />) : null}
             </View>
-            <TextPrimary style={[styles.flexRow, styles.justifiedStart, styles.getStartedText, { verticalAlign: 'middle', lineHeight: 12  }]}>Description</TextPrimary>
+            {/* <TextPrimary style={[styles.flexRow, styles.justifiedStart, styles.getStartedText, { verticalAlign: 'middle', lineHeight: 12  }]}>Description</TextPrimary>
             <View style={[styles.justifiedApart, styles.inputItem, styles.flexRow, ,{ width: '90%', backgroundColor: theme.primary }]}>
                 <TextInput 
                     returnKeyType="next" 
@@ -104,7 +103,7 @@ export default function AddOrEditProduct({ item, adding } : AddOrEditProductProp
                     placeholder="Product Description" 
                 />
                 {formSubmitted ? (error.description ? <FontAwesome6 name="check" style={{right: 10}} size={24} color="green" /> : <FontAwesome6 name="circle-exclamation" size={24} color="red" />) : null}
-            </View>
+            </View> */}
             <TextPrimary style={[styles.flexRow, styles.justifiedStart, styles.getStartedText, { verticalAlign: 'middle', lineHeight: 12  }]}>Unit of Measure</TextPrimary>
             <View style={[styles.justifiedApart, styles.flexRow, styles.inputItem, { width: '90%', backgroundColor: theme.primary }]}>
                 <TextInput
@@ -136,7 +135,7 @@ export default function AddOrEditProduct({ item, adding } : AddOrEditProductProp
                 </Picker>
                 {formSubmitted ? (error.category ? <FontAwesome6 name="check" style={{right: 10}} size={24} color="green" /> : <FontAwesome6 name="circle-exclamation" size={24} color="red" />) : null}
             </View>
-            <TextPrimary style={[styles.flexRow, styles.justifiedStart, styles.getStartedText, { verticalAlign: 'middle', lineHeight: 12  }]}>Default Expiry (days)</TextPrimary>
+        {/* <TextPrimary style={[styles.flexRow, styles.justifiedStart, styles.getStartedText, { verticalAlign: 'middle', lineHeight: 12  }]}>Default Expiry (days)</TextPrimary>
             <View style={[styles.justifiedApart, styles.inputItem, styles.flexRow, ,{ width: '90%', backgroundColor: theme.primary }]}>
                 <TextInput 
                     ref={defaultExpiryRef} 
@@ -152,7 +151,7 @@ export default function AddOrEditProduct({ item, adding } : AddOrEditProductProp
                     placeholder="Default expiry date" 
                 />
                 {formSubmitted ? (error.defaultExpiry ? <FontAwesome6 name="check" style={{right: 10}} size={24} color="green" /> : <FontAwesome6 name="circle-exclamation" size={24} color="red" />) : null}
-            </View>
+            </View> */}
             <View style={styles.justifiedCenter}>
                 <TouchableOpacity onPress={handleSubmit} style={[styles.flexRow, styles.justified, { marginTop: 10, marginBottom: 30, backgroundColor: theme.primary, width: 'auto', padding: 10, borderRadius: 10 }]}>
                     <TextSecondary>{adding ? "Add Product " : "Update Product "}</TextSecondary>
