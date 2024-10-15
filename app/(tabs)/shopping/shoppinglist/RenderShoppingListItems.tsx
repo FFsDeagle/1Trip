@@ -18,7 +18,7 @@ export default function RenderShoppingListItems({ setShoppingList, shoppingList 
         setShoppingList((prevList) =>
           prevList
             .map((item) => {
-              if (item.id === id) {
+              if (item._id === id) {
                 if (item.quantity > 1) {
                   return { ...item, quantity: item.quantity - 1 }; // Create a new object with updated quantity
                 } else {
@@ -34,7 +34,7 @@ export default function RenderShoppingListItems({ setShoppingList, shoppingList 
       const incrementItem = (id: string | number) => {
         setShoppingList((prevList) =>
           prevList.map((item) => {
-            if (item.id === id) {
+            if (item._id === id) {
               return { ...item, quantity: item.quantity + 1 }; // Create a new object with updated quantity
             }
             return item;
@@ -53,13 +53,13 @@ export default function RenderShoppingListItems({ setShoppingList, shoppingList 
                         </View>
                         <View style={[styles.flexRow, styles.justfiedEnd, { width: '35%' }]}>
                             <TextPrimary style={[styles.listText, { marginRight: 10 }]}>{item.quantity}</TextPrimary>
-                            <TouchableOpacity onPress={() => setShoppingList([...shoppingList.filter((x) => x.id !== item.id)])} style={[styles.justified, { marginRight: 10 }]}>
+                            <TouchableOpacity onPress={() => setShoppingList([...shoppingList.filter((x) => x._id !== item._id)])} style={[styles.justified, { marginRight: 10 }]}>
                                 <FontAwesome name="trash" size={20} color={theme.textPrimary} />
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => decrementItem(item.id)} style={[styles.justified, { marginRight: 10 }]}>
+                            <TouchableOpacity onPress={() => decrementItem(item._id)} style={[styles.justified, { marginRight: 10 }]}>
                                 <FontAwesome name="minus" size={20} color={theme.textPrimary} />
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => incrementItem(item.id)} style={[styles.justified, { marginRight: 20 }]}>
+                            <TouchableOpacity onPress={() => incrementItem(item._id)} style={[styles.justified, { marginRight: 20 }]}>
                                 <FontAwesome name="plus" size={20} color={theme.textPrimary} />
                             </TouchableOpacity>
                         </View>

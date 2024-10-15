@@ -80,12 +80,12 @@ export default function ItemInfo() {
               <TextPrimary style={styles.title}>{item?.name}</TextPrimary>
             </View>
           </View>
-          <View style={[styles.justified, { width: '100%' }]}>
+          {/* <View style={[styles.justified, { width: '100%' }]}>
             <TextPrimary style={[styles.flexRow, styles.justifiedStart, styles.getStartedText, { verticalAlign: 'middle', lineHeight: 12 }]}>Description</TextPrimary>
             <View style={[styles.justifiedApart, styles.inputItem, styles.flexRow, ,{ width: '90%', backgroundColor: theme.primary }]}>
               <TextPrimary style={styles.title}>{item?.description}</TextPrimary>
             </View>
-          </View>
+          </View> */}
           <View style={[styles.justified, { width: '100%' }]}>
             <TextPrimary style={[styles.flexRow, styles.justifiedStart, styles.getStartedText, { verticalAlign: 'middle', lineHeight: 12 }]}>Category</TextPrimary>
             <View style={[styles.justifiedApart, styles.inputItem, styles.flexRow, ,{ width: '90%', backgroundColor: theme.primary }]}>
@@ -98,12 +98,12 @@ export default function ItemInfo() {
               <TextPrimary style={styles.title}>{item?.uom}</TextPrimary>
             </View>
           </View>
-          <View style={[styles.justified, { width: '100%' }]}>
+          {/* <View style={[styles.justified, { width: '100%' }]}>
             <TextPrimary style={[styles.flexRow, styles.justifiedStart, styles.getStartedText, { verticalAlign: 'middle', lineHeight: 12 }]}>Default Expiry (days)</TextPrimary>
             <View style={[styles.justifiedApart, styles.inputItem, styles.flexRow, ,{ width: '90%', backgroundColor: theme.primary }]}>
               <TextPrimary style={styles.title}>{item?.defaultExpiry}</TextPrimary>
             </View>
-          </View>
+          </View> */}
         </View> 
         :
         <AddOrEditProduct item={item} adding={false} />

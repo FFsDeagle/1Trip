@@ -32,7 +32,6 @@ export default function ProductSearch({ route }: RouteParams) {
     useFocusEffect(
         useCallback(() => {
             // Refetch data from store on focus
-            console.log('ProductSearch focused');
             setSearchResults([...items]);
         },[items])
     )

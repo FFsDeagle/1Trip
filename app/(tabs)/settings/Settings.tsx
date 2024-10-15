@@ -51,7 +51,7 @@ function Settings(){
             case 'Log out':
                 // Clear token from local storage and logout
                 if (storageKey) {
-                    await AsyncStorage.setItem(storageKey, token);
+                    await AsyncStorage.setItem(storageKey, '');
                 }
                 await dispatch(logoutAsync(id));
                 navigationLogin.navigate('Login');
@@ -65,9 +65,9 @@ function Settings(){
         <SecondaryView style={styles.container}>
             <FlatList
                 data={[
-                    { key: 'About' },
-                    { key: 'Themes', },
-                    { key: 'Notifications' },
+                    // { key: 'About' },
+                    // { key: 'Themes', },
+                    // { key: 'Notifications' },
                     { key: 'Log out' },
                 ]}
                 renderItem={({ item }) => <TouchableOpacity onPress={() => handleSelection(item.key)} style={styles.listItem}><TextSecondary style={styles.title}>{item.key}</TextSecondary></TouchableOpacity>}

@@ -38,19 +38,6 @@ export interface ThemeStyle {
     tabIconSelected: string,
 }
 
-export const initialState: ThemeProps = {
-    status: 'idle',
-    error: undefined,
-    colors: {} as Colors,
-    mode: '',
-}
-
-// Theme response
-export interface ThemeResponse {
-    theme: ThemeProps
-}
-
-// Default theme is currently hardcoded
 export const defaultTheme: ThemeProps = {
     status: 'idle',
     error: undefined,
@@ -74,6 +61,18 @@ export const defaultTheme: ThemeProps = {
     } as Colors,
     mode: 'default',
 };
+
+export const initialState: ThemeProps = {
+    status: 'idle',
+    error: undefined,
+    colors: defaultTheme.colors as Colors,
+    mode: defaultTheme.mode,
+}
+
+// Theme response
+export interface ThemeResponse {
+    theme: ThemeProps
+}
 
 // This will fail for now, default value will be set to defaultTheme
 export const getTheme = createAsyncThunk(
