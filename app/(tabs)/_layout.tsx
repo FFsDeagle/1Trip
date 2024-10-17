@@ -80,7 +80,7 @@ export default function TabLayout() {
             component={Shopping} 
             options={{
               headerShown: false,
-              tabBarIcon: ({ color }) => <TabBarIcon name="shopping-cart" color={theme.colors.iconColor2 ? theme.colors.iconColor2 : color } />,
+              tabBarIcon: ({ color }) => <TabBarIcon name="shopping-cart" color={theme.colors.iconColor ? theme.colors.iconColor : color } />,
               headerStyle: {
                 // backgroundColor: Colors[colorScheme ?? 'light'].background,
                 backgroundColor: theme.colors.background,
@@ -90,7 +90,7 @@ export default function TabLayout() {
               },
               headerTitleStyle: {
                 // color: Colors[colorScheme ?? 'light'].text,
-                color: theme.colors.primary,
+                color: theme.colors.iconColor,
               },
             }}
           />

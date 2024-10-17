@@ -23,7 +23,7 @@ const SettingsIcon = () => {
         <AntDesign 
             name="setting" 
             size={24} 
-            color={theme.colors.iconColor2}
+            color={theme.colors.iconColor}
         />
     </TouchableOpacity>
   )

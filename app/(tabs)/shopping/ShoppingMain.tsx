@@ -1,5 +1,5 @@
 import { styles } from "@/components/util/Theme";
-import { LinearGradient } from "@/components/Themed";
+import { LinearGradient, PrimaryView } from "@/components/Themed";
 import { ScrollView } from 'react-native';
 import { GetLists } from "./ShoppingSlice";
 import { useEffect } from "react";
@@ -28,11 +28,11 @@ export default function ShoppingMain() {
   }
 
   return (
-    <LinearGradient colors={[]} style={[styles.container]}>
+    <PrimaryView style={[styles.container]}>
       <ScrollView contentContainerStyle={{backgroundColor: 'transparent'}}>
           <ShoppingListWidget />
       </ScrollView>
       <AddShoppingListButton />
-    </LinearGradient>
+    </PrimaryView>
   )
 };

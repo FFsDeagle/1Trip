@@ -217,7 +217,6 @@ export default function Login ({ navigation }: { navigation: any }){
             </TextPrimary>
             <ThirdView style={{
                 width: '90%',
-                backgroundColor: 'rgba(0,0,0,0.1)',
                 borderRadius: 15,
             }}>
                 <TextInput
@@ -226,6 +225,8 @@ export default function Login ({ navigation }: { navigation: any }){
                         color: 'white',
                         padding: 10,
                         width: '100%',
+                        backgroundColor: theme.background,
+                        borderRadius: 15,
                     }}
                     ref={textRef}
                     value={login.email}
@@ -237,11 +238,11 @@ export default function Login ({ navigation }: { navigation: any }){
                     textContentType="username"
                     onChange={e => setLogin({...login, email: e.nativeEvent.text })}
                     placeholder="Username"
+                    placeholderTextColor={theme.textSecondary}
                 />
             </ThirdView>
             <ThirdView style={{
                 width: '90%',
-                backgroundColor: 'rgba(0,0,0,0.1)',
                 borderRadius: 15,
                 marginTop: 15,
                 marginBottom: 25,
@@ -252,8 +253,9 @@ export default function Login ({ navigation }: { navigation: any }){
                     style={{
                         color: 'white',
                         padding: 10,
-                        borderBottomWidth: StyleSheet.hairlineWidth,
                         width: '100%',
+                        backgroundColor: theme.background,
+                        borderRadius: 15,
                     }}
                     onSubmitEditing={handleSigninWithCredentials}
                     textContentType="password"
@@ -263,13 +265,13 @@ export default function Login ({ navigation }: { navigation: any }){
                     secureTextEntry={true}
                     onChange={e => setLogin({...login, password: e.nativeEvent.text})}
                     placeholder="Password"
+                    placeholderTextColor={theme.textSecondary}
                 />
             </ThirdView>
             {!isKeyboardVisible && 
-                <View style={[styles.justified, { width: '100%' }]}>
+                <View style={[styles.justifiedCenter, { width: '100%' }]}>
                     <PrimaryView
                             style={[{
-                                backgroundColor: 'rgba(0,0,0,0.5)',
                                 padding: 5,
                                 borderRadius: 20,
                             }]}
@@ -278,7 +280,7 @@ export default function Login ({ navigation }: { navigation: any }){
                             onPress={handleSigninWithCredentials}
                             style={styles.justified}
                         >
-                            <TextPrimary style={[styles.textStyle]}>Sign In</TextPrimary>
+                            <TextPrimary style={[styles.textStyle, { textAlign: 'center' }]}>Sign In</TextPrimary>
                         </TouchableOpacity>
                     </PrimaryView>
                     <TouchableOpacity
