@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/app/store/hooks";
-import { ScrollView, SecondaryView, TextPrimary, TextSecondary } from "@/components/Themed";
+import { PrimaryView, ScrollView, SecondaryView, TextPrimary, TextSecondary } from "@/components/Themed";
 import { Text, TouchableOpacity } from 'react-native';
 import { styles } from "@/components/util/Theme";
 import { ShoppingStackParamList, ViewShoppingListTypeProps } from "@/constants/types";
@@ -67,20 +67,20 @@ export default function ShoppingListWidget() {
     }
 
     return (
-        <View style={[styles.justifiedCenter, {paddingBottom: 10}]}>
+        <View style={[styles.justifiedCenter, { paddingBottom: 10, backgroundColor: 'transparent' }]}>
             {displayMessage && <View style={[styles.justifiedCenter, { marginTop: 25 }]}><TextSecondary>Create a new shopping list to get started</TextSecondary></View>}
             {cards && cards.map((card, key) => {
                 if (!card.items || card.items.length === 0) return;
                 return (
-                    <View
+                    <SecondaryView
                         key={key}
                         style={[
                             styles.cardContainer,
                             styles.flexColumn,
-                            {backgroundColor: 'transparent', overflow: 'hidden'}
+                            { overflow: 'hidden', padding: 5 }
                         ]}
                     >
-                        <View style={[styles.justifiedApart, styles.flexRow, { padding: 5, backgroundColor: 'rgba(0,0,0,0.05)' }]}>
+                        <View style={[styles.justifiedApart, styles.flexRow, { padding: 5, marginTop: 5 }]}>
                             <View
                                 style={[styles.flexRow, { }]}>
                                 {card.icon}
@@ -95,7 +95,7 @@ export default function ShoppingListWidget() {
                                 <FontAwesome5 color={theme.iconColor} size={20} name="chevron-right" />
                             </TouchableOpacity>
                         </View>
-                        <ScrollView style={{backgroundColor: 'rgba(0,0,0,0.06)'}} horizontal={true}>
+                        <ScrollView style={{}} horizontal={true}>
                             {
                                 shoppingLists && shoppingLists.lists[card.listType as keyof ShoppingListTypes]
                                     .slice(-5)
@@ -112,7 +112,7 @@ export default function ShoppingListWidget() {
                                                         margin: 5,
                                                         width: 90,
                                                         height: '90%',
-                                                        borderRadius: 5,
+                                                        borderRadius: 20,
                                                         backgroundColor: 'rgba(0,0,0,0.05)',
                                                     }
                                                 ]}
@@ -125,7 +125,7 @@ export default function ShoppingListWidget() {
                                     })
                             }
                         </ScrollView>
-                    </View>
+                    </SecondaryView>
                 )
             })
         }

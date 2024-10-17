@@ -1,5 +1,5 @@
 import { Animated, Dimensions, View } from "react-native";
-import { SecondaryView, TextSecondary } from "../Themed";
+import { TextSecondary, ThirdView } from "../Themed";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useAppSelector } from "@/app/store/hooks";
 import { useEffect, useRef } from "react";
@@ -48,7 +48,7 @@ export default function LoadingIndicator({ displayText }: LoadingIndicatorProps 
     },[rotate]);
 
     return (
-        <SecondaryView style={[styles.container]}>
+        <ThirdView style={[styles.container]}>
             <Animated.View
                 style={[styles.alignContentStart, {
                     position: 'absolute',
@@ -90,6 +90,6 @@ export default function LoadingIndicator({ displayText }: LoadingIndicatorProps 
                     {displayText}
                 </TextSecondary>
             </View>
-        </SecondaryView>
+        </ThirdView>
     );
 }

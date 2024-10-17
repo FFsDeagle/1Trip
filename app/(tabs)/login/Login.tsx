@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { TouchableOpacity, Keyboard, View, GestureResponderEvent, TextInput, StyleSheet } from 'react-native';
 import { styles } from "@/components/util/Theme";
-import { LinearGradientSecondary, SecondaryView, TextPrimary, TextSecondary } from "@/components/Themed";
+import { LinearGradient, LinearGradientSecondary, PrimaryView, SecondaryView, TextPrimary, TextSecondary, ThirdView } from "@/components/Themed";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -201,7 +201,7 @@ export default function Login ({ navigation }: { navigation: any }){
     }
 
     return (
-        <SecondaryView 
+        <ThirdView 
                 style={[styles.container, {
                     display: 'flex',
                     justifyContent: 'center',
@@ -213,9 +213,9 @@ export default function Login ({ navigation }: { navigation: any }){
                 marginBottom: 30,
                 fontStyle: 'italic',
             }}>
-                <TextSecondary style={{ fontStyle: 'normal' }}>1</TextSecondary>Trip <FontAwesome5 name="location-arrow" size={38} color={theme.textPrimary} />
+                <TextSecondary style={{ fontStyle: 'normal' }}>Shop</TextSecondary>Wise <FontAwesome5 name="shopping-cart" size={38} color={theme.iconColor} />
             </TextPrimary>
-            <SecondaryView style={{
+            <ThirdView style={{
                 width: '90%',
                 backgroundColor: 'rgba(0,0,0,0.1)',
                 borderRadius: 15,
@@ -238,8 +238,8 @@ export default function Login ({ navigation }: { navigation: any }){
                     onChange={e => setLogin({...login, email: e.nativeEvent.text })}
                     placeholder="Username"
                 />
-            </SecondaryView>
-            <SecondaryView style={{
+            </ThirdView>
+            <ThirdView style={{
                 width: '90%',
                 backgroundColor: 'rgba(0,0,0,0.1)',
                 borderRadius: 15,
@@ -252,7 +252,6 @@ export default function Login ({ navigation }: { navigation: any }){
                     style={{
                         color: 'white',
                         padding: 10,
-                        borderBottomColor: 'rgba(255,255,255,0.5)',
                         borderBottomWidth: StyleSheet.hairlineWidth,
                         width: '100%',
                     }}
@@ -265,15 +264,14 @@ export default function Login ({ navigation }: { navigation: any }){
                     onChange={e => setLogin({...login, password: e.nativeEvent.text})}
                     placeholder="Password"
                 />
-            </SecondaryView>
+            </ThirdView>
             {!isKeyboardVisible && 
                 <View style={[styles.justified, { width: '100%' }]}>
-                    <LinearGradientSecondary
-                            colors={[]}
+                    <PrimaryView
                             style={[{
                                 backgroundColor: 'rgba(0,0,0,0.5)',
                                 padding: 5,
-                                borderRadius: 50,
+                                borderRadius: 20,
                             }]}
                         >
                         <TouchableOpacity
@@ -282,7 +280,7 @@ export default function Login ({ navigation }: { navigation: any }){
                         >
                             <TextPrimary style={[styles.textStyle]}>Sign In</TextPrimary>
                         </TouchableOpacity>
-                    </LinearGradientSecondary>
+                    </PrimaryView>
                     <TouchableOpacity
                         onPress={() => navigation.navigate('ForgotPassword')}
                         style={styles.justified}
@@ -318,6 +316,6 @@ export default function Login ({ navigation }: { navigation: any }){
                     </View>
                 </View>
             }
-        </SecondaryView>
+        </ThirdView>
     );
 };

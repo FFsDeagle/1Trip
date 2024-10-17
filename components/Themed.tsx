@@ -47,7 +47,14 @@ export function SecondaryView(props: ViewProps) {
   const { style, ...otherProps } = props;
   const backgroundColor = useThemeColor('background2');
 
-  return <DefaultView style={[{ backgroundColor }, style] as StyleProp<ViewStyle>} {...otherProps} />;
+  return <DefaultView style={[style, { backgroundColor, borderRadius: 30 }] as StyleProp<ViewStyle>} {...otherProps} />;
+}
+
+export function ThirdView(props: ViewProps) {
+  const { style, ...otherProps } = props;
+  const backgroundColor = useThemeColor('background2');
+
+  return <DefaultView style={[style, { backgroundColor }] as StyleProp<ViewStyle>} {...otherProps} />;
 }
 
 export function TertiaryView(props: ViewProps) {
