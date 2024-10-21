@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
-import { LinearGradientSecondary, ScrollView, SecondaryView, TextPrimary, TextSecondary } from "@/components/Themed";
+import { LinearGradient, LinearGradientSecondary, ScrollView, SecondaryView, TextPrimary, TextSecondary } from "@/components/Themed";
 import { TouchableOpacity } from 'react-native';
 import { DeleteIncompleteList, DeleteList, ShoppingList, ShoppingListTypes } from './ShoppingSlice';
 import { Dimensions, FlatList, View } from "react-native";
@@ -43,7 +43,7 @@ export default function RenderShoppingLists({ title, listType }: RenderShoppingL
     return (
         <View>
             {list && 
-                    <LinearGradientSecondary
+                    <LinearGradient
                         colors={[]}
                         style={[styles.container]}
                     >
@@ -116,7 +116,7 @@ export default function RenderShoppingLists({ title, listType }: RenderShoppingL
                                 </View>
                             )}
                         />
-                    </LinearGradientSecondary>
+                    </LinearGradient>
             }
         </View>
     )

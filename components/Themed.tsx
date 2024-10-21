@@ -103,3 +103,10 @@ export function ScrollView(props: ScrollViewProps){
 
   return <DefaultScrollView style={[{ backgroundColor }, style] as StyleProp<ViewStyle>} {...otherProps} />;
 }
+
+export function SecondaryScrollView(props: ScrollViewProps){
+  const { style, ...otherProps } = props;
+  const backgroundColor = useThemeColor('background');
+
+  return <DefaultScrollView style={[{ backgroundColor }, style] as StyleProp<ViewStyle>} {...otherProps} />;
+}

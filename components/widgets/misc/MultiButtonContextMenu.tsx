@@ -95,7 +95,7 @@ export default function MultiButtonContextMenu(props: MultiButtonContextMenuProp
                     }}
                     onPress={() => setShowItems(true)}
                 >
-                    <FontAwesome5 name="ellipsis-v" size={24} color="black" />
+                    <FontAwesome5 name="ellipsis-v" size={24} color={theme.colors.iconColor} />
                 </TouchableOpacity>
             )}
             {showItems && (

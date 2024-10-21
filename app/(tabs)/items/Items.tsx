@@ -29,7 +29,7 @@ export default function Items() {
         options={{
           headerShown: true,
           headerRight: () => <TouchableOpacity onPress={() => navigation.navigate('ProductSearch', { nav: 'ItemInfo', placeholder: "Search for your Products.."})}>
-              <FontAwesome6 name="magnifying-glass" size={24} color="white" />
+              <FontAwesome6 name="magnifying-glass" size={24} color={theme.colors.iconColor} />
             </TouchableOpacity>,
           headerStyle: {
             // backgroundColor: Colors[colorScheme ?? 'light'].background,
@@ -38,7 +38,7 @@ export default function Items() {
           headerTitle: 'Products',
           headerTitleStyle: {
             // color: Colors[colorScheme ?? 'light'].text,
-            color: 'white',
+            color: theme.colors.textPrimary,
           },
         }}
       />

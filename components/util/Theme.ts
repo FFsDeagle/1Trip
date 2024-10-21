@@ -197,7 +197,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     listItem: {
-      borderColor: 'rgba(0,0,0,0.2)',
+      borderColor: 'rgba(0,0,0,0.5)',
       borderBottomWidth: 1,
       padding: 10,
       fontSize: 16,
@@ -217,7 +217,6 @@ export const styles = StyleSheet.create({
     },
     subtitle: {
       fontSize: 12,
-      color: 'rgba(0,0,0,0.4)',
     },
   });
   

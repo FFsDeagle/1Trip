@@ -86,7 +86,7 @@ export default function AddOrEditProduct({ item, adding } : AddOrEditProductProp
                     onSubmitEditing={() => descriptionRef?.current?.focus()} 
                     value={product.name} 
                     onChange={e => setProduct({...product, name: e.nativeEvent.text})} 
-                    style={[{color: theme.textPrimary }]} 
+                    style={[{color: theme.background }]} 
                     placeholder="Product Name" 
                 />
                 {formSubmitted ? (error.name ? <FontAwesome6 name="check" style={{right: 10}} size={24} color="green" /> : <FontAwesome6 name="circle-exclamation" size={24} color="red" />) : null}
@@ -127,7 +127,7 @@ export default function AddOrEditProduct({ item, adding } : AddOrEditProductProp
                 <Picker
                     selectedValue={product.category}
                     onValueChange={(e) => setProduct({ ...product, category: e })}
-                    style={[{ backgroundColor: theme.primary, color: theme.textPrimary, width: '70%' }]}
+                    style={[{ backgroundColor: theme.primary, color: theme.background, width: '70%' }]}
                 >
                     {categories.map((category) => (
                         <Picker.Item key={category._id} label={category.name} value={category.name} />
@@ -153,7 +153,7 @@ export default function AddOrEditProduct({ item, adding } : AddOrEditProductProp
                 {formSubmitted ? (error.defaultExpiry ? <FontAwesome6 name="check" style={{right: 10}} size={24} color="green" /> : <FontAwesome6 name="circle-exclamation" size={24} color="red" />) : null}
             </View> */}
             <View style={styles.justifiedCenter}>
-                <TouchableOpacity onPress={handleSubmit} style={[styles.flexRow, styles.justified, { marginTop: 10, marginBottom: 30, backgroundColor: theme.primary, width: 'auto', padding: 10, borderRadius: 10 }]}>
+                <TouchableOpacity onPress={handleSubmit} style={[styles.flexRow, styles.justified, { marginTop: 10, marginBottom: 30, backgroundColor: theme.background2, width: 'auto', padding: 10, borderRadius: 10 }]}>
                     <TextSecondary>{adding ? "Add Product " : "Update Product "}</TextSecondary>
                     <FontAwesome6 name={adding ? "plus" : "edit"} size={24} color={theme.iconColor} />
                 </TouchableOpacity>

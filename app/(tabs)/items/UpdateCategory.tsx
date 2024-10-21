@@ -1,4 +1,4 @@
-import { LinearGradient, TextPrimary, TextSecondary } from "@/components/Themed";
+import { LinearGradient, TextPrimary, TextSecondary, TouchableOpacity } from "@/components/Themed";
 import { Categories, deleteCategories, updateCategories } from "./ItemSlice";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { useEffect, useState } from "react";
@@ -6,7 +6,7 @@ import { useNavigation } from "expo-router";
 import { NavigationProp } from "@react-navigation/native";
 import { ItemsStackParamList } from "@/constants/types";
 import { styles } from "@/components/util/Theme";
-import { TextInput, TouchableOpacity, View } from "react-native";
+import { TextInput, View } from "react-native";
 import BackButton from "@/components/util/BackButton";
 
 
@@ -44,15 +44,15 @@ export default function UpdateCategory({ route }: { route: any }) {
                         placeholder="Category Name"
                         value={categoryData.name}
                         onChangeText={text => setCategoryData({ ...categoryData, name: text })}
-                        style={[{ width: '100%', color: theme.textPrimary }]}
+                        style={[{ width: '100%', color: theme.background }]}
                     />
                 </View>
             </View>
             <View style={[styles.flexRow, styles.justifiedCenter]}>
-                <TouchableOpacity onPress={handleUpdate} style={[styles.button, { backgroundColor: theme.primary, width: '45%' }]}>
+                <TouchableOpacity onPress={handleUpdate} style={[styles.button, { width: '45%' }]}>
                     <TextPrimary style={styles.buttonText}>Update</TextPrimary>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={handleDelete} style={[styles.button, { backgroundColor: theme.primary, width: '45%'  }]}>
+                <TouchableOpacity onPress={handleDelete} style={[styles.button, { width: '45%'  }]}>
                     <TextPrimary style={styles.buttonText}>Delete</TextPrimary>
                 </TouchableOpacity>
             </View>

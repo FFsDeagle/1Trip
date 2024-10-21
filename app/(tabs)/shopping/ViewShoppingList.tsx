@@ -1,5 +1,5 @@
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
-import { SecondaryView, TextPrimary, TextSecondary } from "@/components/Themed";
+import { SecondaryView, TextPrimary, TextSecondary, ThirdView } from "@/components/Themed";
 import { ScrollView, TouchableOpacity } from 'react-native';
 import { ShoppingList } from "./ShoppingSlice";
 import { FlatList, View } from "react-native";
@@ -80,7 +80,7 @@ export default function ViewShoppingList({ route }: ViewShoppingListProps) {
   }, []);
 
   return (
-    <SecondaryView style={[styles.container, styles.flexColumn, styles.justifiedStart]}>
+    <ThirdView style={[styles.container, styles.flexColumn, styles.justifiedStart]}>
       <ScrollView>
         {shoppingList.map((item) => {
           return (
@@ -113,6 +113,6 @@ export default function ViewShoppingList({ route }: ViewShoppingListProps) {
           </TouchableOpacity>          
         ]} 
       />
-    </SecondaryView>
+    </ThirdView>
   );
 }

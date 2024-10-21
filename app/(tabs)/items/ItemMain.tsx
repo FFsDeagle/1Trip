@@ -1,5 +1,5 @@
 import { styles } from "@/components/util/Theme";
-import { ScrollView, SecondaryView } from "@/components/Themed";
+import { PrimaryView, ScrollView, SecondaryScrollView, SecondaryView } from "@/components/Themed";
 import ItemsCategoryWidget from "@/components/widgets/items/ItemsCategoryWidget";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import PlusFeaturesWidget from "@/components/widgets/items/PlusFeaturesWidget";
@@ -26,12 +26,12 @@ export default function ItemMain() {
   }
 
   return (
-    <SecondaryView style={styles.container}>
-      <ScrollView>
+    <PrimaryView style={styles.container}>
+      <SecondaryScrollView>
         <ItemsCategoryWidget />
         <PlusFeaturesWidget />
-      </ScrollView>
+      </SecondaryScrollView>
       <AddNewItemButton />
-    </SecondaryView>
+    </PrimaryView>
   )
 };

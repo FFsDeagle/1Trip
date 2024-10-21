@@ -18,7 +18,7 @@ export default function AddNewShoppingList() {
         <FontAwesome5 
             name="plus" 
             size={24} 
-            color={theme.colors.iconColor2}
+            color={theme.colors.iconColor}
         />
     </TouchableOpacity>
   )

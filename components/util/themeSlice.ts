@@ -47,7 +47,7 @@ export const defaultTheme: ThemeProps = {
       background: '#1F1F1F',
       background2: '#333645',
       background3: '#B2B2B2',
-      linearBackground: ['#232531', '#1D1725'],
+      linearBackground: ['#1F1F1F', '#333645'],
       linearBackground2: ['#D7D7D1', '#9EA7AD'],
       tabIconDefault: '#ccc',
       textPrimary: '#FEFEFE',

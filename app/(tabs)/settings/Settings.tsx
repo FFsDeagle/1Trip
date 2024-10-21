@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
-import { SecondaryView, TextSecondary, TouchableOpacity } from "@/components/Themed";
+import { SecondaryView, TextSecondary, ThirdView, TouchableOpacity } from "@/components/Themed";
 import { styles } from "@/components/util/Theme";
 import { LoginStackParamList, ShoppingStackParamList } from "@/constants/types";
 import { AntDesign } from "@expo/vector-icons";
@@ -62,7 +62,7 @@ function Settings(){
     }
 
     return (
-        <SecondaryView style={styles.container}>
+        <ThirdView style={styles.container}>
             <FlatList
                 data={[
                     // { key: 'About' },
@@ -72,7 +72,7 @@ function Settings(){
                 ]}
                 renderItem={({ item }) => <TouchableOpacity onPress={() => handleSelection(item.key)} style={styles.listItem}><TextSecondary style={styles.title}>{item.key}</TextSecondary></TouchableOpacity>}
             />
-        </SecondaryView>
+        </ThirdView>
     )
 }
 

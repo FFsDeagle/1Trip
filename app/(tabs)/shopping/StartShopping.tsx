@@ -130,7 +130,7 @@ export default function StartShopping({ route }: ViewShoppingListProps){
                 <View 
                     style={[
                         styles.flexRow, 
-                        { backgroundColor: item.isChecked ? 'lightgreen' : theme.background2, 
+                        { backgroundColor: item.isChecked ? 'darkgreen' : theme.background2, 
                             marginLeft: 5, borderRadius: 15, width: 'auto', padding: 5, elevation: 1 
                         }]}
                 >

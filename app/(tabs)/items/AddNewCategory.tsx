@@ -1,5 +1,5 @@
-import { LinearGradient, TextPrimary, TextSecondary } from "@/components/Themed";
-import { TextInput, View, TouchableOpacity} from "react-native";
+import { LinearGradient, TouchableOpacity, TextSecondary } from "@/components/Themed";
+import { TextInput, View } from "react-native";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { styles } from "@/components/util/Theme";
 import BackButton from "@/components/util/BackButton";
@@ -53,12 +53,12 @@ export default function AddNewCategory(){
                     ref={focusRef}
                     value={category} 
                     onChange={(e) => setCategory(e.nativeEvent.text)}
-                    style={[{ color: theme.textPrimary }]} 
+                    style={[{ color: theme.background }]} 
                     placeholder="Category Name"
                 />
             </View>
             <View style={styles.justifiedCenter}>
-                <TouchableOpacity onPress={handleSubmit} style={[styles.flexRow, styles.justified, { marginTop: 10, marginBottom: 30, backgroundColor: theme.primary, width: 'auto', padding: 10, borderRadius: 10 }]}>
+                <TouchableOpacity onPress={handleSubmit} style={[styles.flexRow, styles.justified, { marginTop: 10, marginBottom: 30, width: 'auto', padding: 10, borderRadius: 10 }]}>
                     <TextSecondary>Add Category </TextSecondary>
                     <FontAwesome6 name="plus" size={24} color={theme.iconColor} />
                 </TouchableOpacity>

@@ -1,9 +1,9 @@
-import { TouchableOpacity, View } from 'react-native';
+import { View, TouchableOpacity as TouchableOpacityOrig } from 'react-native';
 import { AntDesign } from "@expo/vector-icons";
 import { styles } from "@/components/util/Theme";
 import { ItemsStackParamList } from "@/constants/types";
 import { useNavigation } from "expo-router";
-import { LinearGradient, TextSecondary } from "@/components/Themed";
+import { TextPrimary, TextSecondary, TouchableOpacity } from "@/components/Themed";
 import { useAppSelector } from "@/app/store/hooks";
 import { NavigationProp } from "@react-navigation/native";
 
@@ -12,18 +12,17 @@ export default function ItemsCategoryWidget() {
     const { categories, items } = useAppSelector(state => state.item);
     const navigation = useNavigation<NavigationProp<ItemsStackParamList>>();
     return (
-        <LinearGradient 
-          style={styles.gridContainer} 
-          colors={[]}        
+        <View
+          style={styles.gridContainer}
         >
           <View style={[styles.flexRow, styles.justifiedStart]}>
             <View style={[styles.flexRow, styles.justifiedApart, styles.justifiedApart]}>
                 <TextSecondary style={[styles.header2, {color: theme.textPrimary}]}>
                     Categories
                 </TextSecondary>
-              <TouchableOpacity onPress={() => navigation.navigate("ViewCategories")} style={[styles.justified ,{ right: 15 }]}>
-                    <AntDesign name="setting" size={24} color={theme.textPrimary} />
-                </TouchableOpacity>
+              <TouchableOpacityOrig onPress={() => navigation.navigate("ViewCategories")} style={[styles.justified ,{ right: 15 }]}>
+                    <AntDesign name="setting" size={24} color={theme.iconColor} />
+                </TouchableOpacityOrig>
             </View>
           </View>
           {/* Display a list of Categories? */}
@@ -35,9 +34,9 @@ export default function ItemsCategoryWidget() {
               styles.flexRow, 
               styles.justifiedApart
             ]}>
-              <TextSecondary style={styles.subtitle}>
+              <TextPrimary style={styles.subtitle}>
                 {category.name}
-              </TextSecondary>
+              </TextPrimary>
             </TouchableOpacity>
           ))}
           <View style={[{ marginTop: 15 }, styles.flexRow, styles.justifiedStart]}>
@@ -58,6 +57,6 @@ export default function ItemsCategoryWidget() {
               </TextSecondary>
             </TouchableOpacity>
           ))}
-        </LinearGradient>
+        </View>
     )
 }

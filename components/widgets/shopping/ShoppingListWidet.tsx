@@ -117,9 +117,9 @@ export default function ShoppingListWidget() {
                                                     }
                                                 ]}
                                             >
-                                                <Text>
+                                                <TextSecondary>
                                                     {list.name}
-                                                </Text>
+                                                </TextSecondary>
                                             </TouchableOpacity>
                                         )
                                     })

@@ -1,4 +1,4 @@
-import { LinearGradientSecondary, ScrollView, SecondaryView, TextPrimary } from "@/components/Themed";
+import { LinearGradient, LinearGradientSecondary, ScrollView, SecondaryScrollView, SecondaryView, TextPrimary } from "@/components/Themed";
 import { ShoppingList } from "./ShoppingSlice";
 import { RouteProp } from "@react-navigation/native";
 import { View } from "react-native";
@@ -16,8 +16,8 @@ type ViewShoppingListProps = {
 export default function ViewHistoryList({ route }: ViewShoppingListProps) {
     const { list } = route.params;
     return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <LinearGradientSecondary style={[styles.container, styles.justifiedStart, { alignItems: 'center', paddingTop: 10 }]} colors={[]}>
+        <SecondaryScrollView contentContainerStyle={styles.container}>
+            <LinearGradient style={[styles.container, styles.justifiedStart, { alignItems: 'center', paddingTop: 10 }]} colors={[]}>
                     {list.items.map(item => {
                         return (
                             <SecondaryView key={item._id} style={[styles.flexRow, styles.justifiedApart, styles.listItem, 
@@ -38,7 +38,7 @@ export default function ViewHistoryList({ route }: ViewShoppingListProps) {
                             </SecondaryView>
                         )
                     })}
-            </LinearGradientSecondary>
-        </ScrollView>
+            </LinearGradient>
+        </SecondaryScrollView>
     )
 }

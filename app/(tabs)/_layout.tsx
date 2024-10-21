@@ -107,7 +107,7 @@ export default function TabLayout() {
             component={Items} 
             options={{
               headerShown: false,
-              tabBarIcon: ({ color }) => <TabBarIcon name="square" color={theme.colors.iconColor2 ? theme.colors.iconColor2 : color } />,
+              tabBarIcon: ({ color }) => <TabBarIcon name="square" color={theme.colors.iconColor ? theme.colors.iconColor : color } />,
             }}
           />
       </Tab.Navigator>
