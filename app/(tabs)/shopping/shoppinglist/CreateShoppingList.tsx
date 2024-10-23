@@ -263,7 +263,7 @@ export default function CreateShoppingList({ route }: ShoppingListNavigationProp
                         {
                             shoppingList && shoppingList.length === 0 ?
                             <TextSecondary style={[styles.title, { textAlign: 'center', height: initialHeight, marginTop: 10 }]}>
-                                Drag items to create your shopping list
+                                Search for items in your list of products 
                             </TextSecondary>
                             :
                             <View style={styles.container}>

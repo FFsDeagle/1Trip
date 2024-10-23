@@ -45,8 +45,8 @@ export default function RenderShoppingListItems({ setShoppingList, shoppingList 
     return (
         shoppingList.map((item, key) => {
             return (
-                <View key={key} style={[styles.flexRow, { padding: 5, backgroundColor: 'transparent' }]}>
-                    <View style={[styles.flexRow, { backgroundColor: theme.background3, marginLeft: 5, borderRadius: 15, width: 'auto', padding: 5, elevation: 1 }]}>
+                <View key={key} style={[styles.flexRow, { padding: 5 }]}>
+                    <PrimaryView style={[styles.flexRow, { marginLeft: 5, borderRadius: 15, width: 'auto', padding: 5, elevation: 1 }]}>
                         <View style={[styles.flexRow, styles.justifiedApart, { width: '65%'}]}>
                             <TextPrimary style={[styles.listText, { fontSize: 14, fontWeight: 'bold', letterSpacing: 1 }]}>{item.name}</TextPrimary>
                             <TextPrimary style={[styles.listText, { fontSize: 12 }]}>{item.category}</TextPrimary>
@@ -63,7 +63,7 @@ export default function RenderShoppingListItems({ setShoppingList, shoppingList 
                                 <FontAwesome name="plus" size={20} color={theme.textPrimary} />
                             </TouchableOpacity>
                         </View>
-                    </View>
+                    </PrimaryView>
                 </View>
             )
         })

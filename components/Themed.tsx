@@ -57,6 +57,13 @@ export function ThirdView(props: ViewProps) {
   return <DefaultView style={[style, { backgroundColor }] as StyleProp<ViewStyle>} {...otherProps} />;
 }
 
+export function FourthView(props: ViewProps) {
+  const { style, ...otherProps } = props;
+  const backgroundColor = useThemeColor('background4');
+
+  return <DefaultView style={[style, { backgroundColor }] as StyleProp<ViewStyle>} {...otherProps} />;
+}
+
 export function TertiaryView(props: ViewProps) {
   const { style, ...otherProps } = props;
   const backgroundColor = useThemeColor('background3');

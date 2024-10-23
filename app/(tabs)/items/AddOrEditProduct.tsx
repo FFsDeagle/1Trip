@@ -104,24 +104,6 @@ export default function AddOrEditProduct({ item, adding } : AddOrEditProductProp
                 />
                 {formSubmitted ? (error.description ? <FontAwesome6 name="check" style={{right: 10}} size={24} color="green" /> : <FontAwesome6 name="circle-exclamation" size={24} color="red" />) : null}
             </View> */}
-            <TextPrimary style={[styles.flexRow, styles.justifiedStart, styles.getStartedText, { verticalAlign: 'middle', lineHeight: 12  }]}>Unit of Measure</TextPrimary>
-            <View style={[styles.justifiedApart, styles.flexRow, styles.inputItem, { width: '90%', backgroundColor: theme.primary }]}>
-                <TextInput
-                    returnKeyType="next"
-                    ref={uomRef}
-                    onSubmitEditing={() => categoryRef?.current?.focus()}
-                    value={product.uom?.toString()} 
-                    onChange={(e) => {
-                        const value = e.nativeEvent.text;
-                        const numericValue = value ? parseFloat(value) : '';
-                        setProduct({ ...product, uom: Number(numericValue) });
-                    }}
-                    style={[{ color: theme.textPrimary }]} 
-                    placeholder="Product Quantity"
-                    keyboardType="numeric"
-                />
-                {formSubmitted ? (error.uom ? <FontAwesome6 name="check" style={{right: 10}} size={24} color="green" /> : <FontAwesome6 name="circle-exclamation" size={24} color="red" />) : null}
-            </View>
             <TextPrimary style={[styles.flexRow, styles.justifiedStart, styles.getStartedText, { verticalAlign: 'middle', lineHeight: 12  }]}>Category</TextPrimary>
             <View style={[styles.justifiedCenter, styles.justifiedApart, styles.flexRow, styles.inputItem, { width: '90%', backgroundColor: theme.primary }]}>
                 <Picker
@@ -134,6 +116,24 @@ export default function AddOrEditProduct({ item, adding } : AddOrEditProductProp
                     ))}
                 </Picker>
                 {formSubmitted ? (error.category ? <FontAwesome6 name="check" style={{right: 10}} size={24} color="green" /> : <FontAwesome6 name="circle-exclamation" size={24} color="red" />) : null}
+            </View>
+            <TextPrimary style={[styles.flexRow, styles.justifiedStart, styles.getStartedText, { verticalAlign: 'middle', lineHeight: 12  }]}>Unit of Measure</TextPrimary>
+            <View style={[styles.justifiedApart, styles.flexRow, styles.inputItem, { width: '90%', backgroundColor: theme.primary }]}>
+                <TextInput
+                    returnKeyType="next"
+                    ref={uomRef}
+                    onSubmitEditing={() => categoryRef?.current?.focus()}
+                    value={product.uom?.toString()} 
+                    onChange={(e) => {
+                        const value = e.nativeEvent.text;
+                        const numericValue = value ? parseFloat(value) : '';
+                        setProduct({ ...product, uom: Number(numericValue) });
+                    }}
+                    style={[{ color: theme.background }]} 
+                    placeholder="Product Quantity"
+                    keyboardType="numeric"
+                />
+                {formSubmitted ? (error.uom ? <FontAwesome6 name="check" style={{right: 10}} size={24} color="green" /> : <FontAwesome6 name="circle-exclamation" size={24} color="red" />) : null}
             </View>
         {/* <TextPrimary style={[styles.flexRow, styles.justifiedStart, styles.getStartedText, { verticalAlign: 'middle', lineHeight: 12  }]}>Default Expiry (days)</TextPrimary>
             <View style={[styles.justifiedApart, styles.inputItem, styles.flexRow, ,{ width: '90%', backgroundColor: theme.primary }]}>

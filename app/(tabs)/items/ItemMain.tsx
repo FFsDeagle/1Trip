@@ -28,8 +28,8 @@ export default function ItemMain() {
   return (
     <PrimaryView style={styles.container}>
       <SecondaryScrollView>
-        <ItemsCategoryWidget />
         <PlusFeaturesWidget />
+        <ItemsCategoryWidget />
       </SecondaryScrollView>
       <AddNewItemButton />
     </PrimaryView>

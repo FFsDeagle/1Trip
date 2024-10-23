@@ -20,11 +20,11 @@ export function RenderAllItems({ items, shoppingList, setShoppingList, }: Render
                         <TouchableOpacity
                             onPress={() => {
                                 // First check if the item exists in the shopping list
-                                const exists = shoppingList.find((i) => i.id === item.id);
+                                const exists = shoppingList.find((i) => i._id === item._id);
                                 if (exists) {
                                     // If the item exists, update the quantity
                                     setShoppingList(shoppingList.map((i) => {
-                                        if (i.id === item.id) {
+                                        if (i._id === item._id) {
                                             i.quantity += item.uom;
                                         }
                                         return i;
@@ -32,11 +32,8 @@ export function RenderAllItems({ items, shoppingList, setShoppingList, }: Render
                                 return;
                                 } // If the item does not exist, add it to the shopping list
                                 setShoppingList([...shoppingList, {
-                                    id: item.id, name: item.name, category: item.category,
-                                    description: item.description,
+                                    _id: item._id, name: item.name, category: item.category,
                                     quantity: item.uom,
-                                    lastAddedDate: new Date(Date.now()).toISOString(),
-                                    isPastExpiry: false
                                 }]);
                             }}
                             key={key} 

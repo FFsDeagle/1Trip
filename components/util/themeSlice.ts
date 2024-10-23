@@ -16,6 +16,7 @@ export interface Colors {
     background?: string;
     background2?: string;
     background3?: string;
+    background4?: string;
     textPrimary?: string;
     textSecondary?: string
     tabIconDefault?: string,
@@ -47,6 +48,7 @@ export const defaultTheme: ThemeProps = {
       background: '#1F1F1F',
       background2: '#333645',
       background3: '#B2B2B2',
+      background4: '#282A30',
       linearBackground: ['#1F1F1F', '#333645'],
       linearBackground2: ['#D7D7D1', '#9EA7AD'],
       tabIconDefault: '#ccc',

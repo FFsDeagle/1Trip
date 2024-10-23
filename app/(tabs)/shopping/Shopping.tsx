@@ -26,7 +26,7 @@ export default function Items() {
           headerRight: () => <SettingsIcon />,
           headerStyle: {
             // backgroundColor: Colors[colorScheme ?? 'light'].background,
-            backgroundColor: theme.colors.background,
+            backgroundColor: theme.colors.background4,
           },
           headerTitleStyle: {
             // color: Colors[colorScheme ?? 'light'].text,
@@ -48,7 +48,7 @@ export default function Items() {
         options={{
           headerShown: true,
           headerStyle: {
-            backgroundColor: theme.colors.background,
+            backgroundColor: theme.colors.background4,
           },
           headerTintColor: theme.colors.tint,
           headerTitleStyle: {
@@ -64,7 +64,7 @@ export default function Items() {
           headerShown: true,
           headerTitle: "Start Shopping",
           headerStyle: {
-            backgroundColor: theme.colors.background,
+            backgroundColor: theme.colors.background4,
           },
           headerTintColor: theme.colors.tint,
           headerTitleStyle: {
@@ -79,7 +79,7 @@ export default function Items() {
         options={{
           headerShown: true,
           headerStyle: {
-            backgroundColor: theme.colors.background,
+            backgroundColor: theme.colors.background4,
           },
           headerTintColor: theme.colors.tint,
           headerTitleStyle: {
@@ -94,7 +94,7 @@ export default function Items() {
         options={{
           headerShown: true,
           headerStyle: {
-            backgroundColor: theme.colors.background,
+            backgroundColor: theme.colors.background4,
           },
           headerTintColor: theme.colors.tint,
           headerTitleStyle: {
@@ -109,7 +109,7 @@ export default function Items() {
           headerShown: true,
           headerTitle: "History List",
           headerStyle: {
-            backgroundColor: theme.colors.background,
+            backgroundColor: theme.colors.background4,
           },
           headerTintColor: theme.colors.tint,
           headerTitleStyle: {

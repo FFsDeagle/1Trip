@@ -113,7 +113,7 @@ export default function ShoppingListWidget() {
                                                         width: 90,
                                                         height: '90%',
                                                         borderRadius: 20,
-                                                        backgroundColor: 'rgba(0,0,0,0.05)',
+                                                        backgroundColor: 'rgba(0,0,0,0.3)',
                                                     }
                                                 ]}
                                             >

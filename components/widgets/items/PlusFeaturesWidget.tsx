@@ -1,6 +1,6 @@
 import { useAppSelector } from "@/app/store/hooks";
-import { SecondaryView, TextPrimary, TextSecondary } from "@/components/Themed";
-import { TouchableOpacity } from "react-native";
+import { FourthView, TouchableOpacity, SecondaryView, TextPrimary, TextSecondary } from "@/components/Themed";
+import {  } from "react-native";
 import { styles } from "@/components/util/Theme";
 import { AntDesign } from "@expo/vector-icons";
 import { View } from "react-native";
@@ -13,7 +13,7 @@ export default function PlusFeaturesWidget(){
     {/* Daily Meal Planner */}
 
     return (
-        <SecondaryView style={[styles.justified]}>
+        <SecondaryView style={[styles.justified, { width: '98%', alignSelf: 'center', marginTop: 10 }]}>
             <View style={[styles.flexRow, styles.justifiedApart]}>
                 <TextSecondary style={[styles.header2, {color: theme.textPrimary}]}>
                     Plus Features
@@ -23,7 +23,7 @@ export default function PlusFeaturesWidget(){
                 </TouchableOpacity>
             </View>
             {/* Background image for the plus features, Drawn out or AI Generated */}
-            <View style={[styles.cardContainer, styles.justifiedCenter, { backgroundColor: theme.background3 }]}>
+            <FourthView style={[styles.cardContainer, styles.justifiedCenter, { backgroundColor: theme.background3 }]}>
                 <View style={[styles.justifiedApart, styles.flexRow]}>
                     <View style={[styles.flexColumn, styles.justifiedCenter, { width: '60%', left: 20 }]}>
                         <TextPrimary style={[styles.heading, { width: '100%', padding: 0 }]}>
@@ -34,19 +34,19 @@ export default function PlusFeaturesWidget(){
                         </TextSecondary>
                     </View>
                     <View style={[styles.justifiedCenter, { width: '30%' }]}>
-                        <TouchableOpacity style={[styles.button , styles.justifiedCenter, styles.flexRow, { right: 20, width: 'auto', alignSelf: 'center', backgroundColor: theme.primary }]}>
+                        <TouchableOpacity style={[styles.button , styles.justifiedCenter, styles.flexRow, { right: 20, width: 'auto', alignSelf: 'center' }]}>
                             <TextPrimary style={styles.buttonText}>
                                 More Info
                             </TextPrimary>
                         </TouchableOpacity>
                     </View>
                 </View>
-            </View>
+            </FourthView>
             <View style={styles.separator} />
-            <View style={[styles.cardContainer, styles.justifiedCenter, { backgroundColor: theme.background3, marginBottom: 30 }]}>
+            <FourthView style={[styles.cardContainer, styles.justifiedCenter, { backgroundColor: theme.background3, marginBottom: 30 }]}>
                 <View style={[styles.justifiedApart, styles.flexRow]}>
                     <View style={[styles.justifiedCenter, { width: '30%' }]}>
-                        <TouchableOpacity style={[styles.button , styles.justifiedCenter, styles.flexRow, { width: 'auto', alignSelf: 'center', backgroundColor: theme.primary }]}>
+                        <TouchableOpacity style={[styles.button , styles.justifiedCenter, styles.flexRow, { width: 'auto', alignSelf: 'center' }]}>
                             <TextPrimary style={styles.buttonText}>
                                 More info
                             </TextPrimary>
@@ -61,7 +61,7 @@ export default function PlusFeaturesWidget(){
                         </TextSecondary>
                     </View>
                 </View>
-            </View>
+            </FourthView>
         </SecondaryView>
     )
 

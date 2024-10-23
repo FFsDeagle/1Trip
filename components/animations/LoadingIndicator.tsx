@@ -82,11 +82,11 @@ export default function LoadingIndicator({ displayText }: LoadingIndicatorProps 
                             { scale: 1.5 },
                         ],
                     }]}
-                        name="shopping-cart" size={38} color={theme.textPrimary} />
+                        name="shopping-cart" size={38} color={theme.iconColor} />
             </Animated.View>
                 </Animated.View>
             <View style={[styles.justified, styles.container, { marginTop: 50 }]}>
-                <TextSecondary style={[styles.getStartedText, { color: theme.background }]}>
+                <TextSecondary style={[styles.getStartedText, { color: theme.textPrimary }]}>
                     {displayText}
                 </TextSecondary>
             </View>

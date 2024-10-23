@@ -77,7 +77,7 @@ export default function ItemInfo() {
           <View style={[styles.justified, { width: '100%' }]}>
             <TextPrimary style={[styles.flexRow, styles.justifiedStart, styles.getStartedText, { verticalAlign: 'middle', lineHeight: 12 }]}>Name</TextPrimary>
             <View style={[styles.justifiedApart, styles.inputItem, styles.flexRow, ,{ width: '90%', backgroundColor: theme.primary }]}>
-              <TextPrimary style={styles.title}>{item?.name}</TextPrimary>
+              <TextPrimary style={[styles.title, { color: theme.background }]}>{item?.name}</TextPrimary>
             </View>
           </View>
           {/* <View style={[styles.justified, { width: '100%' }]}>
@@ -89,13 +89,13 @@ export default function ItemInfo() {
           <View style={[styles.justified, { width: '100%' }]}>
             <TextPrimary style={[styles.flexRow, styles.justifiedStart, styles.getStartedText, { verticalAlign: 'middle', lineHeight: 12 }]}>Category</TextPrimary>
             <View style={[styles.justifiedApart, styles.inputItem, styles.flexRow, ,{ width: '90%', backgroundColor: theme.primary }]}>
-              <TextPrimary style={styles.title}>{item?.category}</TextPrimary>
+              <TextPrimary style={[styles.title, { color: theme.background }]}>{item?.category}</TextPrimary>
             </View>
           </View>
           <View style={[styles.justified, { width: '100%' }]}>
             <TextPrimary style={[styles.flexRow, styles.justifiedStart, styles.getStartedText, { verticalAlign: 'middle', lineHeight: 12 }]}>Unit of Measure</TextPrimary>
             <View style={[styles.justifiedApart, styles.inputItem, styles.flexRow, ,{ width: '90%', backgroundColor: theme.primary }]}>
-              <TextPrimary style={styles.title}>{item?.uom}</TextPrimary>
+              <TextPrimary style={[styles.title, { color: theme.background }]}>{item?.uom}</TextPrimary>
             </View>
           </View>
           {/* <View style={[styles.justified, { width: '100%' }]}>

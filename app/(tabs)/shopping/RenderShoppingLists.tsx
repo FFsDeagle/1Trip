@@ -51,13 +51,12 @@ export default function RenderShoppingLists({ title, listType }: RenderShoppingL
                             numColumns={2}
                             data={list}
                             renderItem={({item, index}: { item: ShoppingList, index: number }) => (
-                                <View
+                                <SecondaryView
                                     key={index + 1}
                                     style={[
                                         {
                                             width: '45%', 
                                             height: 'auto',
-                                            backgroundColor: theme.primary,
                                             margin: 10,
                                             borderRadius: 15,
                                             elevation: 5,
@@ -113,7 +112,7 @@ export default function RenderShoppingLists({ title, listType }: RenderShoppingL
                                                 <FontAwesome6 name="trash-can" size={16}/>
                                         </TouchableOpacity>
                                     </View>}
-                                </View>
+                                </SecondaryView>
                             )}
                         />
                     </LinearGradient>
