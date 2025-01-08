@@ -10,19 +10,19 @@
 
 ### Login
 
-![Login GIF](/app/Images/Login.gif)
+![Login GIF](Images/Login.gif)
 
 ### Creating Shopping List
 
-![Create List GIF](/app/Images/Create%20List.gif)
+![Create List GIF](Images/Create%20List.gif)
 
 ### Products List
 
-![Products Search and Update GIF](/app/Images/ProductSearch.gif)
+![Products Search and Update GIF](Images/ProductSearch.gif)
 
 ### Shopping
 
-![Go Shopping GIF](/app/Images/ShoppingList.gif)
+![Go Shopping GIF](Images/ShoppingList.gif)
 
 ## Built With
 
