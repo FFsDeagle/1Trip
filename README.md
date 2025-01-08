@@ -1,10 +1,10 @@
 ## Project Name
 
-1Trip
+ShopWise
 
 ## Description
 
-1Trip is a software application designed to simplify the process of planning and organising shopping trips. It offers users a user-friendly interface to create and manage shopping lists and individual products.
+ShopWise is a software application designed to simplify the process of planning and organising shopping trips. It offers users a user-friendly interface to create and manage shopping lists and individual products.
 
 ## Progress and Next Steps
 
