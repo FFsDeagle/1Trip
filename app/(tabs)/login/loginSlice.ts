@@ -71,7 +71,7 @@ export const forgotPassword = createAsyncThunk(
     'login/forgotPassword',
     async ({ email }: LoginProps) => {
         console.log("Attempting to send password reset email to:", email);
-        const response = await axios.post('http://192.168.1.116:5000/recover/forgotPassword', { email })
+        const response = await axios.post('http://192.168.1.112:5000/recover/forgotPassword', { email })
         return response.data;
     }
 )
@@ -80,7 +80,7 @@ export const verifyAuthToken = createAsyncThunk(
     'login/verifyAuthToken',
     async (authToken: string) => {
         // return testLoginResponse;
-        const response = await axios.post('http://192.168.1.116:5000/account/verifyAuthToken', { authToken })
+        const response = await axios.post('http://192.168.1.112:5000/account/verifyAuthToken', { authToken })
         return response.data;
     }
 )
@@ -89,7 +89,7 @@ export const createAccount = createAsyncThunk(
     'login/createAccount',
     async ({ firstName, lastName, email, password }: LoginProps) => {
         console.log("Attempting to create account with email:", email);
-        const response = await axios.post('http://192.168.1.116:5000/account/signUp', { firstName, lastName, email, password })
+        const response = await axios.post('http://192.168.1.112:5000/account/signUp', { firstName, lastName, email, password })
         return response.data;
     }
 )
@@ -100,7 +100,7 @@ export const loginAsync = createAsyncThunk(
     async ({ email, password }: LoginProps) => {
         // return testLoginResponse as LoginResponse;
         console.log("Attempting to sign in with email:", email);
-        const response = await axios.post('http://192.168.1.116:5000/account/login', { email, password })
+        const response = await axios.post('http://192.168.1.112:5000/account/login', { email, password })
         return response.data;
     }
 )
@@ -110,7 +110,7 @@ export const logoutAsync = createAsyncThunk(
     'login/logoutAsync',
     // No need to define a interface here as we are only passing 1 argument of type string
     async (id: string) => {
-        const response = await axios.post('http://192.168.1.116:5000/account/logout', { id })
+        const response = await axios.post('http://192.168.1.112:5000/account/logout', { id })
         return response.data;
     }
 )

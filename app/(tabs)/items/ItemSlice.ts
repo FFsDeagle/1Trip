@@ -51,7 +51,7 @@ export const getProducts = createAsyncThunk(
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
         console.log('token 321', token);
-        const response = await axios.get('http://192.168.1.116:5000/products/getProducts', { 
+        const response = await axios.get('http://192.168.1.112:5000/products/getProducts', { 
             params: { id },
             headers: { Authorization: `Bearer ${token}`} 
         })
@@ -64,7 +64,7 @@ export const getFavouriteList = createAsyncThunk(
     async (id: string, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.get('http://192.168.1.116:5000/products/getFavouriteList', { 
+        const response = await axios.get('http://192.168.1.112:5000/products/getFavouriteList', { 
             params: { id }, 
             headers: { Authorization: `Bearer ${token}` }
         })
@@ -77,7 +77,7 @@ export const addFavouriteList = createAsyncThunk(
     async ({ name, items }: FavouriteList, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.post('http://192.168.1.116:5000/products/addFavouriteList', { 
+        const response = await axios.post('http://192.168.1.112:5000/products/addFavouriteList', { 
             name, 
             items,
         }, { headers: { Authorization: `Bearer ${token}` }})
@@ -90,7 +90,7 @@ export const addItem = createAsyncThunk(
     async ({ id, product } : { id: string, product: InventoryItem }, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.post('http://192.168.1.116:5000/products/addProduct', 
+        const response = await axios.post('http://192.168.1.112:5000/products/addProduct', 
             { id, product },
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -103,7 +103,7 @@ export const updateProduct = createAsyncThunk(
     async ({ id, product }: { id: string, product: InventoryItem }, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.put('http://192.168.1.116:5000/products/updateProduct', 
+        const response = await axios.put('http://192.168.1.112:5000/products/updateProduct', 
             { id, product },
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -116,7 +116,7 @@ export const deleteItem = createAsyncThunk(
     async ({ userId, id }: { id: string, userId: string }, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.delete('http://192.168.1.116:5000/products/deleteProduct', {
+        const response = await axios.delete('http://192.168.1.112:5000/products/deleteProduct', {
             headers: { Authorization: `Bearer ${token}` },
             data: { userId, id }
         });
@@ -129,7 +129,7 @@ export const getCategories = createAsyncThunk(
     async (id: string, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.get('http://192.168.1.116:5000/products/getCategories', { 
+        const response = await axios.get('http://192.168.1.112:5000/products/getCategories', { 
             params: { id },
             headers: { Authorization: `Bearer ${token}`}
         });
@@ -142,7 +142,7 @@ export const addCategories = createAsyncThunk(
     async ({ id, category }: { id: string, category: string }, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.post('http://192.168.1.116:5000/products/addCategories', 
+        const response = await axios.post('http://192.168.1.112:5000/products/addCategories', 
             { id, category },
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -157,7 +157,7 @@ export const deleteCategories = createAsyncThunk(
         const { token } = state.login.loginResponse;
         const categoryId = category._id;
         console.log('deleteCategories', id, category);
-        const response = await axios.delete('http://192.168.1.116:5000/products/deleteCategories', {
+        const response = await axios.delete('http://192.168.1.112:5000/products/deleteCategories', {
             headers: { Authorization: `Bearer ${token}` },
             data: { id, category }
         });
@@ -172,7 +172,7 @@ export const updateCategories = createAsyncThunk(
     async ({ id, category }: { id: string, category: Categories }, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.put('http://192.168.1.116:5000/products/updateCategories', 
+        const response = await axios.put('http://192.168.1.112:5000/products/updateCategories', 
             { id, category },
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -186,7 +186,7 @@ export const getItemList = createAsyncThunk(
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
         console.log("token 321", token);
-        const response = await axios.get('http://192.168.1.116:5000/products/getProducts', { 
+        const response = await axios.get('http://192.168.1.112:5000/products/getProducts', { 
             params: { id },
             headers: { Authorization: `Bearer ${token}`}
          })

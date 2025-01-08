@@ -4,27 +4,25 @@
 
 ## Description
 
-1Trip is a software application designed to simplify the process of planning and organising shopping trips. It offers users a user-friendly interface to create, manage, and share shopping lists.
+1Trip is a software application designed to simplify the process of planning and organising shopping trips. It offers users a user-friendly interface to create and manage shopping lists and individual products.
 
-## Installation
+## Preview
 
-To install and run the 1Trip application, follow these steps:
+### Login
 
-1. Clone the repository to your local machine.
-2. Install the required dependencies by running
-    ```sh
-    npm install
-    ```
+![Login GIF](/app/Images/Login.gif)
 
-3. Start the application by running
+### Creating Shopping List
 
-    ```sh
-    npm run web
-    ```
+![Create List GIF](/app/Images/Create%20List.gif)
 
-## Usage
+### Products List
 
-Once the application is running, you can access it through your web browser at `http://localhost:8081`. From there, you can create a new account or log in with your existing credentials. Once logged in, you can begin creating and managing your shopping list.
+![Products Search and Update GIF](/app/Images/ProductSearch.gif)
+
+### Shopping
+
+![Go Shopping GIF](/app/Images/ShoppingList.gif)
 
 ## Built With
 

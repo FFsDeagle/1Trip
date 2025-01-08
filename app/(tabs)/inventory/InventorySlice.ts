@@ -40,7 +40,7 @@ export const addItem = createAsyncThunk(
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
         const response = await axios.post(
-            'http://192.168.1.116:5000/inventory/addInventory',
+            'http://192.168.1.112:5000/inventory/addInventory',
             { 
                 category, 
                 // description, 
@@ -58,7 +58,7 @@ export const AddListToInventory = createAsyncThunk(
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
         const response = await axios.post(
-            'http://192.168.1.116:5000/inventory/addListToInventory',
+            'http://192.168.1.112:5000/inventory/addListToInventory',
             { id, list },
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -73,7 +73,7 @@ export const GetInventoryItems = createAsyncThunk(
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
         const response = await axios.get(
-            'http://192.168.1.116:5000/inventory/getInventoryItems',
+            'http://192.168.1.112:5000/inventory/getInventoryItems',
             { 
                 params: { id },
                 headers: { Authorization: `Bearer ${token}` } 

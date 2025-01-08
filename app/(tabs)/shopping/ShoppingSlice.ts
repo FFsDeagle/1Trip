@@ -45,7 +45,7 @@ export const DeleteList = createAsyncThunk(
     async ({ id, list }: { id: string, list: ShoppingList}, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.delete(`http://192.168.1.116:5000/shopping/deleteList`, {
+        const response = await axios.delete(`http://192.168.1.112:5000/shopping/deleteList`, {
             data: { id, list },
             headers: {
                 Authorization: `Bearer ${token}`
@@ -60,7 +60,7 @@ export const DeleteIncompleteList = createAsyncThunk(
     async ({ id, list }: { id: string, list: ShoppingList}, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.delete('http://192.168.1.116:5000/shopping/deleteIncompleteList', {
+        const response = await axios.delete('http://192.168.1.112:5000/shopping/deleteIncompleteList', {
             data: { id, list },
             headers: {
                 Authorization: `Bearer ${token}`
@@ -75,7 +75,7 @@ export const SaveIncompleteList = createAsyncThunk(
     async ({ id, list }: { id: string, list: ShoppingList}, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.post('http://192.168.1.116:5000/shopping/saveIncompleteList', { id, list }, {
+        const response = await axios.post('http://192.168.1.112:5000/shopping/saveIncompleteList', { id, list }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -89,7 +89,7 @@ export const GetLists = createAsyncThunk(
     async (id: string, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.get('http://192.168.1.116:5000/shopping/getLists', {
+        const response = await axios.get('http://192.168.1.112:5000/shopping/getLists', {
             params: { id },
             headers: {
                 Authorization: `Bearer ${token}`
@@ -104,7 +104,7 @@ export const UpdateShoppingList = createAsyncThunk(
     async ({ id, list }: { id: string, list: ShoppingList}, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.post('http://192.168.1.116:5000/shopping/updateList', { id, list }, {
+        const response = await axios.post('http://192.168.1.112:5000/shopping/updateList', { id, list }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -122,7 +122,7 @@ export const SaveShoppingList = createAsyncThunk(
         console.log(id);
         console.log(list);
         console.log('saveList token', token);
-        const response = await axios.post('http://192.168.1.116:5000/shopping/saveList', { id, list }, {
+        const response = await axios.post('http://192.168.1.112:5000/shopping/saveList', { id, list }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -136,7 +136,7 @@ export const SaveToHistory = createAsyncThunk(
     async ({ id, list }: { id: string, list: ShoppingList}, { getState }) => {
         const state = getState() as RootState;
         const { token } = state.login.loginResponse;
-        const response = await axios.post('http://192.168.1.116:5000/shopping/saveToHistory', { id, list }, {
+        const response = await axios.post('http://192.168.1.112:5000/shopping/saveToHistory', { id, list }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
